@@ -1,0 +1,47 @@
+<!-- News_app/templates/news_app/categories.html -->
+{% extends 'base.html' %}
+
+{% block title %}Categories - News Application{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Categories</h1>
+    {% if user.is_authenticated and user.can_manage_content %}
+    <a href="{% url 'create_category' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Create Category
+    </a>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% for category in categories %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ category.name }}</h5>
+                <p class="card-text">{{ category.description|truncatewords:20 }}</p>
+                <div class="mt-auto">
+                    <small class="text-muted">
+                        {{ category.article_count }} article{{ category.article_count|pluralize }}
+                    </small>
+                    <a href="{% url 'category_articles' category.id %}" class="btn btn-outline-primary text-white mt-2">
+                        View Articles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="text-center py-5">
+            <h4>No categories available yet.</h4>
+            <p class="text-muted">Categories will appear here as they are created.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}

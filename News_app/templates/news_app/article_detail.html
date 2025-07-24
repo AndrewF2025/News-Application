@@ -1,0 +1,259 @@
+<!-- News_app/templates/news_app/article_detail.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ article.title }} - News Application{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="mb-3">
+        <button class="btn btn-outline-secondary" onclick="window.history.back();">
+            <i class="fas fa-arrow-left me-1"></i> Back
+        </button>
+    </div>
+    <div class="col-lg-8">
+        <!-- Article Header -->
+        <div class="mb-4">
+            <h1 class="display-5">{{ article.title }}</h1>
+
+            <!-- Article Meta -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <small class="text-muted">
+                        By <strong>{{ article.author.get_full_name|default:article.author.username }}</strong>
+                        • {{ article.created_date|date:"F d, Y" }}
+                        {% if article.published_date %}
+                        • Published {{ article.published_date|date:"F d, Y" }}
+                        {% endif %}
+                    </small>
+                </div>
+                <div>
+                    {% if article.category %}
+                    <span class="badge bg-secondary">{{ article.category.name }}</span>
+                    {% endif %}
+                    {% if article.is_published %}
+                    <span class="badge bg-success">Published</span>
+                    {% else %}
+                    <span class="badge bg-warning">Draft</span>
+                    {% endif %}
+                    {% if article.is_approved %}
+                    <span class="badge bg-primary">Approved</span>
+                    {% elif user.can_manage_content %}
+                    <span class="badge bg-danger">Pending Approval</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Article Image -->
+            {% if article.image %}
+            <img src="{{ article.image.url }}" class="img-fluid rounded mb-4" alt="{{ article.title }}"
+                style="max-height: 400px; width: 100%; object-fit: cover;">
+            {% else %}
+            <img src="{% static 'news_app/default_article.jpg' %}" class="img-fluid rounded mb-4"
+                alt="No image available" style="max-height: 400px; width: 100%; object-fit: cover;">
+            {% endif %}
+
+        </div>
+
+        <!-- Article Content -->
+        <div class="article-content mb-4">
+            {{ article.content|linebreaks }}
+        </div>
+
+        <!-- Article Actions -->
+        {% if user.is_authenticated %}
+        <div class="mb-3">
+            {% if user == article.author and not article.is_approved and not article.is_published %}
+            <a href="{% url 'edit_article' article.id %}" class="btn btn-outline-light btn-sm text-muted">
+                <i class="fas fa-edit"></i> Edit Article
+            </a>
+            {% endif %}
+            {% if user == article.author or user.can_manage_content %}
+            <a href="{% url 'delete_article' article.id %}" class="btn btn-outline-danger btn-sm"
+                onclick="return confirm('Are you sure you want to delete this article?');">
+                <i class="fas fa-trash"></i> Delete Article
+            </a>
+            {% endif %}
+
+            {% if not article.is_approved and user.can_approve_articles %}
+            <form method="POST" action="{% url 'approve_article' article.id %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-sm">
+                    <i class="fas fa-check"></i> Approve Article
+                </button>
+            </form>
+            {% endif %}
+            {% if article.is_approved and not article.is_published and user.can_approve_articles %}
+            <form method="POST" action="{% url 'publish_article' article.id %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-info btn-sm">
+                    <i class="fas fa-globe"></i> Publish Article
+                </button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Publisher Info -->
+        {% if article.publisher %}
+        <div class="card mt-4">
+            <div class="card-body">
+                <h6 class="card-title">Published by</h6>
+                <p class="card-text">
+                    <strong>{{ article.publisher.name }}</strong><br>
+                    {{ article.publisher.description }}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Comments Section -->
+        <div class="mt-5">
+            <h4>Comments <span class="badge bg-secondary">{{ comments.count }}</span></h4>
+
+            <!-- Add Comment Form -->
+            {% if user.is_authenticated %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h6>Add a comment</h6>
+                    <form method="POST" action="{% url 'add_comment' article.id %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <textarea name="content" class="form-control" rows="3"
+                                placeholder="Write your comment here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <a href="{% url 'login' %}">Login</a> to post a comment.
+            </div>
+            {% endif %}
+
+            <!-- Comments List -->
+            {% if comments and comments.count > 0 %}
+            {% for comment in comments %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="card-title mb-1">
+                                {{ comment.author.get_full_name|default:comment.author.username }}
+                                <small class="text-muted">({{ comment.author.role|title }})</small>
+                            </h6>
+                            <small class="text-muted">{{ comment.created_date|date:"F d, Y g:i A" }}</small>
+                        </div>
+                        {% if user.is_authenticated %}
+                        {% if user == comment.author or user.can_manage_content %}
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown">
+                                Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% if user == comment.author %}
+                                <li><a class="dropdown-item" href="{% url 'edit_comment' comment.id %}">Edit</a></li>
+                                {% endif %}
+                                <li>
+                                    <form method="POST" action="{% url 'delete_comment' comment.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item text-danger"
+                                            onclick="return confirm('Are you sure you want to delete this comment?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    <p class="card-text mt-2">{{ comment.content|linebreaks }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="text-center py-4">
+                <p class="text-muted">No comments yet. Be the first to comment!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Related Articles -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">Related Articles</h6>
+            </div>
+            <div class="card-body">
+                {% if related_articles and related_articles|length > 0 %}
+                {% for related in related_articles %}
+                <div class="mb-3">
+                    <h6 class="mb-1">
+                        <a href="{% url 'article_detail' related.id %}" class="text-decoration-none">
+                            {{ related.title }}
+                        </a>
+                    </h6>
+                    <small class="text-muted">
+                        By {{ related.author.get_full_name|default:related.author.username }}
+                        • {{ related.created_date|date:"M d, Y" }}
+                    </small>
+                </div>
+                {% if not forloop.last %}
+                <hr>{% endif %}
+                {% endfor %}
+                {% else %}
+                <div class="text-center py-3">
+                    <p class="text-muted">No related articles found.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Latest Articles -->
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">Latest Articles</h6>
+            </div>
+            <div class="card-body">
+                {% if latest_articles and latest_articles|length > 0 %}
+                {% for latest in latest_articles %}
+                <div class="mb-3">
+                    <h6 class="mb-1">
+                        <a href="{% url 'article_detail' latest.id %}" class="text-decoration-none">
+                            {{ latest.title }}
+                        </a>
+                    </h6>
+                    <small class="text-muted">{{ latest.created_date|date:"M d, Y" }}</small>
+                </div>
+                {% if not forloop.last %}
+                <hr>{% endif %}
+                {% endfor %}
+                {% else %}
+                <div class="text-center py-3">
+                    <p class="text-muted">No latest articles found.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    .article-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+
+    .article-content p {
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}

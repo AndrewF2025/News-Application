@@ -1,0 +1,229 @@
+<!-- News_app/templates/news_app/profile.html -->
+{% extends 'base.html' %}
+
+{% block title %}Profile - News Application{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 class="card-title">{{ user.get_full_name|default:user.username }}</h5>
+                <p class="card-text">
+                    <span class="badge bg-primary">{{ display_role }}</span>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">Member since {{ user.date_joined|date:"M d, Y" }}</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Profile Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>Username:</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ user.username }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>Email:</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ user.email }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>First Name:</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ user.first_name }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>Last Name:</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ user.last_name }}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>Role:</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ display_role }}
+                    </div>
+                </div>
+                <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                <a href="{% url 'password_change' %}" class="btn btn-warning ms-2">Change Password</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if display_role == 'Journalist' %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">My Articles</h5>
+            </div>
+            <div class="card-body">
+                {% if articles %}
+                <ul class="list-group mb-3">
+                    {% for article in articles|slice:":5" %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'article_detail' article.id %}">{{ article.title }}</a>
+                        <span class="badge bg-secondary">
+                            {% if article.is_published %}
+                            Published
+                            {% elif article.is_approved %}
+                            Approved
+                            {% else %}
+                            Pending
+                            {% endif %}
+                        </span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">No articles found.</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No articles found.</p>
+                {% endif %}
+                <a href="{% url 'create_article' %}" class="btn btn-success">Create New Article</a>
+                <a href="{% url 'my_articles' %}" class="btn btn-primary ms-2">My Articles</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">My Newsletters</h5>
+            </div>
+            <div class="card-body">
+                {% if newsletters %}
+                <ul class="list-group mb-3">
+                    {% for newsletter in newsletters|slice:":5" %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'newsletter_detail' newsletter.id %}">{{ newsletter.title }}</a>
+                        <span class="badge bg-secondary">
+                            {% if newsletter.is_published %}
+                            Published
+                            {% elif newsletter.is_approved %}
+                            Approved
+                            {% else %}
+                            Pending
+                            {% endif %}
+                        </span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">No newsletters found.</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No newsletters found.</p>
+                {% endif %}
+                <a href="{% url 'create_newsletter' %}" class="btn btn-success">Create New Newsletter</a>
+                <a href="{% url 'my_newsletters' %}" class="btn btn-primary ms-2">My Newsletters</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if user.can_manage_content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Pending Approvals</h5>
+            </div>
+            <div class="card-body">
+                {% if pending_articles or pending_newsletters %}
+                <h6>Pending Articles</h6>
+                <ul class="list-group mb-3">
+                    {% for article in pending_articles|slice:":5" %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'article_detail' article.id %}">{{ article.title }}</a>
+                        <span class="badge bg-warning">Pending</span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">No pending articles.</li>
+                    {% endfor %}
+                </ul>
+                <h6>Pending Newsletters</h6>
+                <ul class="list-group mb-3">
+                    {% for newsletter in pending_newsletters|slice:":5" %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'newsletter_detail' newsletter.id %}">{{ newsletter.title }}</a>
+                        <span class="badge bg-warning">Pending</span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">No pending newsletters.</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No pending articles or newsletters.</p>
+                {% endif %}
+                <a href="{% url 'pending_approvals' %}" class="btn btn-warning">View Pending Approvals</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if subscribed_publishers %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Subscribed Publishers</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for publisher in subscribed_publishers %}
+                    <li>{{ publisher.name }}</li>
+                    {% empty %}
+                    <li>No subscriptions yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if subscribed_journalists %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Subscribed Journalists</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for journalist in subscribed_journalists %}
+                    <li>{{ journalist.get_full_name|default:journalist.username }}</li>
+                    {% empty %}
+                    <li>No subscriptions yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

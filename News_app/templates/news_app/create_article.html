@@ -1,0 +1,82 @@
+<!-- News_app/templates/news_app/create_article.html -->
+{% extends 'base.html' %}
+
+{% block title %}Create Article - News Application{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Create Article</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {% for field in form %}
+                        {% if field.name == 'is_independent' %}
+                        <div class="form-check mb-2">
+                            {{ field }} {{ field.label_tag }}
+                            <small class="form-text text-muted">Check if this article is independent. Publisher will be
+                                disabled.</small>
+                        </div>
+                        {% elif field.name == 'publisher' %}
+                        <div id="publisher-field" class="mb-3">
+                            {{ field.label_tag }} {{ field }}
+                        </div>
+                        {% else %}
+                        <div class="mb-2">
+                            {{ field.label_tag }} {{ field }}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="submit" class="btn btn-primary" id="create-article-btn">Create Article</button>
+                        <a href="{% url 'articles' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var independentCheckbox = document.querySelector('[name="is_independent"]');
+                        var publisherSelect = document.querySelector('[name="publisher"]');
+                        var publisherField = document.getElementById('publisher-field');
+                        var createBtn = document.getElementById('create-article-btn');
+
+                        function togglePublisherField() {
+                            if (independentCheckbox && publisherField) {
+                                publisherField.style.display = independentCheckbox.checked ? 'none' : 'block';
+                                if (independentCheckbox.checked && publisherSelect) {
+                                    publisherSelect.value = '';
+                                }
+                            }
+                        }
+
+                        function validateForm(e) {
+                            var isIndependent = independentCheckbox && independentCheckbox.checked;
+                            var hasPublisher = publisherSelect && publisherSelect.value;
+                            if (!isIndependent && !hasPublisher) {
+                                e.preventDefault();
+                                alert('Please select a publisher or mark the article as independent.');
+                                return false;
+                            }
+                            return true;
+                        }
+
+                        if (independentCheckbox && publisherField) {
+                            independentCheckbox.addEventListener('change', togglePublisherField);
+                            togglePublisherField();
+                        }
+                        if (createBtn) {
+                            createBtn.addEventListener('click', function (e) {
+                                validateForm(e);
+                            });
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

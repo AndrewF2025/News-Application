@@ -1,0 +1,16 @@
+<!-- News_app/templates/news_app/create_publisher.html -->
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_superuser %}
+<div class="form-container">
+    <h2>Create Publisher</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% else %}
+<div class="alert alert-danger mt-4">Only admins can create publishers.</div>
+{% endif %}
+{% endblock %}

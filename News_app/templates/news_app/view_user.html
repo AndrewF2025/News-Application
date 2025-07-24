@@ -1,0 +1,16 @@
+<!-- News_app/templates/news_app/view_user.html -->
+{% extends 'base.html' %}
+{% block title %}View User{% endblock %}
+{% block content %}
+<h2>User Details</h2>
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ user.get_full_name|default:user.username }}</h5>
+        <p class="card-text"><strong>Username:</strong> {{ user.username }}</p>
+        <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+        <p class="card-text"><strong>Role:</strong> {{ user.display_role }}</p>
+        <p class="card-text"><strong>Joined:</strong> {{ user.date_joined|date:"M d, Y" }}</p>
+    </div>
+</div>
+<a href="{% url 'admin_users' %}" class="btn btn-secondary">Back to Users</a>
+{% endblock %}

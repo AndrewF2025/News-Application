@@ -1,0 +1,27 @@
+<!-- News_app/templates/news_app/add_publisher_staff.html -->
+{% extends 'base.html' %}
+{% block title %}Add {{ role|title }} to Publisher{% endblock %}
+{% block content %}
+<h2>Add {{ role|title }} to {{ publisher.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="user_id" class="form-label">Select {{ role|title }}</label>
+        <select name="user_id" id="user_id" class="form-select">
+            {% for user in users %}
+            {% if user.id in existing_staff_ids %}
+            <option value="{{ user.id }}" disabled>
+                {{ user.get_full_name }} ({{ user.username }}) - {{ user.display_role }} - Already Added
+            </option>
+            {% else %}
+            <option value="{{ user.id }}">
+                {{ user.get_full_name }} ({{ user.username }}) - {{ user.display_role }}
+            </option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Add {{ role|title }}</button>
+    <a href="{% url 'admin_publishers' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

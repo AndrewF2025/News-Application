@@ -1,0 +1,42 @@
+<!-- News_app/templates/news_app/edit_publisher_staff.html -->
+{% extends 'base.html' %}
+{% block title %}Edit Publisher Staff{% endblock %}
+{% block content %}
+<h2>Edit Staff for {{ staff.publisher.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="user_id" class="form-label">Select User</label>
+        <select name="user_id" id="user_id" class="form-select">
+            {% for user in users %}
+            {% if user.id == staff.user.id %}
+            <option value="{{ user.id }}" selected>
+                {{ user.get_full_name }} ({{ user.display_role }})
+            </option>
+            {% else %}
+            <option value="{{ user.id }}">
+                {{ user.get_full_name }}
+            </option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="role" class="form-label">Role</label>
+        <select name="role" id="role" class="form-select">
+            {% if staff.role == "editor" %}
+            <option value="editor" selected>Editor</option>
+            {% else %}
+            <option value="editor">Editor</option>
+            {% endif %}
+            {% if staff.role == "journalist" %}
+            <option value="journalist" selected>Journalist</option>
+            {% else %}
+            <option value="journalist">Journalist</option>
+            {% endif %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success">Update Staff</button>
+    <a href="{% url 'admin_publishers' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

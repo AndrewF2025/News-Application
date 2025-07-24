@@ -1,0 +1,128 @@
+<!-- News_app/templates/news_app/newsletter_detail.html -->
+{% extends 'base.html' %}
+{% block title %}Newsletter Detail{% endblock %}
+
+{% block content %}
+<!-- Newsletter Detail Layout -->
+<div class="row">
+    <!-- Back Button Section -->
+    <div class="mb-3">
+        <button class="btn btn-outline-secondary" onclick="window.history.back();">
+            <i class="fas fa-arrow-left me-1"></i> Back
+        </button>
+    </div>
+    <!-- Main Newsletter Section -->
+    <div class="col-lg-8">
+        <!-- Newsletter Header -->
+        <div class="mb-4">
+            <h1 class="display-5">{{ newsletter.title }}</h1>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <small class="text-muted">
+                        By <strong>{{ newsletter.author.get_full_name|default:newsletter.author.username }}</strong>
+                        • {{ newsletter.created_date|date:"F d, Y" }}
+                    </small>
+                </div>
+                <div>
+                    {% if newsletter.is_published %}
+                    <span class="badge bg-success">Published</span>
+                    {% else %}
+                    <span class="badge bg-warning">Draft</span>
+                    {% endif %}
+                    {% if newsletter.is_approved %}
+                    <span class="badge bg-info">Approved</span>
+                    {% else %}
+                    <span class="badge bg-danger">Pending Approval</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Newsletter Content Section -->
+        <div class="newsletter-content mb-4">
+            {{ newsletter.content|linebreaks }}
+        </div>
+        <!-- Newsletter Actions Section -->
+        {% if user.is_authenticated %}
+        <div class="mb-3">
+            {% if user == newsletter.author and not newsletter.is_approved and not newsletter.is_published %}
+            <a href="{% url 'edit_newsletter' newsletter.id %}" class="btn btn-outline-light btn-sm text-muted">
+                <i class="fas fa-edit"></i> Edit Newsletter
+            </a>
+            {% endif %}
+            {% if user == newsletter.author or user.can_manage_content %}
+            <a href="{% url 'delete_newsletter' newsletter.id %}" class="btn btn-outline-danger btn-sm"
+                onclick="return confirm('Are you sure you want to delete this newsletter?');">
+                <i class="fas fa-trash"></i> Delete Newsletter
+            </a>
+            {% endif %}
+            {% if not newsletter.is_approved and user.can_approve_articles %}
+            <form method="POST" action="{% url 'approve_newsletter' newsletter.id %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-sm">
+                    <i class="fas fa-check"></i> Approve Newsletter
+                </button>
+            </form>
+            {% endif %}
+            {% if newsletter.is_approved and not newsletter.is_published and user.can_approve_articles %}
+            <form method="POST" action="{% url 'publish_newsletter' newsletter.id %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-info btn-sm">
+                    <i class="fas fa-globe"></i> Publish Newsletter
+                </button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+        <!-- Published By Section -->
+        {% if newsletter.publisher or newsletter.is_independent %}
+        <div class="card mt-4">
+            <div class="card-body">
+                <h6 class="card-title">Published by</h6>
+                <p class="card-text">
+                    {% if newsletter.publisher %}
+                    <strong>{{ newsletter.publisher.name }}</strong><br>
+                    {{ newsletter.publisher.description }}
+                    {% elif newsletter.is_independent %}
+                    <span>Published independently</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <!-- Sidebar Section -->
+    <div class="col-lg-4">
+        <!-- Latest Newsletters Card -->
+        <div class="card mb-4">
+            <div class="card-header">Latest Newsletters</div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for latest in latest_newsletters %}
+                    <li class="list-group-item">
+                        <a href="{% url 'newsletter_detail' latest.id %}">{{ latest.title }}</a>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">No newsletters found.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!-- Related Newsletters Card -->
+        <div class="card mb-4">
+            <div class="card-header">Related Newsletters</div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for related in related_newsletters %}
+                    <li class="list-group-item">
+                        <a href="{% url 'newsletter_detail' related.id %}">{{ related.title }}</a>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">No related newsletters found.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Newsletter Detail Layout -->
+{% endblock %}

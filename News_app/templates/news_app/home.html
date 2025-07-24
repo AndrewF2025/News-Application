@@ -1,0 +1,122 @@
+<!-- News_app/templates/news_app/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home - News Application{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="jumbotron bg-primary text-white rounded mb-4 p-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="display-4">Welcome to News Application</h1>
+            <p class="lead">Stay informed with the latest news, articles, and newsletters from trusted sources.</p>
+            {% if not user.is_authenticated %}
+            <a class="btn btn-light btn-lg" href="{% url 'register' %}" role="button">Get Started</a>
+            {% endif %}
+        </div>
+        <div class="col-md-4 text-center">
+            <i class="fas fa-newspaper fa-5x"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">{{ stats.total_articles }}</h5>
+                <p class="card-text">Total Articles</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">{{ stats.total_newsletters }}</h5>
+                <p class="card-text">Newsletters</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">{{ stats.total_categories }}</h5>
+                <p class="card-text">Categories</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">{{ stats.total_publishers }}</h5>
+                <p class="card-text">Publishers</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Latest Articles -->
+<h2 class="mb-3">Latest Articles</h2>
+<div class="row">
+    {% for article in latest_articles %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card article-card h-100">
+            {% if article.image %}
+            <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}"
+                style="height: 200px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+                <div class="mt-auto">
+                    <small class="text-muted">
+                        By {{ article.author.get_full_name|default:article.author.username }}
+                        • {{ article.created_date|date:"M d, Y" }}
+                    </small>
+                    {% if article.category %}
+                    <span class="badge bg-secondary ms-2">{{ article.category.name }}</span>
+                    {% endif %}
+                </div>
+                <a href="{% url 'article_detail' article.id %}" class="btn btn-primary mt-2">Read More</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="text-center py-5">
+            <h4>No articles available yet.</h4>
+            <p class="text-muted">Check back later for the latest news!</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if latest_articles %}
+<div class="text-center mt-4">
+    <a href="{% url 'articles' %}" class="btn btn-outline-primary">View All Articles</a>
+</div>
+{% endif %}
+
+<!-- Featured Categories -->
+<h2 class="mb-3 mt-5">Browse by Category</h2>
+<div class="row">
+    {% for category in categories %}
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5 class="card-title">{{ category.name }}</h5>
+                <p class="card-text">{{ category.description|truncatewords:15 }}</p>
+                <a href="{% url 'category_articles' category.id %}" class="btn btn-outline-primary text-white">
+                    View Articles
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}

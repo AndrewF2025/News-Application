@@ -1,0 +1,22 @@
+<!-- News_app/templates/news_app/admin_home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - News Application{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Welcome, Admin!</h1>
+    <p class="lead">This is your admin dashboard. Manage publishers, editors, journalists, and site content here.</p>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'admin_publishers' %}" class="btn btn-primary w-100">Manage Publishers</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="/admin/" class="btn btn-secondary w-100">Django Admin Panel</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a href="{% url 'home' %}" class="btn btn-outline-dark w-100">View Site Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

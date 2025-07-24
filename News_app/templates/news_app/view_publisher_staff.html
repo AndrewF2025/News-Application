@@ -1,0 +1,15 @@
+<!-- News_app/templates/news_app/view_publisher_staff.html -->
+{% extends 'base.html' %}
+{% block title %}View Publisher Staff{% endblock %}
+{% block content %}
+<h2>Publisher Staff Details</h2>
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ staff.user.get_full_name }} ({{ staff.user.username }})</h5>
+        <p class="card-text"><strong>Role:</strong> {{ staff.user.display_role }}</p>
+        <p class="card-text"><strong>Publisher:</strong> {{ staff.publisher.name }}</p>
+    </div>
+</div>
+<a href="{% url 'edit_publisher' staff.publisher.id %}" class="btn btn-warning">Edit Publisher</a>
+<a href="{% url 'admin_publishers' %}" class="btn btn-secondary">Back to Publishers</a>
+{% endblock %}

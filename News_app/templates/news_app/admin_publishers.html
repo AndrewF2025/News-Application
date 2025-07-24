@@ -1,0 +1,54 @@
+<!-- News_app/templates/news_app/admin_publishers.html -->
+{% extends 'base.html' %}
+{% block title %}Admin: Manage Publishers{% endblock %}
+{% block content %}
+<h1>Manage Publishers</h1>
+<a href="{% url 'create_publisher' %}" class="btn btn-primary mb-3">Create Publisher</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Editors</th>
+            <th>Journalists</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for publisher in publishers %}
+        <tr>
+            <td>{{ publisher.name }}</td>
+            <td>{{ publisher.description }}</td>
+            <td>
+                {% for staff in publisher.editor_staff %}
+                {{ staff.user.get_full_name }} <a href="{% url 'view_publisher_staff' staff.id %}">View</a> <a
+                    href="{% url 'delete_publisher_staff' staff.id %}" class="text-danger">Delete</a><br>
+                {% empty %}No editors assigned.{% endfor %}
+                <a href="{% url 'add_publisher_staff' publisher.id 'editor' %}"
+                    class="btn btn-sm btn-outline-success mt-1">Add Editor</a>
+            </td>
+            <td>
+                {% for staff in publisher.journalist_staff %}
+                {{ staff.user.get_full_name }} <a href="{% url 'view_publisher_staff' staff.id %}">View</a> <a
+                    href="{% url 'delete_publisher_staff' staff.id %}" class="text-danger">Delete</a><br>
+                {% empty %}No journalists assigned.{% endfor %}
+                <a href="{% url 'add_publisher_staff' publisher.id 'journalist' %}"
+                    class="btn btn-sm btn-outline-success mt-1">Add Journalist</a>
+            </td>
+            <td>
+                <a href="{% url 'edit_publisher' publisher.id %}" class="btn btn-sm btn-warning">Edit</a>
+                <form action="{% url 'delete_publisher' publisher.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger"
+                        onclick="return confirm('Delete publisher?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">No publishers found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
