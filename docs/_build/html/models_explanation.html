@@ -1,0 +1,955 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database Models Explanation &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Database Models" href="models.html" />
+    <link rel="prev" title="Configuration Guide" href="configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database Models Explanation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#database-design-overview">Database Design Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#entity-relationship-summary">Entity Relationship Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#user-management-models">User Management Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#customuser">CustomUser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#publisherstaff">PublisherStaff</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#content-models">Content Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#article">Article</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#newsletter">Newsletter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comment">Comment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#organization-models">Organization Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#publisher">Publisher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#category">Category</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#subscription-system">Subscription System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subscription">Subscription</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#model-relationships">Model Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#entity-relationship-diagram">Entity Relationship Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#database-constraints-and-validations">Database Constraints and Validations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#field-constraints">Field Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#foreign-key-constraints">Foreign Key Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#business-logic-constraints">Business Logic Constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-considerations">Performance Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#database-indexes">Database Indexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#query-optimization">Query Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-migration-considerations">Data Migration Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api.html">API Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Database Models Explanation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/models_explanation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="database-models-explanation">
+<h1>Database Models Explanation<a class="headerlink" href="#database-models-explanation" title="Link to this heading"></a></h1>
+<p>This document provides comprehensive information about the Django News Application database schema and models. The application uses a well-structured relational database design that supports role-based content management, user subscriptions, and editorial workflows.</p>
+<section id="database-design-overview">
+<h2>Database Design Overview<a class="headerlink" href="#database-design-overview" title="Link to this heading"></a></h2>
+<p>The News Application follows a content management system (CMS) design pattern with the following core principles:</p>
+<ul class="simple">
+<li><p><strong>Role-Based Access Control</strong>: Users have specific roles (Reader, Journalist, Editor) with different permissions</p></li>
+<li><p><strong>Content Workflow</strong>: Articles and newsletters require approval before publication</p></li>
+<li><p><strong>Publisher System</strong>: Organizations can have multiple staff members creating content</p></li>
+<li><p><strong>Subscription Model</strong>: Users can follow publishers or individual journalists</p></li>
+<li><p><strong>Content Categorization</strong>: Articles are organized by categories for better discovery</p></li>
+</ul>
+<section id="entity-relationship-summary">
+<h3>Entity Relationship Summary<a class="headerlink" href="#entity-relationship-summary" title="Link to this heading"></a></h3>
+<p>The main entities and their relationships:</p>
+<ul class="simple">
+<li><p><strong>CustomUser</strong> - Extended user model with roles and permissions</p></li>
+<li><p><strong>Article</strong> - Main content model with approval workflow</p></li>
+<li><p><strong>Newsletter</strong> - Publication model with similar workflow to articles</p></li>
+<li><p><strong>Publisher</strong> - Organization model with staff relationships</p></li>
+<li><p><strong>Category</strong> - Content classification system</p></li>
+<li><p><strong>Comment</strong> - User engagement and feedback system</p></li>
+<li><p><strong>Subscription</strong> - User following system for publishers/journalists</p></li>
+<li><p><strong>PublisherStaff</strong> - Many-to-many relationship for publisher employees</p></li>
+</ul>
+</section>
+</section>
+<section id="user-management-models">
+<h2>User Management Models<a class="headerlink" href="#user-management-models" title="Link to this heading"></a></h2>
+<section id="customuser">
+<h3>CustomUser<a class="headerlink" href="#customuser" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Extended Django user model with role-based permissions for the news application.</p>
+<p><strong>Table</strong>: <code class="docutils literal notranslate"><span class="pre">news_app_customuser</span></code></p>
+<p><strong>Key Features</strong>:
+- Three distinct user roles with different capabilities
+- Custom permission methods for content management
+- Automatic cleanup when roles change</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CustomUser</span><span class="p">(</span><span class="n">AbstractUser</span><span class="p">):</span>
+    <span class="n">ROLE_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s1">&#39;reader&#39;</span><span class="p">,</span> <span class="s1">&#39;Reader&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;editor&#39;</span><span class="p">,</span> <span class="s1">&#39;Editor&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;journalist&#39;</span><span class="p">,</span> <span class="s1">&#39;Journalist&#39;</span><span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="n">role</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ROLE_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;reader&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Fields</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">username</span></code></p></td>
+<td><p>CharField</p></td>
+<td><p>unique, max_length=150</p></td>
+<td><p>Inherited from AbstractUser</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">email</span></code></p></td>
+<td><p>EmailField</p></td>
+<td><p>max_length=254</p></td>
+<td><p>User’s email address</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">first_name</span></code></p></td>
+<td><p>CharField</p></td>
+<td><p>max_length=150</p></td>
+<td><p>User’s first name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">last_name</span></code></p></td>
+<td><p>CharField</p></td>
+<td><p>max_length=150</p></td>
+<td><p>User’s last name</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">role</span></code></p></td>
+<td><p>CharField</p></td>
+<td><p>max_length=20, choices</p></td>
+<td><p>User role: reader/editor/journalist</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_active</span></code></p></td>
+<td><p>BooleanField</p></td>
+<td><p>default=True</p></td>
+<td><p>Account activation status</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">date_joined</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>auto_now_add=True</p></td>
+<td><p>Account creation timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships</strong>:</p>
+<ul class="simple">
+<li><p><strong>authored_articles</strong> (reverse FK): Articles written by this user</p></li>
+<li><p><strong>authored_newsletters</strong> (reverse FK): Newsletters created by this user</p></li>
+<li><p><strong>approved_articles</strong> (reverse FK): Articles approved by this editor</p></li>
+<li><p><strong>approved_newsletters</strong> (reverse FK): Newsletters approved by this editor</p></li>
+<li><p><strong>comments</strong> (reverse FK): Comments posted by this user</p></li>
+<li><p><strong>subscriptions</strong> (reverse FK): User’s subscriptions to publishers/journalists</p></li>
+<li><p><strong>journalist_subscriptions</strong> (reverse FK): Subscriptions to this journalist</p></li>
+<li><p><strong>publisherstaff_set</strong> (reverse FK): Publisher staff memberships for this user</p></li>
+</ul>
+<p><strong>Custom Methods</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">can_approve_articles()</span></code>: Returns True if user is an editor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">can_manage_content()</span></code>: Returns True if user can manage content (editors only)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">save()</span></code>: Custom save method that handles role-specific cleanup</p></li>
+</ul>
+<p><strong>Role Descriptions</strong>:</p>
+<ul class="simple">
+<li><p><strong>Reader</strong>: Can read published content, comment, and subscribe to publishers/journalists</p></li>
+<li><p><strong>Journalist</strong>: Can create articles and newsletters, publish own content</p></li>
+<li><p><strong>Editor</strong>: Can approve/reject content, manage all articles and newsletters</p></li>
+</ul>
+</section>
+<section id="publisherstaff">
+<h3>PublisherStaff<a class="headerlink" href="#publisherstaff" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Junction table connecting publishers with their staff members (editors and journalists).</p>
+<p><strong>Table</strong>: <code class="docutils literal notranslate"><span class="pre">news_app_publisherstaff</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PublisherStaff</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">publisher</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Publisher&#39;</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;CustomUser&#39;</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">role</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">])</span>
+    <span class="n">date_joined</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Fields</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">publisher</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE</p></td>
+<td><p>Publisher organization</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE</p></td>
+<td><p>Staff member (editor/journalist)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">role</span></code></p></td>
+<td><p>CharField</p></td>
+<td><p>max_length=20, choices</p></td>
+<td><p>Staff role: editor/journalist</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">date_joined</span></code></p></td>
+<td><p>DateField</p></td>
+<td><p>auto_now_add=True</p></td>
+<td><p>Date when user joined publisher</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="content-models">
+<h2>Content Models<a class="headerlink" href="#content-models" title="Link to this heading"></a></h2>
+<section id="article">
+<h3>Article<a class="headerlink" href="#article" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Main content model representing news articles with full editorial workflow.</p>
+<p><strong>Table</strong>: <code class="docutils literal notranslate"><span class="pre">news_app_article</span></code></p>
+<p><strong>Key Features</strong>:
+- Editorial approval workflow
+- Optional publisher association
+- Category classification
+- Image support
+- Independent article support</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Article</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">CustomUser</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">publisher</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Publisher</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Category</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="c1"># ... approval and publication fields</span>
+</pre></div>
+</div>
+<p><strong>Fields</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">title</span></code></p></td>
+<td><p>CharField</p></td>
+<td><p>max_length=200</p></td>
+<td><p>Article headline</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">content</span></code></p></td>
+<td><p>TextField</p></td>
+<td></td>
+<td><p>Main article content</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">author</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE, related_name=’authored_articles’</p></td>
+<td><p>Journalist who wrote the article</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">publisher</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE, related_name=’articles’, null=True, blank=True</p></td>
+<td><p>Optional publisher organization</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">category</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>SET_NULL, null=True, blank=True</p></td>
+<td><p>Article category for classification</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">created_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>auto_now_add=True</p></td>
+<td><p>Article creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">published_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>null=True, blank=True</p></td>
+<td><p>Publication timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">updated_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>auto_now=True</p></td>
+<td><p>Last modification timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_approved</span></code></p></td>
+<td><p>BooleanField</p></td>
+<td><p>default=False</p></td>
+<td><p>Editorial approval status</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">approved_by</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>SET_NULL, null=True, limit_choices_to={‘role’: ‘editor’}, related_name=’approved_articles’</p></td>
+<td><p>Editor who approved the article</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">approval_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>null=True, blank=True</p></td>
+<td><p>Approval timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_published</span></code></p></td>
+<td><p>BooleanField</p></td>
+<td><p>default=False</p></td>
+<td><p>Publication status</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">image</span></code></p></td>
+<td><p>ImageField</p></td>
+<td><p>upload_to=’article_images/’, blank=True, null=True</p></td>
+<td><p>Optional featured image</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_independent</span></code></p></td>
+<td><p>BooleanField</p></td>
+<td><p>default=False</p></td>
+<td><p>Independent article (not tied to publisher)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships</strong>:</p>
+<ul class="simple">
+<li><p><strong>author</strong>: ForeignKey to CustomUser (journalist)</p></li>
+<li><p><strong>publisher</strong>: ForeignKey to Publisher (optional)</p></li>
+<li><p><strong>category</strong>: ForeignKey to Category (optional)</p></li>
+<li><p><strong>approved_by</strong>: ForeignKey to CustomUser (editor)</p></li>
+<li><p><strong>comments</strong> (reverse FK): Comments on this article</p></li>
+</ul>
+<p><strong>Meta Options</strong>:</p>
+<ul class="simple">
+<li><p><strong>Ordering</strong>: <code class="docutils literal notranslate"><span class="pre">['-created_date']</span></code> (newest first)</p></li>
+</ul>
+</section>
+<section id="newsletter">
+<h3>Newsletter<a class="headerlink" href="#newsletter" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Newsletter model for periodic publications with similar workflow to articles.</p>
+<p><strong>Table</strong>: <code class="docutils literal notranslate"><span class="pre">news_app_newsletter</span></code></p>
+<p><strong>Key Features</strong>:
+- Similar approval workflow to articles
+- Publisher association
+- Independent newsletter support</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Newsletter</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">CustomUser</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">publisher</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Publisher</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="c1"># ... approval and publication fields</span>
+</pre></div>
+</div>
+<p><strong>Fields</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">title</span></code></p></td>
+<td><p>CharField</p></td>
+<td><p>max_length=200</p></td>
+<td><p>Newsletter title/subject</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">content</span></code></p></td>
+<td><p>TextField</p></td>
+<td></td>
+<td><p>Newsletter content</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">author</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE, related_name=’authored_newsletters’</p></td>
+<td><p>Journalist who created the newsletter</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">publisher</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE, related_name=’newsletters’, null=True, blank=True</p></td>
+<td><p>Optional publisher organization</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">created_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>auto_now_add=True</p></td>
+<td><p>Creation timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">published_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>null=True, blank=True</p></td>
+<td><p>Publication timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">updated_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>auto_now=True</p></td>
+<td><p>Last modification timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_approved</span></code></p></td>
+<td><p>BooleanField</p></td>
+<td><p>default=False</p></td>
+<td><p>Editorial approval status</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">approved_by</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>SET_NULL, null=True, limit_choices_to={‘role’: ‘editor’}, related_name=’approved_newsletters’</p></td>
+<td><p>Editor who approved the newsletter</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">approval_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>null=True, blank=True</p></td>
+<td><p>Approval timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_published</span></code></p></td>
+<td><p>BooleanField</p></td>
+<td><p>default=False</p></td>
+<td><p>Publication status</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_independent</span></code></p></td>
+<td><p>BooleanField</p></td>
+<td><p>default=False</p></td>
+<td><p>Independent newsletter</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships</strong>:</p>
+<ul class="simple">
+<li><p><strong>author</strong>: ForeignKey to CustomUser (journalist)</p></li>
+<li><p><strong>publisher</strong>: ForeignKey to Publisher (optional)</p></li>
+<li><p><strong>approved_by</strong>: ForeignKey to CustomUser (editor)</p></li>
+</ul>
+<p><strong>Meta Options</strong>:</p>
+<ul class="simple">
+<li><p><strong>Ordering</strong>: <code class="docutils literal notranslate"><span class="pre">['-created_date']</span></code> (newest first)</p></li>
+</ul>
+</section>
+<section id="comment">
+<h3>Comment<a class="headerlink" href="#comment" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: User comments and engagement on articles.</p>
+<p><strong>Table</strong>: <code class="docutils literal notranslate"><span class="pre">news_app_comment</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Comment</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">article</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Article</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">CustomUser</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">created_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">updated_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Fields</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">article</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE, related_name=’comments’</p></td>
+<td><p>Article being commented on</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">author</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE, related_name=’comments’</p></td>
+<td><p>User who posted the comment</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">content</span></code></p></td>
+<td><p>TextField</p></td>
+<td></td>
+<td><p>Comment text content</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">created_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>auto_now_add=True</p></td>
+<td><p>Comment creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">updated_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>auto_now=True</p></td>
+<td><p>Last edit timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships</strong>:</p>
+<ul class="simple">
+<li><p><strong>article</strong>: ForeignKey to Article</p></li>
+<li><p><strong>author</strong>: ForeignKey to CustomUser</p></li>
+</ul>
+<p><strong>Meta Options</strong>:</p>
+<ul class="simple">
+<li><p><strong>Ordering</strong>: <code class="docutils literal notranslate"><span class="pre">['-created_date']</span></code> (newest first)</p></li>
+</ul>
+</section>
+</section>
+<section id="organization-models">
+<h2>Organization Models<a class="headerlink" href="#organization-models" title="Link to this heading"></a></h2>
+<section id="publisher">
+<h3>Publisher<a class="headerlink" href="#publisher" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Represents news publisher organizations that employ journalists and editors.</p>
+<p><strong>Table</strong>: <code class="docutils literal notranslate"><span class="pre">news_app_publisher</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Publisher</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">created_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Fields</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>CharField</p></td>
+<td><p>max_length=200</p></td>
+<td><p>Publisher organization name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">description</span></code></p></td>
+<td><p>TextField</p></td>
+<td><p>blank=True</p></td>
+<td><p>Detailed description of publisher</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">created_date</span></code></p></td>
+<td><p>DateTimeField</p></td>
+<td><p>auto_now_add=True</p></td>
+<td><p>Publisher creation timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships</strong>:</p>
+<ul class="simple">
+<li><p><strong>articles</strong> (reverse FK): Articles published by this organization</p></li>
+<li><p><strong>newsletters</strong> (reverse FK): Newsletters published by this organization</p></li>
+<li><p><strong>publisherstaff_set</strong> (reverse FK): Staff members of this publisher</p></li>
+<li><p><strong>subscription_set</strong> (reverse FK): Subscriptions to this publisher</p></li>
+</ul>
+<p><strong>Meta Options</strong>:</p>
+<ul class="simple">
+<li><p><strong>Ordering</strong>: <code class="docutils literal notranslate"><span class="pre">['name']</span></code> (alphabetical)</p></li>
+</ul>
+</section>
+<section id="category">
+<h3>Category<a class="headerlink" href="#category" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Content classification system for organizing articles by topic.</p>
+<p><strong>Table</strong>: <code class="docutils literal notranslate"><span class="pre">news_app_category</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Category</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Fields</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>CharField</p></td>
+<td><p>max_length=100</p></td>
+<td><p>Category name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">description</span></code></p></td>
+<td><p>TextField</p></td>
+<td><p>blank=True</p></td>
+<td><p>Category description</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships</strong>:</p>
+<ul class="simple">
+<li><p><strong>article_set</strong> (reverse FK): Articles in this category</p></li>
+</ul>
+<p><strong>Meta Options</strong>:</p>
+<ul class="simple">
+<li><p><strong>Ordering</strong>: <code class="docutils literal notranslate"><span class="pre">['name']</span></code> (alphabetical)</p></li>
+<li><p><strong>verbose_name_plural</strong>: <code class="docutils literal notranslate"><span class="pre">&quot;Categories&quot;</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="subscription-system">
+<h2>Subscription System<a class="headerlink" href="#subscription-system" title="Link to this heading"></a></h2>
+<section id="subscription">
+<h3>Subscription<a class="headerlink" href="#subscription" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Manages user subscriptions to publishers or individual journalists.</p>
+<p><strong>Table</strong>: <code class="docutils literal notranslate"><span class="pre">news_app_subscription</span></code></p>
+<p><strong>Key Features</strong>:
+- Flexible subscription model (publisher OR journalist)
+- Prevents duplicate subscriptions
+- Supports both organizational and individual following</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Subscription</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+ <span class="n">subscriber</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;CustomUser&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+ <span class="n">publisher</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Publisher&#39;</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+ <span class="n">journalist</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;CustomUser&#39;</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+ <span class="c1"># Only one of publisher or journalist should be set</span>
+</pre></div>
+</div>
+<p><strong>Fields</strong>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">subscriber</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE, related_name=’subscriptions’</p></td>
+<td><p>User who is subscribing</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">publisher</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE, null=True, blank=True</p></td>
+<td><p>Publisher being followed (optional)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">journalist</span></code></p></td>
+<td><p>ForeignKey</p></td>
+<td><p>CASCADE, null=True, blank=True, related_name=’journalist_subscriptions’</p></td>
+<td><p>Journalist being followed (optional)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships</strong>:</p>
+<ul class="simple">
+<li><p><strong>subscriber</strong>: ForeignKey to CustomUser (the follower)</p></li>
+<li><p><strong>publisher</strong>: ForeignKey to Publisher (optional)</p></li>
+<li><p><strong>journalist</strong>: ForeignKey to CustomUser (optional, related_name=’journalist_subscriptions’)</p></li>
+</ul>
+<p><strong>Business Rules</strong>:</p>
+<ul class="simple">
+<li><p>Either <code class="docutils literal notranslate"><span class="pre">publisher</span></code> OR <code class="docutils literal notranslate"><span class="pre">journalist</span></code> must be set, but not both</p></li>
+<li><p>A user cannot subscribe to the same publisher/journalist multiple times</p></li>
+<li><p>Readers can subscribe to both publishers and journalists</p></li>
+<li><p>Journalists and editors cannot subscribe (enforced in views)</p></li>
+</ul>
+</section>
+</section>
+<section id="model-relationships">
+<h2>Model Relationships<a class="headerlink" href="#model-relationships" title="Link to this heading"></a></h2>
+<section id="entity-relationship-diagram">
+<h3>Entity Relationship Diagram<a class="headerlink" href="#entity-relationship-diagram" title="Link to this heading"></a></h3>
+<p><strong>Core Relationships</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CustomUser (1) -----&gt; (*) Article (author)
+CustomUser (1) -----&gt; (*) Newsletter (author)
+CustomUser (1) -----&gt; (*) Comment (author)
+CustomUser (1) -----&gt; (*) Article (approved_by)
+CustomUser (1) -----&gt; (*) Newsletter (approved_by)
+
+Publisher (1) -----&gt; (*) Article
+Publisher (1) -----&gt; (*) Newsletter
+Publisher (1) -----&gt; (*) PublisherStaff
+
+Category (1) -----&gt; (*) Article
+
+Article (1) -----&gt; (*) Comment
+
+CustomUser (1) -----&gt; (*) Subscription (subscriber)
+Publisher (1) -----&gt; (*) Subscription (publisher)
+CustomUser (1) -----&gt; (*) Subscription (journalist)
+
+CustomUser (1) -----&gt; (*) PublisherStaff (user)
+</pre></div>
+</div>
+<p><strong>Relationship Types</strong>:</p>
+<ul class="simple">
+<li><p><strong>One-to-Many</strong>: Most relationships are one-to-many (ForeignKey)</p></li>
+<li><p><strong>Many-to-Many</strong>: Publisher-User relationship through PublisherStaff</p></li>
+<li><p><strong>Optional Relationships</strong>: Articles can exist without publishers or categories</p></li>
+<li><p><strong>Self-Referencing</strong>: Subscription model allows users to follow other users</p></li>
+</ul>
+</section>
+</section>
+<section id="database-constraints-and-validations">
+<h2>Database Constraints and Validations<a class="headerlink" href="#database-constraints-and-validations" title="Link to this heading"></a></h2>
+<section id="field-constraints">
+<h3>Field Constraints<a class="headerlink" href="#field-constraints" title="Link to this heading"></a></h3>
+<p><strong>Not Null Constraints</strong>:
+- All primary keys and required foreign keys
+- User role field (has default value)
+- Article/Newsletter title and content
+- Comment content</p>
+<p><strong>Unique Constraints</strong>:
+- User username (inherited from AbstractUser)
+- No explicit unique constraints on business fields</p>
+<p><strong>Check Constraints</strong>:
+- User role must be one of: ‘reader’, ‘editor’, ‘journalist’
+- PublisherStaff role must be one of: ‘editor’, ‘journalist’</p>
+<p><strong>Length Constraints</strong>:
+- User role: 20 characters max
+- Article/Newsletter title: 200 characters max
+- Publisher name: 200 characters max
+- Category name: 100 characters max</p>
+</section>
+<section id="foreign-key-constraints">
+<h3>Foreign Key Constraints<a class="headerlink" href="#foreign-key-constraints" title="Link to this heading"></a></h3>
+<p><strong>CASCADE Deletions</strong>:
+- Deleting a user cascades to their articles, newsletters, comments
+- Deleting a publisher cascades to associated articles, newsletters, staff
+- Deleting an article cascades to its comments</p>
+<p><strong>SET_NULL Deletions</strong>:
+- Deleting a category sets article.category to NULL
+- Deleting an approving editor sets approved_by to NULL</p>
+<p><strong>PROTECT Deletions</strong>:
+- No explicit PROTECT constraints (using CASCADE or SET_NULL)</p>
+</section>
+<section id="business-logic-constraints">
+<h3>Business Logic Constraints<a class="headerlink" href="#business-logic-constraints" title="Link to this heading"></a></h3>
+<p><strong>Role-Based Constraints</strong>:
+- Only editors can approve articles/newsletters (limit_choices_to)
+- Subscription logic prevents certain roles from subscribing
+- Custom save methods enforce role-specific cleanup</p>
+<p><strong>Workflow Constraints</strong>:
+- Articles/newsletters must be approved before publication
+- Published content must have a published_date
+- Approval requires an approving editor and approval_date</p>
+<p><strong>Data Integrity</strong>:
+- Subscription model enforces publisher OR journalist (not both)
+- Independent content can exist without publisher association
+- Comment threads are maintained through article foreign key</p>
+</section>
+</section>
+<section id="performance-considerations">
+<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading"></a></h2>
+<section id="database-indexes">
+<h3>Database Indexes<a class="headerlink" href="#database-indexes" title="Link to this heading"></a></h3>
+<p><strong>Automatic Indexes</strong>:
+- Primary keys (id fields)
+- Foreign key fields
+- Unique fields (username)</p>
+<p><strong>Recommended Custom Indexes</strong>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- For article queries by publication status</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_article_published</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">news_app_article</span><span class="p">(</span><span class="n">is_published</span><span class="p">,</span><span class="w"> </span><span class="n">is_approved</span><span class="p">);</span>
+
+<span class="c1">-- For user role-based queries</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_user_role</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">news_app_customuser</span><span class="p">(</span><span class="k">role</span><span class="p">);</span>
+
+<span class="c1">-- For article date-based queries</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_article_dates</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">news_app_article</span><span class="p">(</span><span class="n">created_date</span><span class="p">,</span><span class="w"> </span><span class="n">published_date</span><span class="p">);</span>
+
+<span class="c1">-- For subscription lookups</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_subscription_lookup</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">news_app_subscription</span><span class="p">(</span><span class="n">subscriber_id</span><span class="p">,</span><span class="w"> </span><span class="n">publisher_id</span><span class="p">,</span><span class="w"> </span><span class="n">journalist_id</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="query-optimization">
+<h3>Query Optimization<a class="headerlink" href="#query-optimization" title="Link to this heading"></a></h3>
+<p><strong>Common Query Patterns</strong>:</p>
+<ul class="simple">
+<li><p><strong>Published Articles</strong>: Filter by <code class="docutils literal notranslate"><span class="pre">is_published=True</span></code> and <code class="docutils literal notranslate"><span class="pre">is_approved=True</span></code></p></li>
+<li><p><strong>User’s Content</strong>: Filter by <code class="docutils literal notranslate"><span class="pre">author</span></code> foreign key</p></li>
+<li><p><strong>Publisher Content</strong>: Filter by <code class="docutils literal notranslate"><span class="pre">publisher</span></code> foreign key with staff validation</p></li>
+<li><p><strong>Category Browsing</strong>: Join with Category model</p></li>
+<li><p><strong>Comment Threads</strong>: Order by <code class="docutils literal notranslate"><span class="pre">created_date</span></code> with article grouping</p></li>
+</ul>
+<p><strong>Select Related Optimization</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Efficient article queries</span>
+<span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="s1">&#39;approved_by&#39;</span><span class="p">)</span>
+
+<span class="c1"># Efficient comment queries</span>
+<span class="n">Comment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;article&#39;</span><span class="p">)</span>
+
+<span class="c1"># Efficient subscription queries</span>
+<span class="n">Subscription</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s1">&#39;subscriber&#39;</span><span class="p">,</span> <span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="s1">&#39;journalist&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="data-migration-considerations">
+<h2>Data Migration Considerations<a class="headerlink" href="#data-migration-considerations" title="Link to this heading"></a></h2>
+<p><strong>Schema Evolution</strong>:
+- Role field added to extend Django’s user model
+- Independent content support added via boolean flags
+- Approval workflow requires careful data migration for existing content</p>
+<p><strong>Backward Compatibility</strong>:
+- Model changes maintain foreign key relationships
+- Default values ensure new fields don’t break existing data
+- Migration scripts handle role assignment for existing users</p>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Review the <a class="reference internal" href="api.html"><span class="doc">REST API Documentation</span></a> documentation to understand how these models are exposed via REST API</p></li>
+<li><p>Check <a class="reference internal" href="configuration.html"><span class="doc">Configuration Guide</span></a> for database-specific settings</p></li>
+<li><p>See <a class="reference internal" href="installation.html"><span class="doc">Installation &amp; Setup</span></a> for database setup instructions</p></li>
+<li><p>Explore <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting Guide</span></a> for common database-related issues</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="configuration.html" class="btn btn-neutral float-left" title="Configuration Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="models.html" class="btn btn-neutral float-right" title="Database Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

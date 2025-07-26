@@ -1,0 +1,971 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News_app.tests_api &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tests_api.html">API Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">News_app.tests_api</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for News_app.tests_api</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework</span><span class="w"> </span><span class="kn">import</span> <span class="n">status</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.test</span><span class="w"> </span><span class="kn">import</span> <span class="n">APITestCase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">News_app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Article</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Publisher</span><span class="p">,</span> <span class="n">Newsletter</span><span class="p">,</span> <span class="n">Comment</span>
+
+<span class="n">User</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="APITestSetup">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.APITestSetup">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">APITestSetup</span><span class="p">(</span><span class="n">APITestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base setup class for API test cases.</span>
+<span class="sd">    Initializes a test user, category, publisher, article, newsletter, and</span>
+<span class="sd">    comment for use in all derived API test classes. Handles authentication</span>
+<span class="sd">    and test data creation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="APITestSetup.setUp">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.APITestSetup.setUp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Print setup start message</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Setup] Creating test user, category, publisher, article, &quot;</span>
+              <span class="s2">&quot;newsletter, and comment...&quot;</span><span class="p">)</span>
+        <span class="c1"># Create a test user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;testpass&#39;</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s1">&#39;journalist&#39;</span>
+        <span class="p">)</span>
+        <span class="c1"># Log in the test user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;testpass&#39;</span><span class="p">)</span>
+        <span class="c1"># Create a test category</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="n">Category</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Tech&#39;</span><span class="p">)</span>
+        <span class="c1"># Create a test publisher</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publisher</span> <span class="o">=</span> <span class="n">Publisher</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Test Publisher&#39;</span><span class="p">)</span>
+        <span class="c1"># Create a test article</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">article</span> <span class="o">=</span> <span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Test Article&#39;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s1">&#39;Test Content&#39;</span><span class="p">,</span>
+            <span class="n">author</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span>
+        <span class="p">)</span>
+        <span class="c1"># Create a test newsletter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newsletter</span> <span class="o">=</span> <span class="n">Newsletter</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Test Newsletter&#39;</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="s1">&#39;Newsletter Content&#39;</span><span class="p">,</span>
+            <span class="n">author</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+        <span class="p">)</span>
+        <span class="c1"># Create a test comment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">Comment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">article</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s1">&#39;Test Comment&#39;</span>
+        <span class="p">)</span>
+        <span class="c1"># Print setup complete message</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Setup] Test data created.&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ArticleAPITests">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.ArticleAPITests">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ArticleAPITests</span><span class="p">(</span><span class="n">APITestSetup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    API tests for the Article model.</span>
+<span class="sd">    Covers listing, creation, retrieval, update, deletion, unauthorized access,</span>
+<span class="sd">    and invalid data scenarios for articles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Test listing articles via the API</span>
+<div class="viewcode-block" id="ArticleAPITests.test_list_articles">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.ArticleAPITests.test_list_articles">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_list_articles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test listing articles via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the article list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for listing articles via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for listing articles</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;article-list&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to the API</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Article list returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test creating a new article via the API</span>
+<div class="viewcode-block" id="ArticleAPITests.test_create_article">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.ArticleAPITests.test_create_article">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_article</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test creating a new article via the API.</span>
+<span class="sd">        Asserts that the article is created successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for creating a new article via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for creating an article</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;article-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare the data for the new article</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;New Article&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Some content&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request to create the article</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the article was created successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Article created successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test retrieving a single article via the API</span>
+<div class="viewcode-block" id="ArticleAPITests.test_retrieve_article">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.ArticleAPITests.test_retrieve_article">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_retrieve_article</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test retrieving a single article via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the article detail.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for retrieving a single article via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for retrieving the article</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;article-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to retrieve the article</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Article detail returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test updating an article via the API</span>
+<div class="viewcode-block" id="ArticleAPITests.test_update_article">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.ArticleAPITests.test_update_article">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_update_article</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test updating an article via the API.</span>
+<span class="sd">        Asserts that the article is updated successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for updating an article via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for updating the article</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;article-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="c1"># Prepare the updated data</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Updated Title&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Updated content&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] PUT </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send PUT request to update the article</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the article was updated successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_202_ACCEPTED</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Article updated successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test deleting an article via the API</span>
+<div class="viewcode-block" id="ArticleAPITests.test_delete_article">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.ArticleAPITests.test_delete_article">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_delete_article</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test deleting an article via the API.</span>
+<span class="sd">        Asserts that the article is deleted successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for deleting an article via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for deleting the article</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;article-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] DELETE </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send DELETE request to delete the article</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the article was deleted successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Article deleted successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test unauthorized article creation is blocked</span>
+<div class="viewcode-block" id="ArticleAPITests.test_unauthorized_create_article">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.ArticleAPITests.test_unauthorized_create_article">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_unauthorized_create_article</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that unauthorized article creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for unauthorized article creation]&quot;</span><span class="p">)</span>
+        <span class="c1"># Log out to simulate unauthorized user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+        <span class="c1"># Build the URL for creating an article</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;article-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare the data for the new article</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Unauthorized Article&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Should not work&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2"> (unauthenticated)&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request as unauthorized user</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that unauthorized creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Unauthorized article creation blocked.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test creating an article with invalid data is blocked</span>
+<div class="viewcode-block" id="ArticleAPITests.test_create_article_invalid_data">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.ArticleAPITests.test_create_article_invalid_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_article_invalid_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test creating an article with invalid data.</span>
+<span class="sd">        Asserts that invalid creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for creating an article with invalid data]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for creating an article</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;article-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare invalid data (missing required fields)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>  <span class="c1"># Invalid: title required</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>  <span class="c1"># Invalid: content required</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request with invalid data</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that invalid creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Invalid article creation blocked.&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CategoryAPITests">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CategoryAPITests">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CategoryAPITests</span><span class="p">(</span><span class="n">APITestSetup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    API tests for the Category model.</span>
+<span class="sd">    Covers listing, creation, retrieval, update, deletion, unauthorized access,</span>
+<span class="sd">    and invalid data scenarios for categories.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Test listing categories via the API</span>
+<div class="viewcode-block" id="CategoryAPITests.test_list_categories">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CategoryAPITests.test_list_categories">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_list_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test listing categories via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the category list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for listing categories via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for listing categories</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;category-list&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to the API</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Category list returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test retrieving a single category via the API</span>
+<div class="viewcode-block" id="CategoryAPITests.test_retrieve_category">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CategoryAPITests.test_retrieve_category">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_retrieve_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test retrieving a single category via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the</span>
+<span class="sd">        category detail.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for retrieving a single category via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for retrieving the category</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;category-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to retrieve the category</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Category detail returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test updating a category via the API</span>
+<div class="viewcode-block" id="CategoryAPITests.test_update_category">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CategoryAPITests.test_update_category">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_update_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test updating a category via the API.</span>
+<span class="sd">        Asserts that the category is updated successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for updating a category via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for updating the category</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;category-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="c1"># Prepare the updated data</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Updated Category&#39;</span><span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] PUT </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send PUT request to update the category</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the category was updated successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_202_ACCEPTED</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Category updated successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test deleting a category via the API</span>
+<div class="viewcode-block" id="CategoryAPITests.test_delete_category">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CategoryAPITests.test_delete_category">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_delete_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test deleting a category via the API.</span>
+<span class="sd">        Asserts that the category is deleted successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for deleting a category via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for deleting the category</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;category-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] DELETE </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send DELETE request to delete the category</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the category was deleted successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Category deleted successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test unauthorized category creation is blocked</span>
+<div class="viewcode-block" id="CategoryAPITests.test_unauthorized_create_category">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CategoryAPITests.test_unauthorized_create_category">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_unauthorized_create_category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that unauthorized category creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for unauthorized category creation]&quot;</span><span class="p">)</span>
+        <span class="c1"># Log out to simulate unauthorized user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+        <span class="c1"># Build the URL for creating a category</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;category-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare the data for the new category</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Unauthorized Category&#39;</span><span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2"> (unauthenticated)&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request as unauthorized user</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that unauthorized creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Unauthorized category creation blocked.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test creating a category with invalid data is blocked</span>
+<div class="viewcode-block" id="CategoryAPITests.test_create_category_invalid_data">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CategoryAPITests.test_create_category_invalid_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_category_invalid_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test creating a category with invalid data.</span>
+<span class="sd">        Asserts that invalid creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for creating a category with invalid data]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for creating a category</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;category-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare invalid data (missing required fields)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>  <span class="c1"># Invalid: name required</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request with invalid data</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that invalid creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Invalid category creation blocked.&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PublisherAPITests">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.PublisherAPITests">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PublisherAPITests</span><span class="p">(</span><span class="n">APITestSetup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    API tests for the Publisher model.</span>
+<span class="sd">    Covers listing, creation, retrieval, update, deletion, unauthorized access,</span>
+<span class="sd">    and invalid data scenarios for publishers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Test listing publishers via the API</span>
+<div class="viewcode-block" id="PublisherAPITests.test_list_publishers">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.PublisherAPITests.test_list_publishers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_list_publishers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test listing publishers via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the publisher list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for listing publishers via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for listing publishers</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;publisher-list&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to the API</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Publisher list returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test retrieving a single publisher via the API</span>
+<div class="viewcode-block" id="PublisherAPITests.test_retrieve_publisher">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.PublisherAPITests.test_retrieve_publisher">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_retrieve_publisher</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test retrieving a single publisher via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the</span>
+<span class="sd">        publisher detail.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for retrieving a single publisher via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for retrieving the publisher</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;publisher-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">publisher</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to retrieve the publisher</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Publisher detail returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test updating a publisher via the API</span>
+<div class="viewcode-block" id="PublisherAPITests.test_update_publisher">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.PublisherAPITests.test_update_publisher">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_update_publisher</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test updating a publisher via the API.</span>
+<span class="sd">        Asserts that the publisher is updated successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for updating a publisher via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for updating the publisher</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;publisher-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">publisher</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="c1"># Prepare the updated data</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Updated Publisher&#39;</span><span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] PUT </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send PUT request to update the publisher</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the publisher was updated successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_202_ACCEPTED</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Publisher updated successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test deleting a publisher via the API</span>
+<div class="viewcode-block" id="PublisherAPITests.test_delete_publisher">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.PublisherAPITests.test_delete_publisher">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_delete_publisher</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test deleting a publisher via the API.</span>
+<span class="sd">        Asserts that the publisher is deleted successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for deleting a publisher via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for deleting the publisher</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;publisher-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">publisher</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] DELETE </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send DELETE request to delete the publisher</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the publisher was deleted successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Publisher deleted successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test unauthorized publisher creation is blocked</span>
+<div class="viewcode-block" id="PublisherAPITests.test_unauthorized_create_publisher">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.PublisherAPITests.test_unauthorized_create_publisher">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_unauthorized_create_publisher</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that unauthorized publisher creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for unauthorized publisher creation]&quot;</span><span class="p">)</span>
+        <span class="c1"># Log out to simulate unauthorized user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+        <span class="c1"># Build the URL for creating a publisher</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;publisher-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare the data for the new publisher</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Unauthorized Publisher&#39;</span><span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2"> (unauthenticated)&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request as unauthorized user</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that unauthorized creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Unauthorized publisher creation blocked.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test creating a publisher with invalid data is blocked</span>
+<div class="viewcode-block" id="PublisherAPITests.test_create_publisher_invalid_data">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.PublisherAPITests.test_create_publisher_invalid_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_publisher_invalid_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test creating a publisher with invalid data.</span>
+<span class="sd">        Asserts that invalid creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for creating a publisher with invalid data]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for creating a publisher</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;publisher-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare invalid data (missing required fields)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>  <span class="c1"># Invalid: name required</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request with invalid data</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that invalid creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Invalid publisher creation blocked.&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="NewsletterAPITests">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.NewsletterAPITests">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NewsletterAPITests</span><span class="p">(</span><span class="n">APITestSetup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    API tests for the Newsletter model.</span>
+<span class="sd">    Covers listing, creation, retrieval, update, deletion, unauthorized access,</span>
+<span class="sd">    and invalid data scenarios for newsletters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Test listing newsletters via the API</span>
+<div class="viewcode-block" id="NewsletterAPITests.test_list_newsletters">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.NewsletterAPITests.test_list_newsletters">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_list_newsletters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test listing newsletters via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the</span>
+<span class="sd">        newsletter list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for listing newsletters via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for listing newsletters</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;newsletter-list&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to the API</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Newsletter list returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test retrieving a single newsletter via the API</span>
+<div class="viewcode-block" id="NewsletterAPITests.test_retrieve_newsletter">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.NewsletterAPITests.test_retrieve_newsletter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_retrieve_newsletter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test retrieving a single newsletter via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the</span>
+<span class="sd">        newsletter detail.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for retrieving a single newsletter via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for retrieving the newsletter</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;newsletter-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">newsletter</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to retrieve the newsletter</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Newsletter detail returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test updating a newsletter via the API</span>
+<div class="viewcode-block" id="NewsletterAPITests.test_update_newsletter">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.NewsletterAPITests.test_update_newsletter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_update_newsletter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test updating a newsletter via the API.</span>
+<span class="sd">        Asserts that the newsletter is updated successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for updating a newsletter via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for updating the newsletter</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;newsletter-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">newsletter</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="c1"># Prepare the updated data</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Updated Newsletter&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Updated content&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] PUT </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send PUT request to update the newsletter</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the newsletter was updated successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_202_ACCEPTED</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Newsletter updated successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test deleting a newsletter via the API</span>
+<div class="viewcode-block" id="NewsletterAPITests.test_delete_newsletter">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.NewsletterAPITests.test_delete_newsletter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_delete_newsletter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test deleting a newsletter via the API.</span>
+<span class="sd">        Asserts that the newsletter is deleted successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for deleting a newsletter via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for deleting the newsletter</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;newsletter-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">newsletter</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] DELETE </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send DELETE request to delete the newsletter</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the newsletter was deleted successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Newsletter deleted successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test unauthorized newsletter creation is blocked</span>
+<div class="viewcode-block" id="NewsletterAPITests.test_unauthorized_create_newsletter">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.NewsletterAPITests.test_unauthorized_create_newsletter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_unauthorized_create_newsletter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that unauthorized newsletter creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for unauthorized newsletter creation]&quot;</span><span class="p">)</span>
+        <span class="c1"># Log out to simulate unauthorized user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+        <span class="c1"># Build the URL for creating a newsletter</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;newsletter-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare the data for the new newsletter</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Unauthorized Newsletter&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Should not work&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2"> (unauthenticated)&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request as unauthorized user</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that unauthorized creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Unauthorized newsletter creation blocked.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test creating a newsletter with invalid data is blocked</span>
+<div class="viewcode-block" id="NewsletterAPITests.test_create_newsletter_invalid_data">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.NewsletterAPITests.test_create_newsletter_invalid_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_newsletter_invalid_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test creating a newsletter with invalid data.</span>
+<span class="sd">        Asserts that invalid creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for creating a newsletter with invalid data]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for creating a newsletter</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;newsletter-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare invalid data (missing required fields)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>  <span class="c1"># Invalid: title/content required</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request with invalid data</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that invalid creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Invalid newsletter creation blocked.&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CommentAPITests">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CommentAPITests">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CommentAPITests</span><span class="p">(</span><span class="n">APITestSetup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    API tests for the Comment model.</span>
+<span class="sd">    Covers listing, creation, retrieval, update, deletion, unauthorized access,</span>
+<span class="sd">    and invalid data scenarios for comments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Test listing comments via the API</span>
+<div class="viewcode-block" id="CommentAPITests.test_list_comments">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CommentAPITests.test_list_comments">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_list_comments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test listing comments via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the comment list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for listing comments via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for listing comments</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;comment-list&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to the API</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Comment list returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test retrieving a single comment via the API</span>
+<div class="viewcode-block" id="CommentAPITests.test_retrieve_comment">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CommentAPITests.test_retrieve_comment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_retrieve_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test retrieving a single comment via the API.</span>
+<span class="sd">        Asserts that the response is successful and returns the comment detail.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for retrieving a single comment via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for retrieving the comment</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;comment-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">comment</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] GET </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send GET request to retrieve the comment</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the response is successful</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Comment detail returned successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test updating a comment via the API</span>
+<div class="viewcode-block" id="CommentAPITests.test_update_comment">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CommentAPITests.test_update_comment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_update_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test updating a comment via the API.</span>
+<span class="sd">        Asserts that the comment is updated successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for updating a comment via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for updating the comment</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;comment-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">comment</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="c1"># Prepare the updated data</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Updated comment&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;article&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] PUT </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send PUT request to update the comment</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the comment was updated successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_202_ACCEPTED</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Comment updated successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test deleting a comment via the API</span>
+<div class="viewcode-block" id="CommentAPITests.test_delete_comment">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CommentAPITests.test_delete_comment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_delete_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test deleting a comment via the API.</span>
+<span class="sd">        Asserts that the comment is deleted successfully.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for deleting a comment via the API]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for deleting the comment</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;comment-detail&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">comment</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] DELETE </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send DELETE request to delete the comment</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that the comment was deleted successfully</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Comment deleted successfully.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test unauthorized comment creation is blocked</span>
+<div class="viewcode-block" id="CommentAPITests.test_unauthorized_create_comment">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CommentAPITests.test_unauthorized_create_comment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_unauthorized_create_comment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that unauthorized comment creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for unauthorized comment creation]&quot;</span><span class="p">)</span>
+        <span class="c1"># Log out to simulate unauthorized user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+        <span class="c1"># Build the URL for creating a comment</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;comment-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare the data for the new comment</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Should not work&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;article&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2"> (unauthenticated)&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request as unauthorized user</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that unauthorized creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Unauthorized comment creation blocked.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1"># Test creating a comment with invalid data is blocked</span>
+<div class="viewcode-block" id="CommentAPITests.test_create_comment_invalid_data">
+<a class="viewcode-back" href="../../tests_api.html#News_app.tests_api.CommentAPITests.test_create_comment_invalid_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_create_comment_invalid_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test creating a comment with invalid data.</span>
+<span class="sd">        Asserts that invalid creation is blocked by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[Tests for creating a comment with invalid data]&quot;</span><span class="p">)</span>
+        <span class="c1"># Build the URL for creating a comment</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;comment-list&#39;</span><span class="p">)</span>
+        <span class="c1"># Prepare invalid data (missing required fields)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;article&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">article</span><span class="o">.</span><span class="n">id</span>  <span class="c1"># Invalid: content required</span>
+        <span class="p">}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Request] POST </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> with data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Send POST request with invalid data</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Response] Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Assert that invalid creation is blocked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Assert] Invalid comment creation blocked.&quot;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Routing Explanation &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="REST API Documentation" href="api.html" />
+    <link rel="prev" title="API Tests" href="tests_api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api.html">API Tests</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">URL Routing Explanation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#url-design-overview">URL Design Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-url-patterns">Main URL Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-url-patterns">API URL Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#web-view-url-patterns">Web View URL Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#url-namespacing-and-reverse-resolution">URL Namespacing and Reverse Resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extending-and-customizing-urls">Extending and Customizing URLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">URL Routing Explanation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/urls_explanation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="url-routing-explanation">
+<h1>URL Routing Explanation<a class="headerlink" href="#url-routing-explanation" title="Link to this heading"></a></h1>
+<p>This document provides a comprehensive explanation of the URL routing and structure for the Django News Application. It is intended for maintainers and developers who need to understand how requests are mapped to views and APIs throughout the project.</p>
+<section id="url-design-overview">
+<h2>URL Design Overview<a class="headerlink" href="#url-design-overview" title="Link to this heading"></a></h2>
+<p>The News Application uses Django’s URL routing system to map incoming HTTP requests to the appropriate views and API endpoints. The URL configuration is organized for clarity, maintainability, and RESTful best practices.</p>
+<p>Core Principles:</p>
+<ul class="simple">
+<li><p><strong>Separation of Concerns</strong>: Web views, API endpoints, and admin routes are organized in separate URL patterns and modules.</p></li>
+<li><p><strong>RESTful API Structure</strong>: API endpoints follow REST conventions for resource access and manipulation.</p></li>
+<li><p><strong>Namespacing</strong>: App-specific URLs are namespaced to avoid conflicts and improve reverse URL resolution.</p></li>
+<li><p><strong>Extensibility</strong>: The URL structure is designed to be easily extended for new features or apps.</p></li>
+</ul>
+</section>
+<section id="main-url-patterns">
+<h2>Main URL Patterns<a class="headerlink" href="#main-url-patterns" title="Link to this heading"></a></h2>
+<p>The main URL configuration is defined in <code class="docutils literal notranslate"><span class="pre">News/urls.py</span></code> and includes:</p>
+<ul class="simple">
+<li><p><strong>Admin Interface</strong>: <cite>/admin/</cite> — Django admin site for managing all models</p></li>
+<li><p><strong>Authentication</strong>: <cite>/accounts/</cite> — User login, logout, password management</p></li>
+<li><p><strong>News App</strong>: <cite>/</cite> — Main app routes for articles, categories, publishers, newsletters, comments, and user profiles</p></li>
+<li><p><strong>API Endpoints</strong>: <cite>/api/</cite> — REST API endpoints for all major resources (articles, categories, users, newsletters, publishers, comments, subscriptions)</p></li>
+<li><p><strong>Static &amp; Media Files</strong>: <cite>/static/</cite>, <cite>/media/</cite> — Served in development for assets and uploads</p></li>
+</ul>
+</section>
+<section id="api-url-patterns">
+<h2>API URL Patterns<a class="headerlink" href="#api-url-patterns" title="Link to this heading"></a></h2>
+<p>API endpoints are grouped under the <cite>/api/</cite> prefix and follow resource-based patterns:</p>
+<ul class="simple">
+<li><p><cite>/api/articles/</cite> — List, create, retrieve, update, delete articles</p></li>
+<li><p><cite>/api/categories/</cite> — List, create, retrieve, update, delete categories</p></li>
+<li><p><cite>/api/publishers/</cite> — List, create, retrieve, update, delete publishers</p></li>
+<li><p><cite>/api/newsletters/</cite> — List, create, retrieve, update, delete newsletters</p></li>
+<li><p><cite>/api/comments/</cite> — List, create, retrieve, update, delete comments</p></li>
+<li><p><cite>/api/users/</cite> — User registration, profile, and management</p></li>
+<li><p><cite>/api/auth/</cite> — JWT authentication endpoints (login, refresh)</p></li>
+<li><p><cite>/api/subscriptions/</cite> — Manage user subscriptions to publishers/journalists</p></li>
+</ul>
+</section>
+<section id="web-view-url-patterns">
+<h2>Web View URL Patterns<a class="headerlink" href="#web-view-url-patterns" title="Link to this heading"></a></h2>
+<p>Web-facing views (HTML pages) are mapped to user-friendly routes:</p>
+<ul class="simple">
+<li><p><cite>/</cite> — Home page (article list or dashboard)</p></li>
+<li><p><cite>/articles/&lt;id&gt;/</cite> — Article detail view</p></li>
+<li><p><cite>/categories/</cite> — Category list and detail</p></li>
+<li><p><cite>/publishers/</cite> — Publisher list and detail</p></li>
+<li><p><cite>/newsletters/</cite> — Newsletter list and detail</p></li>
+<li><p><cite>/profile/</cite> — User profile and settings</p></li>
+<li><p><cite>/login/</cite>, <cite>/logout/</cite>, <cite>/register/</cite> — Authentication views</p></li>
+<li><p><cite>/admin/</cite> — Admin dashboard</p></li>
+</ul>
+</section>
+<section id="url-namespacing-and-reverse-resolution">
+<h2>URL Namespacing and Reverse Resolution<a class="headerlink" href="#url-namespacing-and-reverse-resolution" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>App URLs are included with namespaces (e.g., <code class="docutils literal notranslate"><span class="pre">namespace='news_app'</span></code>) for clarity and to support Django’s <code class="docutils literal notranslate"><span class="pre">reverse()</span></code> and <code class="docutils literal notranslate"><span class="pre">url</span></code> template tag.</p></li>
+<li><p>API endpoints may use DRF’s routers for automatic URL generation and viewset mapping.</p></li>
+</ul>
+</section>
+<section id="extending-and-customizing-urls">
+<h2>Extending and Customizing URLs<a class="headerlink" href="#extending-and-customizing-urls" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>To add new features, define new views and add corresponding URL patterns in the appropriate <code class="docutils literal notranslate"><span class="pre">urls.py</span></code> file.</p></li>
+<li><p>Use Django’s <code class="docutils literal notranslate"><span class="pre">include()</span></code> to modularize URL patterns for each app.</p></li>
+<li><p>For custom API endpoints, add routes to the DRF router or define explicit paths as needed.</p></li>
+</ul>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Keep URL patterns flat and resource-oriented for APIs.</p></li>
+<li><p>Use named URL patterns for maintainability and reverse lookups.</p></li>
+<li><p>Document custom or non-standard routes in code comments or this explanation file.</p></li>
+<li><p>Avoid hardcoding URLs in templates or code; use <code class="docutils literal notranslate"><span class="pre">reverse()</span></code> or <code class="docutils literal notranslate"><span class="pre">url</span></code> tags.</p></li>
+</ul>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p>The URL routing structure in the News Application is designed for clarity, scalability, and RESTful best practices. It supports both web and API clients, and is easily extensible for future growth.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests_api.html" class="btn btn-neutral float-left" title="API Tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="REST API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

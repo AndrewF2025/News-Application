@@ -1614,10 +1614,11 @@ def api_subscribable_users(request):
     API endpoint to get all publishers and journalists available to
     subscribe to.
 
-    Returns: {
+    Returns:
+        {
         'publishers': [...],
         'journalists': [...]
-    }
+        }
     """
     # Get all publishers and journalists
     publishers = Publisher.objects.all()
@@ -1747,10 +1748,12 @@ def api_subscribed_content(request):
     """
     API endpoint to list all newsletters and articles from authors and
     publishers that the current user is subscribed to.
-    Returns: {
+
+    Returns:
+        {
         'articles': [...],
         'newsletters': [...]
-    }
+        }
     """
     # Get publisher and journalist subscriptions
     publishers = get_subscribed_publishers(request.user)

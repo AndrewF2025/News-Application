@@ -52,6 +52,14 @@ class UserCreateSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        """
+        Create a new User instance with the provided validated data.
+        This method handles password hashing and user creation.
+
+        :param validated_data: Data validated by the serializer
+
+        :return: The newly created User instance
+        """
         password = validated_data.pop('password')
         user = User(**validated_data)
         user.set_password(password)
@@ -145,6 +153,15 @@ class ArticleSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        """
+        Create a new Article instance with the provided validated data.
+        This method handles the creation of an article, setting the author
+        from the request context, and managing publisher and category IDs.
+
+        :param validated_data: Data validated by the serializer
+
+        :return: The newly created Article instance
+        """
         # Remove write-only fields and set the author
         publisher_id = validated_data.pop('publisher_id', None)
         category_id = validated_data.pop('category_id', None)
@@ -183,6 +200,15 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        """
+        Create a new Article instance with the provided validated data.
+        This method sets the author from the request context and handles
+        the creation of an article without requiring all fields.
+
+        :param validated_data: Data validated by the serializer
+
+        :return: The newly created Article instance
+        """
         validated_data['author'] = self.context['request'].user
         return super().create(validated_data)
 
@@ -232,6 +258,15 @@ class NewsletterSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        """
+        Create a new Newsletter instance with the provided validated data.
+        This method handles the creation of a newsletter, setting the author
+        from the request context, and managing the publisher ID.
+
+        :param validated_data: Data validated by the serializer
+
+        :return: The newly created Newsletter instance
+        """
         publisher_id = validated_data.pop('publisher_id', None)
 
         newsletter = Newsletter(**validated_data)
@@ -269,6 +304,14 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'author', 'created_date', 'updated_date']
 
     def create(self, validated_data):
+        """
+        Create a new Comment instance with the provided validated data.
+        This method sets the author from the request context.
+
+        :param validated_data: Data validated by the serializer
+
+        :return: The newly created Comment instance
+        """
         validated_data['author'] = self.context['request'].user
         return super().create(validated_data)
 

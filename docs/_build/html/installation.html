@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &amp; Setup &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Troubleshooting Guide" href="troubleshooting.html" />
+    <link rel="prev" title="Django News Application Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation &amp; Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-steps">Installation Steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#clone-the-repository">1. Clone the Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-virtual-environment">2. Create Virtual Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#activate-virtual-environment">3. Activate Virtual Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-dependencies">4. Install Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment-configuration">5. Environment Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-setup">6. Database Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#collect-static-files">7. Collect Static Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-the-installation">8. Test the Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#database-configuration">Database Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mysql-required">MySQL (Required)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#verification">Verification</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#admin-panel">Admin Panel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-endpoints">API Endpoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#static-files">Static Files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api.html">API Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation &amp; Setup</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation-setup">
+<h1>Installation &amp; Setup<a class="headerlink" href="#installation-setup" title="Link to this heading"></a></h1>
+<p>This guide will help you set up the Django News Application on your local machine for development and testing purposes.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>Before you begin, ensure you have the following installed:</p>
+<ul class="simple">
+<li><p><strong>Python 3.13+</strong> (recommended)</p></li>
+<li><p><strong>Git</strong> for version control</p></li>
+<li><p><strong>pip</strong> (Python package installer)</p></li>
+<li><p><strong>virtualenv</strong> or <strong>venv</strong> for virtual environments</p></li>
+</ul>
+<p>Required:
+* <strong>MySQL Server</strong> (application uses MySQL by default)</p>
+<p>Optional but recommended:
+* <strong>VS Code</strong> or your preferred IDE
+* <strong>MySQL Workbench</strong> (for database management)</p>
+</section>
+<section id="installation-steps">
+<h2>Installation Steps<a class="headerlink" href="#installation-steps" title="Link to this heading"></a></h2>
+<section id="clone-the-repository">
+<h3>1. Clone the Repository<a class="headerlink" href="#clone-the-repository" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>git clone &lt;repository-url&gt;
+cd &quot;News Application Project&quot;
+</pre></div>
+</div>
+<p>Or download and extract the project files to your desired location.</p>
+</section>
+<section id="create-virtual-environment">
+<h3>2. Create Virtual Environment<a class="headerlink" href="#create-virtual-environment" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python -m venv .venv
+</pre></div>
+</div>
+</section>
+<section id="activate-virtual-environment">
+<h3>3. Activate Virtual Environment<a class="headerlink" href="#activate-virtual-environment" title="Link to this heading"></a></h3>
+<p><strong>Windows (cmd):</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.venv\Scripts\activate
+</pre></div>
+</div>
+<p><strong>Windows (PowerShell):</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.venv\Scripts\Activate.ps1
+</pre></div>
+</div>
+<p><strong>Linux/Mac:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>source .venv/bin/activate
+</pre></div>
+</div>
+</section>
+<section id="install-dependencies">
+<h3>4. Install Dependencies<a class="headerlink" href="#install-dependencies" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
+</pre></div>
+</div>
+<p>This will install all required packages including:
+* Django 5.2.4
+* Django REST Framework
+* Django CORS Headers
+* MySQLclient
+* Pillow
+* Tweepy
+* Django REST Framework SimpleJWT
+* python-dotenv
+* And other dependencies</p>
+</section>
+<section id="environment-configuration">
+<h3>5. Environment Configuration<a class="headerlink" href="#environment-configuration" title="Link to this heading"></a></h3>
+<p>The project includes a <cite>.env.example</cite> file with all necessary environment variables.</p>
+<p><strong>Copy the example file:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>copy .env.example .env
+</pre></div>
+</div>
+<p><strong>Then edit the `.env` file</strong> with your specific values:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Django Settings
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+# Database (Required - MySQL)
+DB_NAME=news_application_db
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_HOST=localhost
+DB_PORT=3306
+
+# Email Settings (Mailtrap for testing)
+EMAIL_HOST=sandbox.smtp.mailtrap.io
+EMAIL_PORT=2525
+EMAIL_HOST_USER=your_mailtrap_user
+EMAIL_HOST_PASSWORD=your_mailtrap_password
+EMAIL_USE_TLS=True
+DEFAULT_FROM_EMAIL=test@example.com
+
+# Twitter API (Optional)
+TWITTER_API_KEY=your_twitter_api_key
+TWITTER_API_SECRET=your_twitter_api_secret
+TWITTER_ACCESS_TOKEN=your_access_token
+TWITTER_ACCESS_TOKEN_SECRET=your_access_token_secret
+TWITTER_BEARER_TOKEN=your_bearer_token
+TWITTER_ENABLED=True
+
+# Localization (Optional)
+LANGUAGE_CODE=en-us
+TIME_ZONE=UTC
+</pre></div>
+</div>
+<p><strong>Required Settings to Update:</strong></p>
+<ul class="simple">
+<li><p><strong>SECRET_KEY</strong>: Generate a new Django secret key</p></li>
+<li><p><strong>DB_PASSWORD</strong>: Your MySQL root password</p></li>
+<li><p><strong>EMAIL_HOST_USER</strong> &amp; <strong>EMAIL_HOST_PASSWORD</strong>: Your Mailtrap credentials (optional)</p></li>
+<li><p><strong>Twitter API keys</strong>: Only if you want Twitter integration (optional)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can use the application with just the database settings configured.
+Email and Twitter settings are optional for basic functionality.</p>
+</div>
+</section>
+<section id="database-setup">
+<h3>6. Database Setup<a class="headerlink" href="#database-setup" title="Link to this heading"></a></h3>
+<p><strong>Important:</strong> This application uses a custom User model, so database setup must be done carefully.</p>
+<p><strong>Install and Start MySQL:</strong></p>
+<ol class="arabic simple">
+<li><p>Install MySQL Server if not already installed</p></li>
+<li><p>Start MySQL service</p></li>
+<li><p>Create the database (see MySQL Configuration section below)</p></li>
+</ol>
+<p><strong>Run Migrations:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py makemigrations
+python manage.py migrate
+</pre></div>
+</div>
+<p><strong>Create Superuser:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py createsuperuser
+</pre></div>
+</div>
+<p>Follow the prompts to create an admin account.</p>
+</section>
+<section id="collect-static-files">
+<h3>7. Collect Static Files<a class="headerlink" href="#collect-static-files" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py collectstatic
+</pre></div>
+</div>
+</section>
+<section id="test-the-installation">
+<h3>8. Test the Installation<a class="headerlink" href="#test-the-installation" title="Link to this heading"></a></h3>
+<p>Start the development server:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py runserver
+</pre></div>
+</div>
+<p>Visit <a class="reference external" href="http://localhost:8000">http://localhost:8000</a> to see the application running.</p>
+</section>
+</section>
+<section id="database-configuration">
+<h2>Database Configuration<a class="headerlink" href="#database-configuration" title="Link to this heading"></a></h2>
+<section id="mysql-required">
+<h3>MySQL (Required)<a class="headerlink" href="#mysql-required" title="Link to this heading"></a></h3>
+<p>This application requires MySQL and uses a custom User model. Follow these steps:</p>
+<ol class="arabic">
+<li><p><strong>Install MySQL Server</strong></p></li>
+<li><p><strong>Create Database:</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">news_application_db</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">&#39;news_user&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;your_password&#39;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">news_application_db</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;news_user&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+<span class="n">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Or use root user (for development):</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">news_application_db</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Update .env file</strong> with your MySQL credentials</p></li>
+<li><p><strong>Run migrations</strong> as described above</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The application uses <code class="docutils literal notranslate"><span class="pre">CustomUser</span></code> model from <code class="docutils literal notranslate"><span class="pre">News_app.CustomUser</span></code>.
+Do not run migrations until MySQL is properly configured.</p>
+</div>
+</section>
+</section>
+<section id="verification">
+<h2>Verification<a class="headerlink" href="#verification" title="Link to this heading"></a></h2>
+<p>After installation, verify everything works:</p>
+<section id="admin-panel">
+<h3>Admin Panel<a class="headerlink" href="#admin-panel" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Go to <a class="reference external" href="http://localhost:8000/admin">http://localhost:8000/admin</a></p></li>
+<li><p>Login with your superuser credentials</p></li>
+<li><p>You should see the Django admin interface with News app models</p></li>
+</ol>
+</section>
+<section id="api-endpoints">
+<h3>API Endpoints<a class="headerlink" href="#api-endpoints" title="Link to this heading"></a></h3>
+<p>Test the API by visiting:
+* <a class="reference external" href="http://localhost:8000/api/">http://localhost:8000/api/</a> - API root (DRF browsable API)
+* <a class="reference external" href="http://localhost:8000/api/articles/">http://localhost:8000/api/articles/</a> - Articles endpoint
+* <a class="reference external" href="http://localhost:8000/api/categories/">http://localhost:8000/api/categories/</a> - Categories endpoint
+* <a class="reference external" href="http://localhost:8000/api/users/">http://localhost:8000/api/users/</a> - Users endpoint
+* <a class="reference external" href="http://localhost:8000/api/auth/login/">http://localhost:8000/api/auth/login/</a> - JWT token authentication</p>
+</section>
+<section id="static-files">
+<h3>Static Files<a class="headerlink" href="#static-files" title="Link to this heading"></a></h3>
+<p>Verify static files are loading by checking:
+* CSS styles are applied
+* Admin interface looks correct</p>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<p><strong>Port 8000 already in use:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py runserver 8001
+</pre></div>
+</div>
+<p><strong>Database connection errors:</strong>
+* <strong>Check your .env file configuration</strong>
+* <strong>Ensure MySQL is running</strong> (required for this application)
+* <strong>Verify database exists</strong> (news_application_db)
+* <strong>Check MySQL credentials and permissions</strong></p>
+<p><strong>MySQLclient installation issues:</strong>
+* <strong>Windows</strong>: May need Microsoft C++ Build Tools
+* <strong>Linux</strong>: <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">python3-dev</span> <span class="pre">default-libmysqlclient-dev</span> <span class="pre">build-essential</span></code>
+* <strong>macOS</strong>: <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">mysql</span></code></p>
+<p><strong>Missing dependencies:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pip install --upgrade -r requirements.txt
+</pre></div>
+</div>
+<p><strong>Permission errors:</strong>
+* Ensure virtual environment is activated
+* Check file permissions in project directory</p>
+<p><strong>Static files not loading:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python manage.py collectstatic --clear
+</pre></div>
+</div>
+</section>
+<section id="getting-help">
+<h3>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading"></a></h3>
+<p>If you encounter issues:</p>
+<ol class="arabic simple">
+<li><p>Check the Django debug output in the terminal</p></li>
+<li><p>Verify all environment variables are set correctly</p></li>
+<li><p>Ensure all dependencies are installed</p></li>
+<li><p>Check the Django documentation for specific errors</p></li>
+</ol>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>Once installation is complete, you can:</p>
+<ul class="simple">
+<li><p>Explore the <a class="reference internal" href="api.html"><span class="doc">REST API Documentation</span></a> documentation to understand available endpoints</p></li>
+<li><p>Review the <a class="reference internal" href="models.html"><span class="doc">Database Models</span></a> to understand the data structure</p></li>
+<li><p>Check <a class="reference internal" href="configuration.html"><span class="doc">Configuration Guide</span></a> for advanced settings</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Django News Application Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

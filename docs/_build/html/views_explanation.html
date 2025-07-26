@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Views Explanation &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Views" href="views.html" />
+    <link rel="prev" title="Forms" href="forms.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api.html">API Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Views Explanation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#view-architecture-overview">View Architecture Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#view-categories-and-responsibilities">View Categories and Responsibilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#article-views"><strong>Article Views</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#newsletter-views"><strong>Newsletter Views</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-and-publisher-management-views"><strong>User and Publisher Management Views</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comment-views"><strong>Comment Views</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-views-drf"><strong>API Views (DRF)</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#admin-views"><strong>Admin Views</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#key-decorators-and-mixins">Key Decorators and Mixins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#business-rules-and-workflow-constraints">Business Rules and Workflow Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#view-relationships-and-url-patterns">View Relationships and URL Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extending-and-customizing-views">Extending and Customizing Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-and-best-practices">Performance and Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#view-constraints-and-validations">View Constraints and Validations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permissions-matrix">Permissions Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#view-extensibility">View Extensibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting-and-debugging">Troubleshooting and Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Views Explanation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/views_explanation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="views-explanation">
+<h1>Views Explanation<a class="headerlink" href="#views-explanation" title="Link to this heading"></a></h1>
+<p>This document provides a comprehensive overview of the views in the Django News Application. It explains the purpose, workflow, permissions, and design decisions behind each major view, similar to the models explanation.</p>
+<section id="view-architecture-overview">
+<h2>View Architecture Overview<a class="headerlink" href="#view-architecture-overview" title="Link to this heading"></a></h2>
+<p>The application uses:
+* <strong>Function-based views</strong> for simple logic and template rendering
+* <strong>Class-based views</strong> for reusable, extensible logic
+* <strong>Django REST Framework API views and viewsets</strong> for RESTful endpoints</p>
+</section>
+<section id="view-categories-and-responsibilities">
+<h2>View Categories and Responsibilities<a class="headerlink" href="#view-categories-and-responsibilities" title="Link to this heading"></a></h2>
+<section id="article-views">
+<h3><strong>Article Views</strong><a class="headerlink" href="#article-views" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>List, detail, create, edit, delete articles</p></li>
+<li><p>Approval workflow for editors</p></li>
+<li><p>Permissions: Only journalists can create, only editors can approve, all users can view published</p></li>
+</ul>
+</section>
+<section id="newsletter-views">
+<h3><strong>Newsletter Views</strong><a class="headerlink" href="#newsletter-views" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Similar to articles: create, approve, publish</p></li>
+<li><p>Permissions: Journalists create, editors approve</p></li>
+</ul>
+</section>
+<section id="user-and-publisher-management-views">
+<h3><strong>User and Publisher Management Views</strong><a class="headerlink" href="#user-and-publisher-management-views" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Registration, login, profile edit, role assignment</p></li>
+<li><p>Publisher staff management (add/remove staff, assign roles)</p></li>
+<li><p>Permissions: Only admins/editors can manage staff</p></li>
+</ul>
+</section>
+<section id="comment-views">
+<h3><strong>Comment Views</strong><a class="headerlink" href="#comment-views" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add, edit, delete comments on articles</p></li>
+<li><p>Permissions: Only comment authors can edit/delete</p></li>
+</ul>
+</section>
+<section id="api-views-drf">
+<h3><strong>API Views (DRF)</strong><a class="headerlink" href="#api-views-drf" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>CRUD endpoints for articles, categories, users, newsletters</p></li>
+<li><p>JWT authentication endpoints for login and token refresh</p></li>
+<li><p>Permissions: Role-based, enforced via DRF permission classes</p></li>
+</ul>
+</section>
+<section id="admin-views">
+<h3><strong>Admin Views</strong><a class="headerlink" href="#admin-views" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Custom admin pages for managing users, publishers, and content</p></li>
+<li><p>Permissions: Superusers and editors only</p></li>
+</ul>
+</section>
+</section>
+<section id="key-decorators-and-mixins">
+<h2>Key Decorators and Mixins<a class="headerlink" href="#key-decorators-and-mixins" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><cite>&#64;login_required</cite>: Ensures user is authenticated</p></li>
+<li><p><cite>&#64;role_required(role)</cite>: Restricts access to users with a specific role</p></li>
+<li><p><cite>&#64;editor_required</cite>: Restricts access to editors</p></li>
+<li><p>Custom mixins for shared logic (pagination, permission checks)</p></li>
+</ul>
+</section>
+<section id="business-rules-and-workflow-constraints">
+<h2>Business Rules and Workflow Constraints<a class="headerlink" href="#business-rules-and-workflow-constraints" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Only editors can approve or publish content</p></li>
+<li><p>Only authors or editors can delete content</p></li>
+<li><p>Role-based redirects (e.g., superusers redirected to admin home)</p></li>
+<li><p>Approval required before publication</p></li>
+</ul>
+</section>
+<section id="view-relationships-and-url-patterns">
+<h2>View Relationships and URL Patterns<a class="headerlink" href="#view-relationships-and-url-patterns" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>View Name</p></th>
+<th class="head"><p>URL Pattern</p></th>
+<th class="head"><p>Purpose/Permissions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ArticleListView</p></td>
+<td><p>/articles/</p></td>
+<td><p>List all published articles (all users)</p></td>
+</tr>
+<tr class="row-odd"><td><p>ArticleCreateView</p></td>
+<td><p>/articles/create/</p></td>
+<td><p>Create new article (journalists only)</p></td>
+</tr>
+<tr class="row-even"><td><p>ArticleApproveView</p></td>
+<td><p>/articles/&lt;id&gt;/approve/</p></td>
+<td><p>Approve article (editors only)</p></td>
+</tr>
+<tr class="row-odd"><td><p>CommentCreateView</p></td>
+<td><p>/articles/&lt;id&gt;/comment/</p></td>
+<td><p>Add comment (authenticated users)</p></td>
+</tr>
+<tr class="row-even"><td><p>API: ArticleViewSet</p></td>
+<td><p>/api/articles/</p></td>
+<td><p>CRUD for articles (role-based permissions)</p></td>
+</tr>
+<tr class="row-odd"><td><p>… (add more as needed)</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="extending-and-customizing-views">
+<h2>Extending and Customizing Views<a class="headerlink" href="#extending-and-customizing-views" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Add new views by subclassing Django or DRF base classes</p></li>
+<li><p>Register new URLs in <cite>News_app/urls.py</cite></p></li>
+<li><p>Use or extend existing permission decorators/mixins</p></li>
+</ul>
+</section>
+<section id="performance-and-best-practices">
+<h2>Performance and Best Practices<a class="headerlink" href="#performance-and-best-practices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use pagination for large querysets</p></li>
+<li><p>Use <cite>select_related</cite>/<cite>prefetch_related</cite> for related data</p></li>
+<li><p>Keep business logic in views thin; use services/helpers for complex logic</p></li>
+</ul>
+</section>
+<section id="view-constraints-and-validations">
+<h2>View Constraints and Validations<a class="headerlink" href="#view-constraints-and-validations" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Authentication Required</strong>: Most views require users to be logged in; enforced via decorators or DRF permissions.</p></li>
+<li><p><strong>Role Checks</strong>: Decorators and permission classes ensure only users with the correct role can access/modify certain resources.</p></li>
+<li><p><strong>Object Ownership</strong>: Edit/delete actions check that the user is the owner (author) or has elevated permissions (editor/admin).</p></li>
+<li><p><strong>Form/Data Validation</strong>: Web views use Django forms for input validation; API views use DRF serializers.</p></li>
+<li><p><strong>Approval Workflow</strong>: Articles and newsletters must be approved before publication; enforced in both web and API views.</p></li>
+</ul>
+</section>
+<section id="permissions-matrix">
+<h2>Permissions Matrix<a class="headerlink" href="#permissions-matrix" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>View/Action</p></th>
+<th class="head"><p>Reader</p></th>
+<th class="head"><p>Journalist</p></th>
+<th class="head"><p>Editor</p></th>
+<th class="head"><p>Admin</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>View Articles</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>Create Article</p></td>
+<td><p>✗</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-even"><td><p>Approve Article</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>Delete Article</p></td>
+<td><p>✗ (own comments only)</p></td>
+<td><p>✓ (own)</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-even"><td><p>Manage Users</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-odd"><td><p>Manage Publisher Staff</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+<tr class="row-even"><td><p>Access Admin</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="view-extensibility">
+<h2>View Extensibility<a class="headerlink" href="#view-extensibility" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Adding New Views</strong>: Subclass Django or DRF base classes, or create new function-based views as needed.</p></li>
+<li><p><strong>Custom Decorators</strong>: Implement new decorators for advanced permission logic.</p></li>
+<li><p><strong>Reusable Mixins</strong>: Use mixins for shared logic (pagination, filtering, etc.).</p></li>
+<li><p><strong>API Versioning</strong>: DRF supports versioned endpoints for backward compatibility.</p></li>
+<li><p><strong>Template Inheritance</strong>: Web views use Django template inheritance for consistent UI.</p></li>
+</ul>
+</section>
+<section id="troubleshooting-and-debugging">
+<h2>Troubleshooting and Debugging<a class="headerlink" href="#troubleshooting-and-debugging" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Common Issues</strong>:
+- Permission denied errors: Check user roles and decorators.
+- Object not found: Ensure correct object IDs and user ownership.
+- Validation errors: Review form/serializer error messages.
+- API authentication failures: Check JWT tokens and DRF settings.</p></li>
+<li><p><strong>Debugging Tips</strong>:
+- Use Django debug toolbar for web views.
+- Use DRF’s browsable API for testing endpoints.
+- Check logs for error traces (see logging configuration).</p></li>
+</ul>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>See <a class="reference internal" href="views.html"><span class="doc">Views</span></a> for code-level API documentation</p></li>
+<li><p>Review <a class="reference internal" href="urls_explanation.html"><span class="doc">URL Routing Explanation</span></a> for routing details</p></li>
+<li><p>Check <a class="reference internal" href="models_explanation.html"><span class="doc">Database Models Explanation</span></a> for data relationships</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="forms.html" class="btn btn-neutral float-left" title="Forms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="views.html" class="btn btn-neutral float-right" title="Views" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

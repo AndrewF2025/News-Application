@@ -55,6 +55,10 @@ class ArticleAPITests(APITestSetup):
     """
     # Test listing articles via the API
     def test_list_articles(self):
+        """
+        Test listing articles via the API.
+        Asserts that the response is successful and returns the article list.
+        """
         print("\n[Tests for listing articles via the API]")
         # Build the URL for listing articles
         url = reverse('article-list')
@@ -68,6 +72,10 @@ class ArticleAPITests(APITestSetup):
 
     # Test creating a new article via the API
     def test_create_article(self):
+        """
+        Test creating a new article via the API.
+        Asserts that the article is created successfully.
+        """
         print("\n[Tests for creating a new article via the API]")
         # Build the URL for creating an article
         url = reverse('article-list')
@@ -91,6 +99,10 @@ class ArticleAPITests(APITestSetup):
 
     # Test retrieving a single article via the API
     def test_retrieve_article(self):
+        """
+        Test retrieving a single article via the API.
+        Asserts that the response is successful and returns the article detail.
+        """
         print("\n[Tests for retrieving a single article via the API]")
         # Build the URL for retrieving the article
         url = reverse('article-detail', args=[self.article.id])
@@ -104,6 +116,10 @@ class ArticleAPITests(APITestSetup):
 
     # Test updating an article via the API
     def test_update_article(self):
+        """
+        Test updating an article via the API.
+        Asserts that the article is updated successfully.
+        """
         print("\n[Tests for updating an article via the API]")
         # Build the URL for updating the article
         url = reverse('article-detail', args=[self.article.id])
@@ -127,6 +143,10 @@ class ArticleAPITests(APITestSetup):
 
     # Test deleting an article via the API
     def test_delete_article(self):
+        """
+        Test deleting an article via the API.
+        Asserts that the article is deleted successfully.
+        """
         print("\n[Tests for deleting an article via the API]")
         # Build the URL for deleting the article
         url = reverse('article-detail', args=[self.article.id])
@@ -143,6 +163,9 @@ class ArticleAPITests(APITestSetup):
 
     # Test unauthorized article creation is blocked
     def test_unauthorized_create_article(self):
+        """
+        Test that unauthorized article creation is blocked by the API.
+        """
         print("\n[Tests for unauthorized article creation]")
         # Log out to simulate unauthorized user
         self.client.logout()
@@ -168,6 +191,10 @@ class ArticleAPITests(APITestSetup):
 
     # Test creating an article with invalid data is blocked
     def test_create_article_invalid_data(self):
+        """
+        Test creating an article with invalid data.
+        Asserts that invalid creation is blocked by the API.
+        """
         print("\n[Tests for creating an article with invalid data]")
         # Build the URL for creating an article
         url = reverse('article-list')
@@ -193,6 +220,10 @@ class CategoryAPITests(APITestSetup):
     """
     # Test listing categories via the API
     def test_list_categories(self):
+        """
+        Test listing categories via the API.
+        Asserts that the response is successful and returns the category list.
+        """
         print("\n[Tests for listing categories via the API]")
         # Build the URL for listing categories
         url = reverse('category-list')
@@ -206,6 +237,11 @@ class CategoryAPITests(APITestSetup):
 
     # Test retrieving a single category via the API
     def test_retrieve_category(self):
+        """
+        Test retrieving a single category via the API.
+        Asserts that the response is successful and returns the
+        category detail.
+        """
         print("\n[Tests for retrieving a single category via the API]")
         # Build the URL for retrieving the category
         url = reverse('category-detail', args=[self.category.id])
@@ -219,6 +255,10 @@ class CategoryAPITests(APITestSetup):
 
     # Test updating a category via the API
     def test_update_category(self):
+        """
+        Test updating a category via the API.
+        Asserts that the category is updated successfully.
+        """
         print("\n[Tests for updating a category via the API]")
         # Build the URL for updating the category
         url = reverse('category-detail', args=[self.category.id])
@@ -237,6 +277,10 @@ class CategoryAPITests(APITestSetup):
 
     # Test deleting a category via the API
     def test_delete_category(self):
+        """
+        Test deleting a category via the API.
+        Asserts that the category is deleted successfully.
+        """
         print("\n[Tests for deleting a category via the API]")
         # Build the URL for deleting the category
         url = reverse('category-detail', args=[self.category.id])
@@ -253,6 +297,9 @@ class CategoryAPITests(APITestSetup):
 
     # Test unauthorized category creation is blocked
     def test_unauthorized_create_category(self):
+        """
+        Test that unauthorized category creation is blocked by the API.
+        """
         print("\n[Tests for unauthorized category creation]")
         # Log out to simulate unauthorized user
         self.client.logout()
@@ -273,6 +320,10 @@ class CategoryAPITests(APITestSetup):
 
     # Test creating a category with invalid data is blocked
     def test_create_category_invalid_data(self):
+        """
+        Test creating a category with invalid data.
+        Asserts that invalid creation is blocked by the API.
+        """
         print("\n[Tests for creating a category with invalid data]")
         # Build the URL for creating a category
         url = reverse('category-list')
@@ -295,6 +346,10 @@ class PublisherAPITests(APITestSetup):
     """
     # Test listing publishers via the API
     def test_list_publishers(self):
+        """
+        Test listing publishers via the API.
+        Asserts that the response is successful and returns the publisher list.
+        """
         print("\n[Tests for listing publishers via the API]")
         # Build the URL for listing publishers
         url = reverse('publisher-list')
@@ -308,6 +363,11 @@ class PublisherAPITests(APITestSetup):
 
     # Test retrieving a single publisher via the API
     def test_retrieve_publisher(self):
+        """
+        Test retrieving a single publisher via the API.
+        Asserts that the response is successful and returns the
+        publisher detail.
+        """
         print("\n[Tests for retrieving a single publisher via the API]")
         # Build the URL for retrieving the publisher
         url = reverse('publisher-detail', args=[self.publisher.id])
@@ -321,6 +381,10 @@ class PublisherAPITests(APITestSetup):
 
     # Test updating a publisher via the API
     def test_update_publisher(self):
+        """
+        Test updating a publisher via the API.
+        Asserts that the publisher is updated successfully.
+        """
         print("\n[Tests for updating a publisher via the API]")
         # Build the URL for updating the publisher
         url = reverse('publisher-detail', args=[self.publisher.id])
@@ -339,6 +403,10 @@ class PublisherAPITests(APITestSetup):
 
     # Test deleting a publisher via the API
     def test_delete_publisher(self):
+        """
+        Test deleting a publisher via the API.
+        Asserts that the publisher is deleted successfully.
+        """
         print("\n[Tests for deleting a publisher via the API]")
         # Build the URL for deleting the publisher
         url = reverse('publisher-detail', args=[self.publisher.id])
@@ -355,6 +423,9 @@ class PublisherAPITests(APITestSetup):
 
     # Test unauthorized publisher creation is blocked
     def test_unauthorized_create_publisher(self):
+        """
+        Test that unauthorized publisher creation is blocked by the API.
+        """
         print("\n[Tests for unauthorized publisher creation]")
         # Log out to simulate unauthorized user
         self.client.logout()
@@ -375,6 +446,10 @@ class PublisherAPITests(APITestSetup):
 
     # Test creating a publisher with invalid data is blocked
     def test_create_publisher_invalid_data(self):
+        """
+        Test creating a publisher with invalid data.
+        Asserts that invalid creation is blocked by the API.
+        """
         print("\n[Tests for creating a publisher with invalid data]")
         # Build the URL for creating a publisher
         url = reverse('publisher-list')
@@ -397,6 +472,11 @@ class NewsletterAPITests(APITestSetup):
     """
     # Test listing newsletters via the API
     def test_list_newsletters(self):
+        """
+        Test listing newsletters via the API.
+        Asserts that the response is successful and returns the
+        newsletter list.
+        """
         print("\n[Tests for listing newsletters via the API]")
         # Build the URL for listing newsletters
         url = reverse('newsletter-list')
@@ -410,6 +490,11 @@ class NewsletterAPITests(APITestSetup):
 
     # Test retrieving a single newsletter via the API
     def test_retrieve_newsletter(self):
+        """
+        Test retrieving a single newsletter via the API.
+        Asserts that the response is successful and returns the
+        newsletter detail.
+        """
         print("\n[Tests for retrieving a single newsletter via the API]")
         # Build the URL for retrieving the newsletter
         url = reverse('newsletter-detail', args=[self.newsletter.id])
@@ -423,6 +508,10 @@ class NewsletterAPITests(APITestSetup):
 
     # Test updating a newsletter via the API
     def test_update_newsletter(self):
+        """
+        Test updating a newsletter via the API.
+        Asserts that the newsletter is updated successfully.
+        """
         print("\n[Tests for updating a newsletter via the API]")
         # Build the URL for updating the newsletter
         url = reverse('newsletter-detail', args=[self.newsletter.id])
@@ -445,6 +534,10 @@ class NewsletterAPITests(APITestSetup):
 
     # Test deleting a newsletter via the API
     def test_delete_newsletter(self):
+        """
+        Test deleting a newsletter via the API.
+        Asserts that the newsletter is deleted successfully.
+        """
         print("\n[Tests for deleting a newsletter via the API]")
         # Build the URL for deleting the newsletter
         url = reverse('newsletter-detail', args=[self.newsletter.id])
@@ -461,6 +554,9 @@ class NewsletterAPITests(APITestSetup):
 
     # Test unauthorized newsletter creation is blocked
     def test_unauthorized_create_newsletter(self):
+        """
+        Test that unauthorized newsletter creation is blocked by the API.
+        """
         print("\n[Tests for unauthorized newsletter creation]")
         # Log out to simulate unauthorized user
         self.client.logout()
@@ -485,6 +581,10 @@ class NewsletterAPITests(APITestSetup):
 
     # Test creating a newsletter with invalid data is blocked
     def test_create_newsletter_invalid_data(self):
+        """
+        Test creating a newsletter with invalid data.
+        Asserts that invalid creation is blocked by the API.
+        """
         print("\n[Tests for creating a newsletter with invalid data]")
         # Build the URL for creating a newsletter
         url = reverse('newsletter-list')
@@ -511,6 +611,10 @@ class CommentAPITests(APITestSetup):
     """
     # Test listing comments via the API
     def test_list_comments(self):
+        """
+        Test listing comments via the API.
+        Asserts that the response is successful and returns the comment list.
+        """
         print("\n[Tests for listing comments via the API]")
         # Build the URL for listing comments
         url = reverse('comment-list')
@@ -524,6 +628,10 @@ class CommentAPITests(APITestSetup):
 
     # Test retrieving a single comment via the API
     def test_retrieve_comment(self):
+        """
+        Test retrieving a single comment via the API.
+        Asserts that the response is successful and returns the comment detail.
+        """
         print("\n[Tests for retrieving a single comment via the API]")
         # Build the URL for retrieving the comment
         url = reverse('comment-detail', args=[self.comment.id])
@@ -537,6 +645,10 @@ class CommentAPITests(APITestSetup):
 
     # Test updating a comment via the API
     def test_update_comment(self):
+        """
+        Test updating a comment via the API.
+        Asserts that the comment is updated successfully.
+        """
         print("\n[Tests for updating a comment via the API]")
         # Build the URL for updating the comment
         url = reverse('comment-detail', args=[self.comment.id])
@@ -559,6 +671,10 @@ class CommentAPITests(APITestSetup):
 
     # Test deleting a comment via the API
     def test_delete_comment(self):
+        """
+        Test deleting a comment via the API.
+        Asserts that the comment is deleted successfully.
+        """
         print("\n[Tests for deleting a comment via the API]")
         # Build the URL for deleting the comment
         url = reverse('comment-detail', args=[self.comment.id])
@@ -575,6 +691,9 @@ class CommentAPITests(APITestSetup):
 
     # Test unauthorized comment creation is blocked
     def test_unauthorized_create_comment(self):
+        """
+        Test that unauthorized comment creation is blocked by the API.
+        """
         print("\n[Tests for unauthorized comment creation]")
         # Log out to simulate unauthorized user
         self.client.logout()
@@ -599,6 +718,10 @@ class CommentAPITests(APITestSetup):
 
     # Test creating a comment with invalid data is blocked
     def test_create_comment_invalid_data(self):
+        """
+        Test creating a comment with invalid data.
+        Asserts that invalid creation is blocked by the API.
+        """
         print("\n[Tests for creating a comment with invalid data]")
         # Build the URL for creating a comment
         url = reverse('comment-list')

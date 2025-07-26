@@ -1,0 +1,454 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Tests &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="URL Routing Explanation" href="urls_explanation.html" />
+    <link rel="prev" title="API Tests Explanation" href="tests_api_explanation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#News_app.tests_api.APITestSetup"><code class="docutils literal notranslate"><span class="pre">APITestSetup</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.APITestSetup.setUp"><code class="docutils literal notranslate"><span class="pre">APITestSetup.setUp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#News_app.tests_api.ArticleAPITests"><code class="docutils literal notranslate"><span class="pre">ArticleAPITests</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.ArticleAPITests.test_create_article"><code class="docutils literal notranslate"><span class="pre">ArticleAPITests.test_create_article()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.ArticleAPITests.test_create_article_invalid_data"><code class="docutils literal notranslate"><span class="pre">ArticleAPITests.test_create_article_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.ArticleAPITests.test_delete_article"><code class="docutils literal notranslate"><span class="pre">ArticleAPITests.test_delete_article()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.ArticleAPITests.test_list_articles"><code class="docutils literal notranslate"><span class="pre">ArticleAPITests.test_list_articles()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.ArticleAPITests.test_retrieve_article"><code class="docutils literal notranslate"><span class="pre">ArticleAPITests.test_retrieve_article()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.ArticleAPITests.test_unauthorized_create_article"><code class="docutils literal notranslate"><span class="pre">ArticleAPITests.test_unauthorized_create_article()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.ArticleAPITests.test_update_article"><code class="docutils literal notranslate"><span class="pre">ArticleAPITests.test_update_article()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#News_app.tests_api.CategoryAPITests"><code class="docutils literal notranslate"><span class="pre">CategoryAPITests</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CategoryAPITests.test_create_category_invalid_data"><code class="docutils literal notranslate"><span class="pre">CategoryAPITests.test_create_category_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CategoryAPITests.test_delete_category"><code class="docutils literal notranslate"><span class="pre">CategoryAPITests.test_delete_category()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CategoryAPITests.test_list_categories"><code class="docutils literal notranslate"><span class="pre">CategoryAPITests.test_list_categories()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CategoryAPITests.test_retrieve_category"><code class="docutils literal notranslate"><span class="pre">CategoryAPITests.test_retrieve_category()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CategoryAPITests.test_unauthorized_create_category"><code class="docutils literal notranslate"><span class="pre">CategoryAPITests.test_unauthorized_create_category()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CategoryAPITests.test_update_category"><code class="docutils literal notranslate"><span class="pre">CategoryAPITests.test_update_category()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#News_app.tests_api.CommentAPITests"><code class="docutils literal notranslate"><span class="pre">CommentAPITests</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CommentAPITests.test_create_comment_invalid_data"><code class="docutils literal notranslate"><span class="pre">CommentAPITests.test_create_comment_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CommentAPITests.test_delete_comment"><code class="docutils literal notranslate"><span class="pre">CommentAPITests.test_delete_comment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CommentAPITests.test_list_comments"><code class="docutils literal notranslate"><span class="pre">CommentAPITests.test_list_comments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CommentAPITests.test_retrieve_comment"><code class="docutils literal notranslate"><span class="pre">CommentAPITests.test_retrieve_comment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CommentAPITests.test_unauthorized_create_comment"><code class="docutils literal notranslate"><span class="pre">CommentAPITests.test_unauthorized_create_comment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.CommentAPITests.test_update_comment"><code class="docutils literal notranslate"><span class="pre">CommentAPITests.test_update_comment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#News_app.tests_api.NewsletterAPITests"><code class="docutils literal notranslate"><span class="pre">NewsletterAPITests</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.NewsletterAPITests.test_create_newsletter_invalid_data"><code class="docutils literal notranslate"><span class="pre">NewsletterAPITests.test_create_newsletter_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.NewsletterAPITests.test_delete_newsletter"><code class="docutils literal notranslate"><span class="pre">NewsletterAPITests.test_delete_newsletter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.NewsletterAPITests.test_list_newsletters"><code class="docutils literal notranslate"><span class="pre">NewsletterAPITests.test_list_newsletters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.NewsletterAPITests.test_retrieve_newsletter"><code class="docutils literal notranslate"><span class="pre">NewsletterAPITests.test_retrieve_newsletter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.NewsletterAPITests.test_unauthorized_create_newsletter"><code class="docutils literal notranslate"><span class="pre">NewsletterAPITests.test_unauthorized_create_newsletter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.NewsletterAPITests.test_update_newsletter"><code class="docutils literal notranslate"><span class="pre">NewsletterAPITests.test_update_newsletter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#News_app.tests_api.PublisherAPITests"><code class="docutils literal notranslate"><span class="pre">PublisherAPITests</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.PublisherAPITests.test_create_publisher_invalid_data"><code class="docutils literal notranslate"><span class="pre">PublisherAPITests.test_create_publisher_invalid_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.PublisherAPITests.test_delete_publisher"><code class="docutils literal notranslate"><span class="pre">PublisherAPITests.test_delete_publisher()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.PublisherAPITests.test_list_publishers"><code class="docutils literal notranslate"><span class="pre">PublisherAPITests.test_list_publishers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.PublisherAPITests.test_retrieve_publisher"><code class="docutils literal notranslate"><span class="pre">PublisherAPITests.test_retrieve_publisher()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.PublisherAPITests.test_unauthorized_create_publisher"><code class="docutils literal notranslate"><span class="pre">PublisherAPITests.test_unauthorized_create_publisher()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#News_app.tests_api.PublisherAPITests.test_update_publisher"><code class="docutils literal notranslate"><span class="pre">PublisherAPITests.test_update_publisher()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Tests</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tests_api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-News_app.tests_api">
+<span id="api-tests"></span><h1>API Tests<a class="headerlink" href="#module-News_app.tests_api" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="News_app.tests_api.APITestSetup">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">News_app.tests_api.</span></span><span class="sig-name descname"><span class="pre">APITestSetup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#APITestSetup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.APITestSetup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<p>Base setup class for API test cases.
+Initializes a test user, category, publisher, article, newsletter, and
+comment for use in all derived API test classes. Handles authentication
+and test data creation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.APITestSetup.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#APITestSetup.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.APITestSetup.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="News_app.tests_api.ArticleAPITests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">News_app.tests_api.</span></span><span class="sig-name descname"><span class="pre">ArticleAPITests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#ArticleAPITests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.ArticleAPITests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#News_app.tests_api.APITestSetup" title="News_app.tests_api.APITestSetup"><code class="xref py py-class docutils literal notranslate"><span class="pre">APITestSetup</span></code></a></p>
+<p>API tests for the Article model.
+Covers listing, creation, retrieval, update, deletion, unauthorized access,
+and invalid data scenarios for articles.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.ArticleAPITests.test_create_article">
+<span class="sig-name descname"><span class="pre">test_create_article</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#ArticleAPITests.test_create_article"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.ArticleAPITests.test_create_article" title="Link to this definition"></a></dt>
+<dd><p>Test creating a new article via the API.
+Asserts that the article is created successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.ArticleAPITests.test_create_article_invalid_data">
+<span class="sig-name descname"><span class="pre">test_create_article_invalid_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#ArticleAPITests.test_create_article_invalid_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.ArticleAPITests.test_create_article_invalid_data" title="Link to this definition"></a></dt>
+<dd><p>Test creating an article with invalid data.
+Asserts that invalid creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.ArticleAPITests.test_delete_article">
+<span class="sig-name descname"><span class="pre">test_delete_article</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#ArticleAPITests.test_delete_article"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.ArticleAPITests.test_delete_article" title="Link to this definition"></a></dt>
+<dd><p>Test deleting an article via the API.
+Asserts that the article is deleted successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.ArticleAPITests.test_list_articles">
+<span class="sig-name descname"><span class="pre">test_list_articles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#ArticleAPITests.test_list_articles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.ArticleAPITests.test_list_articles" title="Link to this definition"></a></dt>
+<dd><p>Test listing articles via the API.
+Asserts that the response is successful and returns the article list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.ArticleAPITests.test_retrieve_article">
+<span class="sig-name descname"><span class="pre">test_retrieve_article</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#ArticleAPITests.test_retrieve_article"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.ArticleAPITests.test_retrieve_article" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a single article via the API.
+Asserts that the response is successful and returns the article detail.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.ArticleAPITests.test_unauthorized_create_article">
+<span class="sig-name descname"><span class="pre">test_unauthorized_create_article</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#ArticleAPITests.test_unauthorized_create_article"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.ArticleAPITests.test_unauthorized_create_article" title="Link to this definition"></a></dt>
+<dd><p>Test that unauthorized article creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.ArticleAPITests.test_update_article">
+<span class="sig-name descname"><span class="pre">test_update_article</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#ArticleAPITests.test_update_article"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.ArticleAPITests.test_update_article" title="Link to this definition"></a></dt>
+<dd><p>Test updating an article via the API.
+Asserts that the article is updated successfully.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="News_app.tests_api.CategoryAPITests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">News_app.tests_api.</span></span><span class="sig-name descname"><span class="pre">CategoryAPITests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CategoryAPITests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CategoryAPITests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#News_app.tests_api.APITestSetup" title="News_app.tests_api.APITestSetup"><code class="xref py py-class docutils literal notranslate"><span class="pre">APITestSetup</span></code></a></p>
+<p>API tests for the Category model.
+Covers listing, creation, retrieval, update, deletion, unauthorized access,
+and invalid data scenarios for categories.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CategoryAPITests.test_create_category_invalid_data">
+<span class="sig-name descname"><span class="pre">test_create_category_invalid_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CategoryAPITests.test_create_category_invalid_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CategoryAPITests.test_create_category_invalid_data" title="Link to this definition"></a></dt>
+<dd><p>Test creating a category with invalid data.
+Asserts that invalid creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CategoryAPITests.test_delete_category">
+<span class="sig-name descname"><span class="pre">test_delete_category</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CategoryAPITests.test_delete_category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CategoryAPITests.test_delete_category" title="Link to this definition"></a></dt>
+<dd><p>Test deleting a category via the API.
+Asserts that the category is deleted successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CategoryAPITests.test_list_categories">
+<span class="sig-name descname"><span class="pre">test_list_categories</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CategoryAPITests.test_list_categories"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CategoryAPITests.test_list_categories" title="Link to this definition"></a></dt>
+<dd><p>Test listing categories via the API.
+Asserts that the response is successful and returns the category list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CategoryAPITests.test_retrieve_category">
+<span class="sig-name descname"><span class="pre">test_retrieve_category</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CategoryAPITests.test_retrieve_category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CategoryAPITests.test_retrieve_category" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a single category via the API.
+Asserts that the response is successful and returns the
+category detail.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CategoryAPITests.test_unauthorized_create_category">
+<span class="sig-name descname"><span class="pre">test_unauthorized_create_category</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CategoryAPITests.test_unauthorized_create_category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CategoryAPITests.test_unauthorized_create_category" title="Link to this definition"></a></dt>
+<dd><p>Test that unauthorized category creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CategoryAPITests.test_update_category">
+<span class="sig-name descname"><span class="pre">test_update_category</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CategoryAPITests.test_update_category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CategoryAPITests.test_update_category" title="Link to this definition"></a></dt>
+<dd><p>Test updating a category via the API.
+Asserts that the category is updated successfully.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="News_app.tests_api.CommentAPITests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">News_app.tests_api.</span></span><span class="sig-name descname"><span class="pre">CommentAPITests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CommentAPITests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CommentAPITests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#News_app.tests_api.APITestSetup" title="News_app.tests_api.APITestSetup"><code class="xref py py-class docutils literal notranslate"><span class="pre">APITestSetup</span></code></a></p>
+<p>API tests for the Comment model.
+Covers listing, creation, retrieval, update, deletion, unauthorized access,
+and invalid data scenarios for comments.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CommentAPITests.test_create_comment_invalid_data">
+<span class="sig-name descname"><span class="pre">test_create_comment_invalid_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CommentAPITests.test_create_comment_invalid_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CommentAPITests.test_create_comment_invalid_data" title="Link to this definition"></a></dt>
+<dd><p>Test creating a comment with invalid data.
+Asserts that invalid creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CommentAPITests.test_delete_comment">
+<span class="sig-name descname"><span class="pre">test_delete_comment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CommentAPITests.test_delete_comment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CommentAPITests.test_delete_comment" title="Link to this definition"></a></dt>
+<dd><p>Test deleting a comment via the API.
+Asserts that the comment is deleted successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CommentAPITests.test_list_comments">
+<span class="sig-name descname"><span class="pre">test_list_comments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CommentAPITests.test_list_comments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CommentAPITests.test_list_comments" title="Link to this definition"></a></dt>
+<dd><p>Test listing comments via the API.
+Asserts that the response is successful and returns the comment list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CommentAPITests.test_retrieve_comment">
+<span class="sig-name descname"><span class="pre">test_retrieve_comment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CommentAPITests.test_retrieve_comment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CommentAPITests.test_retrieve_comment" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a single comment via the API.
+Asserts that the response is successful and returns the comment detail.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CommentAPITests.test_unauthorized_create_comment">
+<span class="sig-name descname"><span class="pre">test_unauthorized_create_comment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CommentAPITests.test_unauthorized_create_comment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CommentAPITests.test_unauthorized_create_comment" title="Link to this definition"></a></dt>
+<dd><p>Test that unauthorized comment creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.CommentAPITests.test_update_comment">
+<span class="sig-name descname"><span class="pre">test_update_comment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#CommentAPITests.test_update_comment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.CommentAPITests.test_update_comment" title="Link to this definition"></a></dt>
+<dd><p>Test updating a comment via the API.
+Asserts that the comment is updated successfully.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="News_app.tests_api.NewsletterAPITests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">News_app.tests_api.</span></span><span class="sig-name descname"><span class="pre">NewsletterAPITests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#NewsletterAPITests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.NewsletterAPITests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#News_app.tests_api.APITestSetup" title="News_app.tests_api.APITestSetup"><code class="xref py py-class docutils literal notranslate"><span class="pre">APITestSetup</span></code></a></p>
+<p>API tests for the Newsletter model.
+Covers listing, creation, retrieval, update, deletion, unauthorized access,
+and invalid data scenarios for newsletters.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.NewsletterAPITests.test_create_newsletter_invalid_data">
+<span class="sig-name descname"><span class="pre">test_create_newsletter_invalid_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#NewsletterAPITests.test_create_newsletter_invalid_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.NewsletterAPITests.test_create_newsletter_invalid_data" title="Link to this definition"></a></dt>
+<dd><p>Test creating a newsletter with invalid data.
+Asserts that invalid creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.NewsletterAPITests.test_delete_newsletter">
+<span class="sig-name descname"><span class="pre">test_delete_newsletter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#NewsletterAPITests.test_delete_newsletter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.NewsletterAPITests.test_delete_newsletter" title="Link to this definition"></a></dt>
+<dd><p>Test deleting a newsletter via the API.
+Asserts that the newsletter is deleted successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.NewsletterAPITests.test_list_newsletters">
+<span class="sig-name descname"><span class="pre">test_list_newsletters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#NewsletterAPITests.test_list_newsletters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.NewsletterAPITests.test_list_newsletters" title="Link to this definition"></a></dt>
+<dd><p>Test listing newsletters via the API.
+Asserts that the response is successful and returns the
+newsletter list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.NewsletterAPITests.test_retrieve_newsletter">
+<span class="sig-name descname"><span class="pre">test_retrieve_newsletter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#NewsletterAPITests.test_retrieve_newsletter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.NewsletterAPITests.test_retrieve_newsletter" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a single newsletter via the API.
+Asserts that the response is successful and returns the
+newsletter detail.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.NewsletterAPITests.test_unauthorized_create_newsletter">
+<span class="sig-name descname"><span class="pre">test_unauthorized_create_newsletter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#NewsletterAPITests.test_unauthorized_create_newsletter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.NewsletterAPITests.test_unauthorized_create_newsletter" title="Link to this definition"></a></dt>
+<dd><p>Test that unauthorized newsletter creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.NewsletterAPITests.test_update_newsletter">
+<span class="sig-name descname"><span class="pre">test_update_newsletter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#NewsletterAPITests.test_update_newsletter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.NewsletterAPITests.test_update_newsletter" title="Link to this definition"></a></dt>
+<dd><p>Test updating a newsletter via the API.
+Asserts that the newsletter is updated successfully.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="News_app.tests_api.PublisherAPITests">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">News_app.tests_api.</span></span><span class="sig-name descname"><span class="pre">PublisherAPITests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#PublisherAPITests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.PublisherAPITests" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#News_app.tests_api.APITestSetup" title="News_app.tests_api.APITestSetup"><code class="xref py py-class docutils literal notranslate"><span class="pre">APITestSetup</span></code></a></p>
+<p>API tests for the Publisher model.
+Covers listing, creation, retrieval, update, deletion, unauthorized access,
+and invalid data scenarios for publishers.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.PublisherAPITests.test_create_publisher_invalid_data">
+<span class="sig-name descname"><span class="pre">test_create_publisher_invalid_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#PublisherAPITests.test_create_publisher_invalid_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.PublisherAPITests.test_create_publisher_invalid_data" title="Link to this definition"></a></dt>
+<dd><p>Test creating a publisher with invalid data.
+Asserts that invalid creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.PublisherAPITests.test_delete_publisher">
+<span class="sig-name descname"><span class="pre">test_delete_publisher</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#PublisherAPITests.test_delete_publisher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.PublisherAPITests.test_delete_publisher" title="Link to this definition"></a></dt>
+<dd><p>Test deleting a publisher via the API.
+Asserts that the publisher is deleted successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.PublisherAPITests.test_list_publishers">
+<span class="sig-name descname"><span class="pre">test_list_publishers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#PublisherAPITests.test_list_publishers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.PublisherAPITests.test_list_publishers" title="Link to this definition"></a></dt>
+<dd><p>Test listing publishers via the API.
+Asserts that the response is successful and returns the publisher list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.PublisherAPITests.test_retrieve_publisher">
+<span class="sig-name descname"><span class="pre">test_retrieve_publisher</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#PublisherAPITests.test_retrieve_publisher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.PublisherAPITests.test_retrieve_publisher" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a single publisher via the API.
+Asserts that the response is successful and returns the
+publisher detail.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.PublisherAPITests.test_unauthorized_create_publisher">
+<span class="sig-name descname"><span class="pre">test_unauthorized_create_publisher</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#PublisherAPITests.test_unauthorized_create_publisher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.PublisherAPITests.test_unauthorized_create_publisher" title="Link to this definition"></a></dt>
+<dd><p>Test that unauthorized publisher creation is blocked by the API.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="News_app.tests_api.PublisherAPITests.test_update_publisher">
+<span class="sig-name descname"><span class="pre">test_update_publisher</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/News_app/tests_api.html#PublisherAPITests.test_update_publisher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#News_app.tests_api.PublisherAPITests.test_update_publisher" title="Link to this definition"></a></dt>
+<dd><p>Test updating a publisher via the API.
+Asserts that the publisher is updated successfully.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests_api_explanation.html" class="btn btn-neutral float-left" title="API Tests Explanation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="urls_explanation.html" class="btn btn-neutral float-right" title="URL Routing Explanation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

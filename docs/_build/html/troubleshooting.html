@@ -1,0 +1,231 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Troubleshooting Guide &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration Guide" href="configuration.html" />
+    <link rel="prev" title="Installation &amp; Setup" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#application-won-t-start">Application Won’t Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-connection-issues">Database Connection Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#static-and-media-files-issues">Static and Media Files Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-common-issues">Other Common Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contact-and-support">Contact and Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api.html">API Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Troubleshooting Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/troubleshooting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="troubleshooting-guide">
+<h1>Troubleshooting Guide<a class="headerlink" href="#troubleshooting-guide" title="Link to this heading"></a></h1>
+<p>This guide provides solutions to common issues encountered when running the Django News Application on Windows using the built-in development server and MySQL. Only issues relevant to this setup are included.</p>
+<section id="application-won-t-start">
+<h2>Application Won’t Start<a class="headerlink" href="#application-won-t-start" title="Link to this heading"></a></h2>
+<p><strong>Symptoms:</strong>
+- Application window/console does not appear
+- Error messages in Command Prompt or PowerShell
+- No response on expected port (e.g., <a class="reference external" href="http://localhost:8000">http://localhost:8000</a>)</p>
+<p><strong>Steps to Diagnose:</strong>
+1. Check if the Python process is running:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Open Task Manager (Ctrl+Shift+Esc) and look for <cite>python.exe</cite> or <cite>pythonw.exe</cite>.</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic" start="2">
+<li><p>View application logs:
+- Check the <cite>logs</cite> directory in your project folder (e.g., <cite>C:pathtoprojectlogsdjango.log</cite>).</p></li>
+<li><p>Test Django manually:
+- Open Command Prompt, activate your virtual environment, and run:</p>
+<blockquote>
+<div><p>::
+cd C:pathtoproject
+venvScriptsactivate
+python manage.py runserver</p>
+</div></blockquote>
+</li>
+</ol>
+<p><strong>Common Causes:</strong>
+- Incorrect environment variables
+- Database connection issues
+- Missing dependencies
+- Syntax errors in settings files</p>
+</section>
+<section id="database-connection-issues">
+<h2>Database Connection Issues<a class="headerlink" href="#database-connection-issues" title="Link to this heading"></a></h2>
+<p><strong>Symptoms:</strong>
+- Application cannot connect to MySQL
+- Database errors in logs or console</p>
+<p><strong>Steps to Diagnose:</strong>
+1. Test MySQL connection:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Use MySQL Workbench or run in Command Prompt:</p></li>
+</ul>
+<blockquote>
+<div><p>::
+mysql -u newsapp_user -p news_application_prod</p>
+</div></blockquote>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Check MySQL service status:
+- Open Services (services.msc) and ensure MySQL is running.</p></li>
+<li><p>View MySQL error logs:
+- Default path: <cite>C:ProgramDataMySQLMySQL Server X.XData` (check for `.err</cite> files)</p></li>
+</ol>
+<p><strong>Common Causes:</strong>
+- Incorrect credentials in <cite>.env.production</cite>
+- MySQL not running
+- Firewall blocking port 3306
+- Database user permissions</p>
+</section>
+<section id="static-and-media-files-issues">
+<h2>Static and Media Files Issues<a class="headerlink" href="#static-and-media-files-issues" title="Link to this heading"></a></h2>
+<p><strong>Symptoms:</strong>
+- Images or CSS not loading
+- 404 errors for static/media files</p>
+<p><strong>Steps to Diagnose:</strong>
+1. Check file permissions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Right-click the static/media folders, go to Properties &gt; Security, and ensure the user running the server has Read access.</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic" start="2">
+<li><p>Confirm collectstatic ran successfully:
+- In Command Prompt:</p>
+<blockquote>
+<div><p>::
+python manage.py collectstatic –noinput</p>
+</div></blockquote>
+</li>
+<li><p>Verify static and media root paths in <cite>settings.py</cite></p></li>
+</ol>
+</section>
+<section id="other-common-issues">
+<h2>Other Common Issues<a class="headerlink" href="#other-common-issues" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Environment Variables Not Loaded:</strong>
+- Ensure <cite>.env.production</cite> exists and is referenced in your settings file. On Windows, use <cite>python-dotenv</cite> or set variables in the system environment.</p></li>
+<li><p><strong>Email Not Sending:</strong>
+- Check SMTP credentials and email backend settings in <cite>settings.py</cite>.</p></li>
+<li><p><strong>Twitter API Errors:</strong>
+- Verify API keys and network connectivity.</p></li>
+</ul>
+</section>
+<section id="contact-and-support">
+<h2>Contact and Support<a class="headerlink" href="#contact-and-support" title="Link to this heading"></a></h2>
+<p>If you encounter issues not covered here, consult the <a class="reference internal" href="installation.html"><span class="doc">Installation &amp; Setup</span></a> guide, check the application logs, and review the Sphinx documentation for further troubleshooting steps.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation &amp; Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

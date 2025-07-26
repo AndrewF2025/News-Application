@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Interface Explanation &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Admin" href="admin.html" />
+    <link rel="prev" title="Views" href="views.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api.html">API Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Admin Interface Explanation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#admin-architecture-overview">Admin Architecture &amp; Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-by-model-admin-customization">Model-by-Model Admin Customization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices-extensibility">Best Practices &amp; Extensibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary-table">Summary Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extending-the-admin">Extending the Admin</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Admin Interface Explanation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/admin_explanation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="admin-interface-explanation">
+<h1>Admin Interface Explanation<a class="headerlink" href="#admin-interface-explanation" title="Link to this heading"></a></h1>
+<p>This document explains the design, rationale, and customizations of the Django admin interface for the News Application. It complements the API autodoc in <code class="docutils literal notranslate"><span class="pre">admin.rst</span></code> by providing context and best practices for maintainers and developers.</p>
+<section id="admin-architecture-overview">
+<h2>Admin Architecture &amp; Overview<a class="headerlink" href="#admin-architecture-overview" title="Link to this heading"></a></h2>
+<p>The Django admin is used to manage all major models in the application, with custom admin classes for each. Customizations focus on usability, filtering, and efficient data management for staff and superusers.</p>
+<p>Key goals:
+- Expose all important models for CRUD operations
+- Provide clear list displays and search/filter options
+- Add custom fields (e.g., user roles) to admin forms
+- Protect important fields as read-only where needed</p>
+</section>
+<section id="model-by-model-admin-customization">
+<h2>Model-by-Model Admin Customization<a class="headerlink" href="#model-by-model-admin-customization" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>CustomUserAdmin</strong></dt><dd><ul class="simple">
+<li><p>Extends Django’s <code class="docutils literal notranslate"><span class="pre">UserAdmin</span></code> for the custom user model</p></li>
+<li><p>Adds <code class="docutils literal notranslate"><span class="pre">role</span></code> to list display, filters, and forms</p></li>
+<li><p>Custom fieldsets and add_fieldsets to include <code class="docutils literal notranslate"><span class="pre">role</span></code></p></li>
+<li><p>Improves user management for different roles</p></li>
+</ul>
+</dd>
+<dt><strong>PublisherAdmin</strong></dt><dd><ul class="simple">
+<li><p>Shows publisher name and creation date</p></li>
+<li><p>Searchable by name and description</p></li>
+</ul>
+</dd>
+<dt><strong>CategoryAdmin</strong></dt><dd><ul class="simple">
+<li><p>Shows category name and description</p></li>
+<li><p>Searchable by name</p></li>
+</ul>
+</dd>
+<dt><strong>ArticleAdmin</strong></dt><dd><ul class="simple">
+<li><p>List display: title, author, publisher, category, approval/publish status, created date</p></li>
+<li><p>Filters: approval, publish status, category, publisher, created date</p></li>
+<li><p>Search: title, content, author username</p></li>
+<li><p>Read-only: created/updated dates</p></li>
+<li><p>Date hierarchy for quick navigation</p></li>
+</ul>
+</dd>
+<dt><strong>NewsletterAdmin</strong></dt><dd><ul class="simple">
+<li><p>List display: title, author, publisher, approval/publish status, created date</p></li>
+<li><p>Filters: approval, publish status, publisher, created date</p></li>
+<li><p>Search: title, content, author username</p></li>
+<li><p>Read-only: created/updated dates</p></li>
+<li><p>Date hierarchy for quick navigation</p></li>
+</ul>
+</dd>
+<dt><strong>CommentAdmin</strong></dt><dd><ul class="simple">
+<li><p>List display: author, article, created date</p></li>
+<li><p>Filter: created date</p></li>
+<li><p>Search: content, author username, article title</p></li>
+<li><p>Read-only: created/updated dates</p></li>
+</ul>
+</dd>
+<dt><strong>PublisherStaffAdmin</strong></dt><dd><ul class="simple">
+<li><p>List display: publisher, user, role, date joined</p></li>
+<li><p>Filters: role, publisher</p></li>
+<li><p>Search: user username, publisher name</p></li>
+</ul>
+</dd>
+<dt><strong>SubscriptionAdmin</strong></dt><dd><ul class="simple">
+<li><p>List display: subscriber, publisher, journalist</p></li>
+<li><p>Filters: publisher, journalist</p></li>
+<li><p>Search: subscriber username, publisher name, journalist username</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="best-practices-extensibility">
+<h2>Best Practices &amp; Extensibility<a class="headerlink" href="#best-practices-extensibility" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">list_display</span></code> and <code class="docutils literal notranslate"><span class="pre">list_filter</span></code> to make admin efficient for staff</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">readonly_fields</span></code> for audit fields (created/updated)</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">search_fields</span></code> for quick lookup of related objects</p></li>
+<li><p>Extend admin classes for custom actions or permissions as needed</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">fieldsets</span></code> and <code class="docutils literal notranslate"><span class="pre">add_fieldsets</span></code> to organize complex forms</p></li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>If a model is missing from admin, ensure it is registered with <code class="docutils literal notranslate"><span class="pre">&#64;admin.register</span></code></p></li>
+<li><p>For custom user fields, add them to <code class="docutils literal notranslate"><span class="pre">fieldsets</span></code> and <code class="docutils literal notranslate"><span class="pre">add_fieldsets</span></code></p></li>
+<li><p>If filters/search do not work, check field names and related lookups</p></li>
+<li><p>For read-only fields, ensure they are included in <code class="docutils literal notranslate"><span class="pre">readonly_fields</span></code></p></li>
+</ul>
+</section>
+<section id="summary-table">
+<h2>Summary Table<a class="headerlink" href="#summary-table" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Admin Class</p></th>
+<th class="head"><p>Model/Class</p></th>
+<th class="head"><p>Key Customizations</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CustomUserAdmin</p></td>
+<td><p>CustomUser</p></td>
+<td><p>role in display/filter/forms</p></td>
+</tr>
+<tr class="row-odd"><td><p>PublisherAdmin</p></td>
+<td><p>Publisher</p></td>
+<td><p>name, created_date, search</p></td>
+</tr>
+<tr class="row-even"><td><p>CategoryAdmin</p></td>
+<td><p>Category</p></td>
+<td><p>name, description, search</p></td>
+</tr>
+<tr class="row-odd"><td><p>ArticleAdmin</p></td>
+<td><p>Article</p></td>
+<td><p>full display, filters, search, readonly, date hierarchy</p></td>
+</tr>
+<tr class="row-even"><td><p>NewsletterAdmin</p></td>
+<td><p>Newsletter</p></td>
+<td><p>full display, filters, search, readonly, date hierarchy</p></td>
+</tr>
+<tr class="row-odd"><td><p>CommentAdmin</p></td>
+<td><p>Comment</p></td>
+<td><p>display, filter, search, readonly</p></td>
+</tr>
+<tr class="row-even"><td><p>PublisherStaffAdmin</p></td>
+<td><p>PublisherStaff</p></td>
+<td><p>display, filter, search</p></td>
+</tr>
+<tr class="row-odd"><td><p>SubscriptionAdmin</p></td>
+<td><p>Subscription</p></td>
+<td><p>display, filter, search</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="extending-the-admin">
+<h2>Extending the Admin<a class="headerlink" href="#extending-the-admin" title="Link to this heading"></a></h2>
+<p>To add new admin features (custom actions, permissions, inlines), subclass the relevant admin class and override methods or add attributes. For advanced use, refer to Django’s admin documentation.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="views.html" class="btn btn-neutral float-left" title="Views" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="admin.html" class="btn btn-neutral float-right" title="Admin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

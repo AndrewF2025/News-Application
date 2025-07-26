@@ -1,0 +1,927 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REST API Documentation &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Forms Explanation" href="forms_explanation.html" />
+    <link rel="prev" title="URL Routing Explanation" href="urls_explanation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api.html">API Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">REST API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#base-url">Base URL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#jwt-token-authentication-recommended">JWT Token Authentication (Recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#session-authentication">Session Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-registration">User Registration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api-endpoints">API Endpoints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#users">Users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#articles">Articles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#categories">Categories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#publishers">Publishers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comments">Comments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#newsletters">Newsletters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subscriptions">Subscriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-account-management">User Account Management</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#permissions-and-authorization">Permissions and Authorization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#user-roles">User Roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#endpoint-permissions">Endpoint Permissions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pagination">Pagination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rate-limiting">Rate Limiting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cors-support">CORS Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-the-api">Testing the API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">REST API Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rest-api-documentation">
+<h1>REST API Documentation<a class="headerlink" href="#rest-api-documentation" title="Link to this heading"></a></h1>
+<p>This document provides comprehensive information about the Django News Application REST API. The API follows REST principles and returns JSON responses.</p>
+<section id="base-url">
+<h2>Base URL<a class="headerlink" href="#base-url" title="Link to this heading"></a></h2>
+<p>All API endpoints are accessible from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>http://localhost:8000/api/
+</pre></div>
+</div>
+</section>
+<section id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Link to this heading"></a></h2>
+<p>The API supports two authentication methods:</p>
+<section id="jwt-token-authentication-recommended">
+<h3>JWT Token Authentication (Recommended)<a class="headerlink" href="#jwt-token-authentication-recommended" title="Link to this heading"></a></h3>
+<p><strong>Primary method for API access</strong></p>
+<ol class="arabic">
+<li><p><strong>Obtain Token:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/auth/login/
+Content-Type: application/json
+
+{
+&quot;username&quot;: &quot;your_username&quot;,
+&quot;password&quot;: &quot;your_password&quot;
+}
+</pre></div>
+</div>
+<p><strong>Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;access&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...&quot;</span><span class="p">,</span>
+<span class="nt">&quot;refresh&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use Token in Requests:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/articles/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+</pre></div>
+</div>
+</li>
+<li><p><strong>Refresh Token:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/auth/refresh/
+Content-Type: application/json
+
+{
+  &quot;refresh&quot;: &quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...&quot;
+}
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="session-authentication">
+<h3>Session Authentication<a class="headerlink" href="#session-authentication" title="Link to this heading"></a></h3>
+<p><strong>Used by the web interface</strong></p>
+<p>Automatically handled when logged in through the Django admin or web interface.</p>
+</section>
+<section id="user-registration">
+<h3>User Registration<a class="headerlink" href="#user-registration" title="Link to this heading"></a></h3>
+<p><strong>Create a new user account:</strong></p>
+<blockquote>
+<div><blockquote>
+<div><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>POST /api/register/
+Content-Type: application/json</p>
+<dl class="simple">
+<dt>{</dt><dd><p>“username”: “newuser”,
+“email”: “<a class="reference external" href="mailto:user&#37;&#52;&#48;example&#46;com">user<span>&#64;</span>example<span>&#46;</span>com</a>”,
+“password”: “securepassword”,
+“first_name”: “John”,
+“last_name”: “Doe”,
+“role”: “reader”
+}</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</section>
+<section id="api-endpoints">
+<h2>API Endpoints<a class="headerlink" href="#api-endpoints" title="Link to this heading"></a></h2>
+<section id="users">
+<h3>Users<a class="headerlink" href="#users" title="Link to this heading"></a></h3>
+<p><strong>List Users</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/users/
+</pre></div>
+</div>
+<p><strong>Response:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
+   &quot;count&quot;: 25,
+   &quot;next&quot;: &quot;http://localhost:8000/api/users/?page=2&quot;,
+   &quot;previous&quot;: null,
+   &quot;results&quot;: [
+     {
+         &quot;id&quot;: 1,
+         &quot;username&quot;: &quot;editor1&quot;,
+         &quot;email&quot;: &quot;editor@example.com&quot;,
+         &quot;first_name&quot;: &quot;Editor&quot;,
+         &quot;last_name&quot;: &quot;User&quot;,
+         &quot;role&quot;: &quot;editor&quot;
+     }
+   ]
+}
+</pre></div>
+</div>
+<p><strong>Get User Details</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/users/{id}/
+</pre></div>
+</div>
+<p><strong>Create User</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/users/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+  &quot;username&quot;: &quot;newuser&quot;,
+  &quot;email&quot;: &quot;user@example.com&quot;,
+  &quot;first_name&quot;: &quot;John&quot;,
+  &quot;last_name&quot;: &quot;Doe&quot;,
+  &quot;role&quot;: &quot;reader&quot;,
+  &quot;password&quot;: &quot;securepassword&quot;
+}
+</pre></div>
+</div>
+<p><strong>Update User</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PUT /api/users/{id}/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+  &quot;first_name&quot;: &quot;Updated First Name&quot;,
+  &quot;last_name&quot;: &quot;Updated Last Name&quot;,
+  &quot;email&quot;: &quot;updated@example.com&quot;
+}
+</pre></div>
+</div>
+<p><strong>Delete User</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DELETE /api/users/{id}/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Get Current User Profile</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/users/me/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Get Users by Role</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/users/by_role/?role=journalist
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Query Parameters:</strong>
+* <code class="docutils literal notranslate"><span class="pre">role</span></code> - Filter users by role (reader, journalist, editor)</p>
+</section>
+<section id="articles">
+<h3>Articles<a class="headerlink" href="#articles" title="Link to this heading"></a></h3>
+<p><strong>List Articles</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/articles/
+</pre></div>
+</div>
+<p><strong>Query Parameters:</strong>
+* <code class="docutils literal notranslate"><span class="pre">page</span></code> - Page number (default: 1)</p>
+<p><strong>Note:</strong> Currently, the API does not support filtering by category, publisher, or search functionality. Articles are filtered based on user role permissions:</p>
+<ul class="simple">
+<li><p><strong>Readers</strong>: Only see published and approved articles</p></li>
+<li><p><strong>Journalists</strong>: See their own articles + published approved articles</p></li>
+<li><p><strong>Editors</strong>: See all articles</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/articles/?page=2
+</pre></div>
+</div>
+<p><strong>Response:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
+ &quot;count&quot;: 50,
+ &quot;next&quot;: &quot;http://localhost:8000/api/articles/?page=3&quot;,
+ &quot;previous&quot;: &quot;http://localhost:8000/api/articles/?page=1&quot;,
+ &quot;results&quot;: [
+     {
+     &quot;id&quot;: 1,
+     &quot;title&quot;: &quot;Breaking News Article&quot;,
+     &quot;content&quot;: &quot;Article content here...&quot;,
+     &quot;author&quot;: {
+         &quot;id&quot;: 2,
+         &quot;username&quot;: &quot;journalist1&quot;,
+         &quot;first_name&quot;: &quot;Jane&quot;,
+         &quot;last_name&quot;: &quot;Reporter&quot;
+     },
+     &quot;category&quot;: {
+       &quot;id&quot;: 1,
+       &quot;name&quot;: &quot;Politics&quot;,
+       &quot;description&quot;: &quot;Political news and analysis&quot;
+     },
+     &quot;publisher&quot;: {
+       &quot;id&quot;: 1,
+       &quot;name&quot;: &quot;Daily News&quot;,
+       &quot;description&quot;: &quot;Local news publisher&quot;
+     },
+     &quot;image&quot;: &quot;/media/article_images/news_image.jpg&quot;,
+     &quot;created_date&quot;: &quot;2025-01-15T09:00:00Z&quot;,
+     &quot;published_date&quot;: &quot;2025-01-15T10:30:00Z&quot;,
+     &quot;updated_date&quot;: &quot;2025-01-15T10:35:00Z&quot;,
+     &quot;is_approved&quot;: true,
+     &quot;is_published&quot;: true,
+     &quot;is_independent&quot;: false
+    }
+    ]
+ }
+</pre></div>
+</div>
+<p><strong>Get Article Details</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/articles/{id}/
+</pre></div>
+</div>
+<p><strong>Create Article</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/articles/
+Content-Type: multipart/form-data
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;title&quot;: &quot;New Article Title&quot;,
+ &quot;content&quot;: &quot;Article content here...&quot;,
+ &quot;category&quot;: 1,
+ &quot;publisher&quot;: 1,
+ &quot;image&quot;: (binary file data),
+ &quot;is_independent&quot;: false
+}
+</pre></div>
+</div>
+<p><strong>Update Article</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PUT /api/articles/{id}/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;title&quot;: &quot;Updated Article Title&quot;,
+ &quot;content&quot;: &quot;Updated content...&quot;,
+ &quot;is_published&quot;: true
+}
+</pre></div>
+</div>
+<p><strong>Delete Article</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DELETE /api/articles/{id}/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Approve Article (Editor Only)</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/articles/{id}/approve/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Article approved successfully&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Publish Article</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/articles/{id}/publish/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Response:</strong> Returns the updated article data with <cite>is_published: true</cite> and <cite>published_date</cite> set.</p>
+<p><strong>Get My Articles</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/articles/my_articles/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Get Pending Approval (Editor Only)</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/articles/pending_approval/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+</section>
+<section id="categories">
+<h3>Categories<a class="headerlink" href="#categories" title="Link to this heading"></a></h3>
+<p><strong>List Categories</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/categories/
+</pre></div>
+</div>
+<p><strong>Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Politics&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Political news and analysis&quot;</span>
+<span class="w"> </span><span class="p">},</span>
+<span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">     </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Technology&quot;</span><span class="p">,</span>
+<span class="w">     </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tech news and innovations&quot;</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Get Category Details</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/categories/{id}/
+</pre></div>
+</div>
+<p><strong>Create Category</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/categories/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;name&quot;: &quot;Sports&quot;,
+ &quot;description&quot;: &quot;Sports news and updates&quot;
+}
+</pre></div>
+</div>
+<p><strong>Update Category</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PUT /api/categories/{id}/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;name&quot;: &quot;Updated Category Name&quot;,
+ &quot;description&quot;: &quot;Updated description&quot;
+}
+</pre></div>
+</div>
+<p><strong>Delete Category</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DELETE /api/categories/{id}/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+</section>
+<section id="publishers">
+<h3>Publishers<a class="headerlink" href="#publishers" title="Link to this heading"></a></h3>
+<p><strong>List Publishers</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/publishers/
+</pre></div>
+</div>
+<p><strong>Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Daily News&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Local news publisher&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;created_date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-01T00:00:00Z&quot;</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Get Publisher Details</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/publishers/{id}/
+</pre></div>
+</div>
+<p><strong>Create Publisher</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/publishers/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;name&quot;: &quot;New Publisher&quot;,
+ &quot;description&quot;: &quot;Description of the new publisher&quot;
+}
+</pre></div>
+</div>
+<p><strong>Update Publisher</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PUT /api/publishers/{id}/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;name&quot;: &quot;Updated Publisher Name&quot;,
+ &quot;description&quot;: &quot;Updated description&quot;
+}
+</pre></div>
+</div>
+<p><strong>Delete Publisher</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DELETE /api/publishers/{id}/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Add Editor to Publisher</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/publishers/{id}/add_editor/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;user_id&quot;: 5
+}
+</pre></div>
+</div>
+<p><strong>Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Editor added successfully&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Add Journalist to Publisher</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/publishers/{id}/add_journalist/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;user_id&quot;: 3
+}
+</pre></div>
+</div>
+<p><strong>Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Journalist added successfully&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="comments">
+<h3>Comments<a class="headerlink" href="#comments" title="Link to this heading"></a></h3>
+<p><strong>List Comments</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/comments/
+</pre></div>
+</div>
+<p><strong>Query Parameters:</strong>
+* <code class="docutils literal notranslate"><span class="pre">article</span></code> - Filter comments by article ID
+* <code class="docutils literal notranslate"><span class="pre">page</span></code> - Page number (default: 1)</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/comments/?article=5
+</pre></div>
+</div>
+<p><strong>Get Comment Details</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/comments/{id}/
+</pre></div>
+</div>
+<p><strong>Create Comment (via ViewSet)</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/comments/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;article&quot;: 1,
+ &quot;content&quot;: &quot;This is a great article!&quot;
+}
+</pre></div>
+</div>
+<p><strong>Create Comment on Article (Custom Endpoint)</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/articles/{article_id}/comments/create/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;content&quot;: &quot;This is a great article!&quot;
+}
+</pre></div>
+</div>
+<p><strong>Update Comment</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PUT /api/comments/{id}/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;content&quot;: &quot;Updated comment content&quot;
+}
+</pre></div>
+</div>
+<p><strong>Delete Comment</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DELETE /api/comments/{id}/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Note:</strong> Users can only edit/delete their own comments. Editors can delete any comment.</p>
+</section>
+<section id="newsletters">
+<h3>Newsletters<a class="headerlink" href="#newsletters" title="Link to this heading"></a></h3>
+<p><strong>List Newsletters</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/newsletters/
+</pre></div>
+</div>
+<p><strong>Create Newsletter</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/newsletters/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;title&quot;: &quot;Weekly Newsletter&quot;,
+ &quot;content&quot;: &quot;Newsletter content...&quot;,
+ &quot;publisher_id&quot;: 1
+}
+</pre></div>
+</div>
+<p><strong>Get Newsletter Details</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/newsletters/{id}/
+</pre></div>
+</div>
+<p><strong>Update Newsletter</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PUT /api/newsletters/{id}/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;title&quot;: &quot;Updated Newsletter Title&quot;,
+ &quot;content&quot;: &quot;Updated content...&quot;,
+ &quot;is_published&quot;: true
+}
+</pre></div>
+</div>
+<p><strong>Delete Newsletter</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DELETE /api/newsletters/{id}/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Approve Newsletter (Editor Only)</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/newsletters/{id}/approve/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Response:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w"> </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Newsletter approved successfully&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Publish Newsletter</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/newsletters/{id}/publish/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Response:</strong> Returns the updated newsletter data with <cite>is_published: true</cite> and <cite>published_date</cite> set.</p>
+<p><strong>Get My Newsletters</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/newsletters/my_newsletters/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+</section>
+<section id="subscriptions">
+<h3>Subscriptions<a class="headerlink" href="#subscriptions" title="Link to this heading"></a></h3>
+<p><strong>List User Subscriptions</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/subscriptions/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Create Subscription</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/subscriptions/create/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;publisher&quot;: 1
+}
+</pre></div>
+</div>
+<p>Or subscribe to a journalist:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/subscriptions/create/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;journalist&quot;: 2
+}
+</pre></div>
+</div>
+<p><strong>Remove Subscription</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/subscriptions/remove/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;publisher&quot;: 1
+}
+</pre></div>
+</div>
+<p>Or remove journalist subscription:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/subscriptions/remove/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+ &quot;journalist&quot;: 2
+}
+</pre></div>
+</div>
+<p><strong>Get Subscribed Content</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/subscriptions/content/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+<p><strong>Get Subscribable Users</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GET /api/subscriptions/subscribable/
+Authorization: Bearer your-jwt-token
+</pre></div>
+</div>
+</section>
+<section id="user-account-management">
+<h3>User Account Management<a class="headerlink" href="#user-account-management" title="Link to this heading"></a></h3>
+<p><strong>Change Password</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/password/change/
+Content-Type: application/json
+Authorization: Bearer your-jwt-token
+
+{
+  &quot;old_password&quot;: &quot;current_password&quot;,
+  &quot;new_password&quot;: &quot;new_secure_password&quot;
+}
+</pre></div>
+</div>
+<p><strong>Reset Password</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POST /api/password/reset/
+Content-Type: application/json
+
+{
+  &quot;email&quot;: &quot;user@example.com&quot;
+}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="permissions-and-authorization">
+<h2>Permissions and Authorization<a class="headerlink" href="#permissions-and-authorization" title="Link to this heading"></a></h2>
+<section id="user-roles">
+<h3>User Roles<a class="headerlink" href="#user-roles" title="Link to this heading"></a></h3>
+<p>The application supports three user roles with varying permissions:</p>
+<ul class="simple">
+<li><p><strong>Editor</strong>: Can manage all content, approve articles/newsletters, and moderate content</p></li>
+<li><p><strong>Journalist</strong>: Can create articles and newsletters, manage their own content</p></li>
+<li><p><strong>Reader</strong>: Can read content, comment on articles, and manage subscriptions</p></li>
+</ul>
+</section>
+<section id="endpoint-permissions">
+<h3>Endpoint Permissions<a class="headerlink" href="#endpoint-permissions" title="Link to this heading"></a></h3>
+<p><strong>Public Access (No Authentication Required):</strong>
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/register/</span></code> - User registration
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/auth/login/</span></code> - Obtain JWT token
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/auth/refresh/</span></code> - Refresh JWT token
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/password/reset/</span></code> - Request password reset</p>
+<p><strong>Note:</strong> All other endpoints require authentication. Articles, categories, publishers, etc. require a valid JWT token or active session.</p>
+<p><strong>Authenticated Users (All Roles):</strong>
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/users/</span></code> - List users (limited fields)
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/users/me/</span></code> - Get current user profile
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/users/by_role/</span></code> - Get users by role
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/articles/</span></code> - Read articles (filtered by role)
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/categories/</span></code> - Read categories
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/publishers/</span></code> - Read publishers
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/newsletters/</span></code> - Read newsletters (filtered by role)
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/comments/</span></code> - Read comments
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/articles/{id}/comments/create/</span></code> - Create comments
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/comments/</span></code> - Create comments (via ViewSet)
+* <code class="docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/api/comments/{id}/</span></code> - Update own comments
+* <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/comments/{id}/</span></code> - Delete own comments
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/subscriptions/</span></code> - View own subscriptions
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/subscriptions/create/</span></code> - Create subscriptions
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/subscriptions/remove/</span></code> - Remove subscriptions
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/subscriptions/content/</span></code> - Get subscribed content
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/subscriptions/subscribable/</span></code> - Get subscribable users
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/password/change/</span></code> - Change password</p>
+<p><strong>Journalists:</strong>
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/articles/</span></code> - Create articles
+* <code class="docutils literal notranslate"><span class="pre">PUT/PATCH</span> <span class="pre">/api/articles/{id}/</span></code> - Update own articles
+* <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/articles/{id}/</span></code> - Delete own articles
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/articles/{id}/publish/</span></code> - Publish own articles
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/articles/my_articles/</span></code> - Get own articles
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/newsletters/</span></code> - Create newsletters
+* <code class="docutils literal notranslate"><span class="pre">PUT/PATCH</span> <span class="pre">/api/newsletters/{id}/</span></code> - Update own newsletters
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/newsletters/{id}/publish/</span></code> - Publish own newsletters
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/newsletters/my_newsletters/</span></code> - Get own newsletters</p>
+<p><strong>Editors:</strong>
+* All Journalist permissions plus:
+* <code class="docutils literal notranslate"><span class="pre">PUT/PATCH</span> <span class="pre">/api/articles/{id}/</span></code> - Update any article
+* <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/articles/{id}/</span></code> - Delete any article
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/articles/{id}/approve/</span></code> - Approve articles
+* <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/articles/pending_approval/</span></code> - View pending articles
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/newsletters/{id}/approve/</span></code> - Approve newsletters
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/categories/</span></code> - Create categories
+* <code class="docutils literal notranslate"><span class="pre">PUT/PATCH</span> <span class="pre">/api/categories/{id}/</span></code> - Update categories
+* <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/categories/{id}/</span></code> - Delete categories
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/publishers/</span></code> - Create publishers
+* <code class="docutils literal notranslate"><span class="pre">PUT/PATCH</span> <span class="pre">/api/publishers/{id}/</span></code> - Update publishers
+* <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/publishers/{id}/</span></code> - Delete publishers
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/publishers/{id}/add_editor/</span></code> - Add editors to publishers
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/publishers/{id}/add_journalist/</span></code> - Add journalists to publishers
+* <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/api/users/</span></code> - Create users
+* <code class="docutils literal notranslate"><span class="pre">PUT/PATCH</span> <span class="pre">/api/users/{id}/</span></code> - Update users
+* <code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">/api/users/{id}/</span></code> - Delete users
+* Content approval and moderation functions</p>
+</section>
+</section>
+<section id="pagination">
+<h2>Pagination<a class="headerlink" href="#pagination" title="Link to this heading"></a></h2>
+<p>All list endpoints support pagination with the following parameters:</p>
+<ul class="simple">
+<li><p><strong>page</strong>: Page number (default: 1)</p></li>
+<li><p><strong>page_size</strong>: Items per page (default: 20)</p></li>
+</ul>
+<p><strong>Example Response:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{
+  &quot;count&quot;: 150,
+  &quot;next&quot;: &quot;http://localhost:8000/api/articles/?page=3&quot;,
+  &quot;previous&quot;: &quot;http://localhost:8000/api/articles/?page=1&quot;,
+  &quot;results&quot;: [...]
+}
+</pre></div>
+</div>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<p>The API returns standard HTTP status codes and JSON error responses:</p>
+<p><strong>Authentication Errors (401):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Authentication credentials were not provided.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Permission Errors (403):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;You do not have permission to perform this action.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Validation Errors (400):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;This field is required.&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Enter a valid email address.&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Not Found Errors (404):</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Not found.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="rate-limiting">
+<h2>Rate Limiting<a class="headerlink" href="#rate-limiting" title="Link to this heading"></a></h2>
+<p>The API currently does not implement rate limiting, but it’s recommended for production use to prevent abuse.</p>
+</section>
+<section id="cors-support">
+<h2>CORS Support<a class="headerlink" href="#cors-support" title="Link to this heading"></a></h2>
+<p>The API includes CORS (Cross-Origin Resource Sharing) support via <code class="docutils literal notranslate"><span class="pre">django-cors-headers</span></code>, allowing web applications from different domains to access the API.</p>
+</section>
+<section id="testing-the-api">
+<h2>Testing the API<a class="headerlink" href="#testing-the-api" title="Link to this heading"></a></h2>
+<p><strong>Using curl:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get JWT token</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/api/auth/login/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;username&quot;: &quot;admin&quot;, &quot;password&quot;: &quot;password&quot;}&#39;</span>
+
+<span class="c1"># Use token to access protected endpoint</span>
+curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://localhost:8000/api/articles/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer YOUR_ACCESS_TOKEN&quot;</span>
+</pre></div>
+</div>
+<p><strong>Using Python requests:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="c1"># Login and get token</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/api/auth/login/&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;password&#39;</span>
+<span class="p">})</span>
+<span class="n">token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;access&#39;</span><span class="p">]</span>
+
+<span class="c1"># Use token for API calls</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Bearer </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+<span class="n">articles</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://localhost:8000/api/articles/&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Browsable API:</strong></p>
+<p>Visit <a class="reference external" href="http://localhost:8000/api/">http://localhost:8000/api/</a> in your browser to use Django REST Framework’s browsable API interface for testing endpoints interactively.</p>
+<p>You can also access the DRF authentication interface at <a class="reference external" href="http://localhost:8000/api-auth/">http://localhost:8000/api-auth/</a> for session-based authentication during development.</p>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Review the <a class="reference internal" href="models.html"><span class="doc">Database Models</span></a> documentation to understand the data structure</p></li>
+<li><p>Check <a class="reference internal" href="configuration.html"><span class="doc">Configuration Guide</span></a> for API-specific settings</p></li>
+<li><p>See <a class="reference internal" href="installation.html"><span class="doc">Installation &amp; Setup</span></a> for setting up the development environment</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="urls_explanation.html" class="btn btn-neutral float-left" title="URL Routing Explanation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="forms_explanation.html" class="btn btn-neutral float-right" title="Forms Explanation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

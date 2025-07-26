@@ -1,0 +1,1021 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration Guide &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Database Models Explanation" href="models_explanation.html" />
+    <link rel="prev" title="Troubleshooting Guide" href="troubleshooting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-overview">Configuration Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#django-settings-structure">Django Settings Structure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#settings-file-location">Settings File Location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core-settings">Core Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#database-configuration">Database Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mysql-database-settings">MySQL Database Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installed-applications">Installed Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-django-apps">Required Django Apps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#third-party-package-requirements">Third-Party Package Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-security">Authentication &amp; Security</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#jwt-token-configuration">JWT Token Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-user-model">Custom User Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#password-validation">Password Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#django-rest-framework-configuration">Django REST Framework Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#drf-settings">DRF Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-permissions">API Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cors-configuration">CORS Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#media-static-files">Media &amp; Static Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#static-files-configuration">Static Files Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#media-files-configuration">Media Files Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#middleware-configuration">Middleware Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-middleware">Required Middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#internationalization-localization">Internationalization &amp; Localization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#language-timezone">Language &amp; Timezone</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#email-configuration">Email Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#smtp-settings">SMTP Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#third-party-integrations">Third-Party Integrations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#twitter-api-configuration">Twitter API Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#logging-configuration">Logging Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#application-logging">Application Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-specific-configuration">Environment-Specific Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#development-settings">Development Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#production-settings">Production Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-configuration">Testing Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#url-configuration">URL Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main-url-configuration">Main URL Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-url-configuration">Application URL Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-validation">Configuration Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#settings-validation">Settings Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-connection-testing">Database Connection Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-best-practices">Configuration Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#security-best-practices">Security Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-optimization">Performance Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#monitoring-maintenance">Monitoring &amp; Maintenance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tests_api.html">API Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Configuration Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/configuration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration-guide">
+<h1>Configuration Guide<a class="headerlink" href="#configuration-guide" title="Link to this heading"></a></h1>
+<p>This document provides comprehensive information about configuring the Django News Application. Proper configuration is essential for development, testing, and production environments.</p>
+<section id="configuration-overview">
+<h2>Configuration Overview<a class="headerlink" href="#configuration-overview" title="Link to this heading"></a></h2>
+<p>The News Application uses Django’s settings system with environment-specific configurations. The main configuration areas include:</p>
+<ul class="simple">
+<li><p><strong>Database Configuration</strong>: MySQL database settings and connection parameters</p></li>
+<li><p><strong>Authentication &amp; Security</strong>: JWT tokens, secret keys, and security settings</p></li>
+<li><p><strong>Media &amp; Static Files</strong>: File upload and static asset configuration</p></li>
+<li><p><strong>API Configuration</strong>: Django REST Framework and CORS settings</p></li>
+<li><p><strong>Email Configuration</strong>: SMTP settings for notifications (if implemented)</p></li>
+<li><p><strong>Environment Variables</strong>: Secure configuration through environment files</p></li>
+<li><p><strong>Third-Party Integrations</strong>: Twitter API configuration for social features</p></li>
+</ul>
+</section>
+<section id="django-settings-structure">
+<h2>Django Settings Structure<a class="headerlink" href="#django-settings-structure" title="Link to this heading"></a></h2>
+<section id="settings-file-location">
+<h3>Settings File Location<a class="headerlink" href="#settings-file-location" title="Link to this heading"></a></h3>
+<p>The main settings file is located at:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>News/settings.py
+</pre></div>
+</div>
+<p>This file contains all Django configuration including:</p>
+<ul class="simple">
+<li><p>Database connections</p></li>
+<li><p>Installed applications</p></li>
+<li><p>Middleware configuration</p></li>
+<li><p>Authentication backends</p></li>
+<li><p>API framework settings</p></li>
+</ul>
+<p><strong>Required Imports</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="c1"># Load environment variables from .env file</span>
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+<span class="c1"># Build paths inside the project like this: BASE_DIR / &#39;subdir&#39;.</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+</pre></div>
+</div>
+</section>
+<section id="core-settings">
+<h3>Core Settings<a class="headerlink" href="#core-settings" title="Link to this heading"></a></h3>
+<p><strong>Secret Key</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span>
+    <span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django-insecure-%^%^=&amp;!2rse8=b2@mquuwi^v9wf^j)vnl&amp;t*(_i&amp;hcd_vlii^t&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Debug Mode</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DEBUG</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span>
+</pre></div>
+</div>
+<p><strong>Allowed Hosts</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALLOWED_HOSTS&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ALLOWED_HOSTS&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Additional Core Settings</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># URL configuration</span>
+<span class="n">ROOT_URLCONF</span> <span class="o">=</span> <span class="s1">&#39;News.urls&#39;</span>
+
+<span class="c1"># WSGI application</span>
+<span class="n">WSGI_APPLICATION</span> <span class="o">=</span> <span class="s1">&#39;News.wsgi.application&#39;</span>
+
+<span class="c1"># Default auto field type</span>
+<span class="n">DEFAULT_AUTO_FIELD</span> <span class="o">=</span> <span class="s1">&#39;django.db.models.BigAutoField&#39;</span>
+</pre></div>
+</div>
+<p><strong>Templates Configuration</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;django.template.backends.django.DjangoTemplates&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DIRS&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;templates&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;APP_DIRS&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;context_processors&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s1">&#39;django.template.context_processors.debug&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.template.context_processors.request&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.contrib.auth.context_processors.auth&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.contrib.messages.context_processors.messages&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;django.template.context_processors.media&#39;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="database-configuration">
+<h2>Database Configuration<a class="headerlink" href="#database-configuration" title="Link to this heading"></a></h2>
+<section id="mysql-database-settings">
+<h3>MySQL Database Settings<a class="headerlink" href="#mysql-database-settings" title="Link to this heading"></a></h3>
+<p>The application uses MySQL as the primary database. Configuration is handled through Django’s database settings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_NAME&#39;</span><span class="p">,</span> <span class="s1">&#39;news_application_db&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;USER&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_USER&#39;</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_PASSWORD&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;HOST&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_HOST&#39;</span><span class="p">,</span> <span class="s1">&#39;localhost&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;PORT&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DB_PORT&#39;</span><span class="p">,</span> <span class="s1">&#39;3306&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;init_command&#39;</span><span class="p">:</span> <span class="s2">&quot;SET sql_mode=&#39;STRICT_TRANS_TABLES&#39;&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Database Requirements</strong>:</p>
+<ul class="simple">
+<li><p>MySQL 5.7+ or MySQL 8.0+</p></li>
+<li><p>Database charset: utf8mb4</p></li>
+<li><p>Collation: utf8mb4_unicode_ci</p></li>
+</ul>
+<p><strong>Database Creation</strong>:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">news_application_db</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;your_mysql_password&#39;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">news_application_db</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;root&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+<span class="n">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="environment-variables">
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading"></a></h3>
+<p>For security and flexibility, use environment variables for sensitive database information:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_NAME&#39;</span><span class="p">,</span> <span class="s1">&#39;news_application_db&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;USER&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_USER&#39;</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_PASSWORD&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;HOST&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_HOST&#39;</span><span class="p">,</span> <span class="s1">&#39;localhost&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;PORT&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_PORT&#39;</span><span class="p">,</span> <span class="s1">&#39;3306&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;init_command&#39;</span><span class="p">:</span> <span class="s2">&quot;SET sql_mode=&#39;STRICT_TRANS_TABLES&#39;&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>.env File Example</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DB_NAME=news_application_db
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_HOST=localhost
+DB_PORT=3306
+SECRET_KEY=your-very-long-secret-key-here
+DEBUG=True
+LANGUAGE_CODE=en-us
+TIME_ZONE=UTC
+
+# Email settings
+EMAIL_HOST=sandbox.smtp.mailtrap.io
+EMAIL_PORT=2525
+EMAIL_HOST_USER=your_mailtrap_user
+EMAIL_HOST_PASSWORD=your_mailtrap_password
+EMAIL_USE_TLS=True
+DEFAULT_FROM_EMAIL=your-app@example.com
+
+# Twitter API (optional)
+TWITTER_API_KEY=your_twitter_api_key
+TWITTER_API_SECRET=your_twitter_api_secret
+TWITTER_ACCESS_TOKEN=your_access_token
+TWITTER_ACCESS_TOKEN_SECRET=your_access_token_secret
+TWITTER_BEARER_TOKEN=your_bearer_token
+TWITTER_ENABLED=True
+</pre></div>
+</div>
+</section>
+</section>
+<section id="installed-applications">
+<h2>Installed Applications<a class="headerlink" href="#installed-applications" title="Link to this heading"></a></h2>
+<section id="required-django-apps">
+<h3>Required Django Apps<a class="headerlink" href="#required-django-apps" title="Link to this heading"></a></h3>
+<p>The application requires the following Django apps to be installed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+
+    <span class="c1"># Third-party apps</span>
+    <span class="s1">&#39;rest_framework&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;rest_framework_simplejwt&#39;</span><span class="p">,</span>
+
+    <span class="c1"># Local apps</span>
+    <span class="s1">&#39;News_app&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>App Descriptions</strong>:</p>
+<ul class="simple">
+<li><p><strong>django.contrib.admin</strong>: Django admin interface for content management</p></li>
+<li><p><strong>django.contrib.auth</strong>: User authentication system (extended by CustomUser)</p></li>
+<li><p><strong>rest_framework</strong>: Django REST Framework for API functionality</p></li>
+<li><p><strong>rest_framework_simplejwt</strong>: JWT authentication for API endpoints</p></li>
+<li><p><strong>News_app</strong>: Main application containing all news-related functionality</p></li>
+</ul>
+</section>
+<section id="third-party-package-requirements">
+<h3>Third-Party Package Requirements<a class="headerlink" href="#third-party-package-requirements" title="Link to this heading"></a></h3>
+<p>Install required packages via pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>django&gt;<span class="o">=</span><span class="m">5</span>.2.4
+pip<span class="w"> </span>install<span class="w"> </span>djangorestframework&gt;<span class="o">=</span><span class="m">3</span>.16.0
+pip<span class="w"> </span>install<span class="w"> </span>djangorestframework-simplejwt&gt;<span class="o">=</span><span class="m">5</span>.5.1
+pip<span class="w"> </span>install<span class="w"> </span>mysqlclient&gt;<span class="o">=</span><span class="m">2</span>.2.7
+pip<span class="w"> </span>install<span class="w"> </span>Pillow&gt;<span class="o">=</span><span class="m">11</span>.3.0
+pip<span class="w"> </span>install<span class="w"> </span>python-dotenv&gt;<span class="o">=</span><span class="m">1</span>.1.1
+pip<span class="w"> </span>install<span class="w"> </span>tweepy&gt;<span class="o">=</span><span class="m">4</span>.16.0
+pip<span class="w"> </span>install<span class="w"> </span>requests&gt;<span class="o">=</span><span class="m">2</span>.32.4
+pip<span class="w"> </span>install<span class="w"> </span>oauthlib&gt;<span class="o">=</span><span class="m">3</span>.3.1
+pip<span class="w"> </span>install<span class="w"> </span>requests-oauthlib&gt;<span class="o">=</span><span class="m">2</span>.0.0
+</pre></div>
+</div>
+</section>
+</section>
+<section id="authentication-security">
+<h2>Authentication &amp; Security<a class="headerlink" href="#authentication-security" title="Link to this heading"></a></h2>
+<section id="jwt-token-configuration">
+<h3>JWT Token Configuration<a class="headerlink" href="#jwt-token-configuration" title="Link to this heading"></a></h3>
+<p>JSON Web Token settings for API authentication:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="n">SIMPLE_JWT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;ACCESS_TOKEN_LIFETIME&#39;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">60</span><span class="p">),</span>
+    <span class="s1">&#39;REFRESH_TOKEN_LIFETIME&#39;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">),</span>
+    <span class="s1">&#39;ROTATE_REFRESH_TOKENS&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;BLACKLIST_AFTER_ROTATION&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Token Lifetime Settings</strong>:</p>
+<ul class="simple">
+<li><p><strong>Access Token</strong>: 60 minutes (for API requests)</p></li>
+<li><p><strong>Refresh Token</strong>: 7 days (for token renewal)</p></li>
+<li><p><strong>Token Rotation</strong>: Enabled for security</p></li>
+<li><p><strong>Blacklisting</strong>: Old tokens are blacklisted after rotation</p></li>
+</ul>
+<p><strong>Login Redirect</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LOGIN_REDIRECT_URL</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-user-model">
+<h3>Custom User Model<a class="headerlink" href="#custom-user-model" title="Link to this heading"></a></h3>
+<p>Configure Django to use the custom user model:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">AUTH_USER_MODEL</span> <span class="o">=</span> <span class="s1">&#39;News_app.CustomUser&#39;</span>
+</pre></div>
+</div>
+<p><strong>Authentication Backends</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">AUTHENTICATION_BACKENDS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;django.contrib.auth.backends.ModelBackend&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="password-validation">
+<h3>Password Validation<a class="headerlink" href="#password-validation" title="Link to this heading"></a></h3>
+<p>Password strength requirements:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">AUTH_PASSWORD_VALIDATORS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s1">&#39;django.contrib.auth.password_validation.&#39;</span>
+            <span class="s1">&#39;UserAttributeSimilarityValidator&#39;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s1">&#39;django.contrib.auth.password_validation.MinimumLengthValidator&#39;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s1">&#39;django.contrib.auth.password_validation.CommonPasswordValidator&#39;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s1">&#39;django.contrib.auth.password_validation.NumericPasswordValidator&#39;</span>
+        <span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="django-rest-framework-configuration">
+<h2>Django REST Framework Configuration<a class="headerlink" href="#django-rest-framework-configuration" title="Link to this heading"></a></h2>
+<section id="drf-settings">
+<h3>DRF Settings<a class="headerlink" href="#drf-settings" title="Link to this heading"></a></h3>
+<p>Core Django REST Framework configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;DEFAULT_AUTHENTICATION_CLASSES&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;rest_framework.authentication.SessionAuthentication&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;rest_framework_simplejwt.authentication.JWTAuthentication&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;DEFAULT_PERMISSION_CLASSES&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;rest_framework.permissions.IsAuthenticated&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;DEFAULT_PAGINATION_CLASS&#39;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s1">&#39;rest_framework.pagination.PageNumberPagination&#39;</span>
+    <span class="p">),</span>
+    <span class="s1">&#39;PAGE_SIZE&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="s1">&#39;DEFAULT_RENDERER_CLASSES&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;rest_framework.renderers.BrowsableAPIRenderer&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;rest_framework.renderers.JSONRenderer&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Configuration Breakdown</strong>:</p>
+<ul class="simple">
+<li><p><strong>Authentication</strong>: Session authentication primary, JWT tokens for API</p></li>
+<li><p><strong>Permissions</strong>: Authenticated users required by default</p></li>
+<li><p><strong>Renderers</strong>: Browsable API for development, JSON for production</p></li>
+<li><p><strong>Pagination</strong>: 20 items per page</p></li>
+</ul>
+</section>
+<section id="api-permissions">
+<h3>API Permissions<a class="headerlink" href="#api-permissions" title="Link to this heading"></a></h3>
+<p>Custom permission classes are implemented in the application:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In views.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.permissions</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsAuthenticated</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">login_required</span>
+</pre></div>
+</div>
+<p><strong>Role-Based Permissions</strong>:</p>
+<ul class="simple">
+<li><p><strong>Readers</strong>: Can view published content, comment, subscribe</p></li>
+<li><p><strong>Journalists</strong>: Can create and manage own content</p></li>
+<li><p><strong>Editors</strong>: Can approve/reject all content, manage all articles</p></li>
+</ul>
+</section>
+<section id="cors-configuration">
+<h3>CORS Configuration<a class="headerlink" href="#cors-configuration" title="Link to this heading"></a></h3>
+<p>The application currently does not include CORS headers middleware. If you need to integrate with a frontend application running on a different domain/port, you can add CORS support:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>django-cors-headers
+</pre></div>
+</div>
+<p>Add to INSTALLED_APPS:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># ... other apps</span>
+    <span class="s1">&#39;corsheaders&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Add to MIDDLEWARE:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MIDDLEWARE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;corsheaders.middleware.CorsMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.security.SecurityMiddleware&#39;</span><span class="p">,</span>
+    <span class="c1"># ... other middleware</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>CORS settings for development:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CORS_ALLOWED_ORIGINS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;http://localhost:3000&quot;</span><span class="p">,</span>  <span class="c1"># React development server</span>
+    <span class="s2">&quot;http://127.0.0.1:3000&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># For development only</span>
+<span class="n">CORS_ALLOW_ALL_ORIGINS</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Set to True only in development</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="media-static-files">
+<h2>Media &amp; Static Files<a class="headerlink" href="#media-static-files" title="Link to this heading"></a></h2>
+<section id="static-files-configuration">
+<h3>Static Files Configuration<a class="headerlink" href="#static-files-configuration" title="Link to this heading"></a></h3>
+<p>Configuration for CSS, JavaScript, and other static assets:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">STATIC_URL</span> <span class="o">=</span> <span class="s1">&#39;static/&#39;</span>
+<span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;staticfiles&#39;</span>
+</pre></div>
+</div>
+<p><strong>Static Files Structure</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>News_app/static/news_app/
+├── styles.css
+└── (other static files)
+</pre></div>
+</div>
+</section>
+<section id="media-files-configuration">
+<h3>Media Files Configuration<a class="headerlink" href="#media-files-configuration" title="Link to this heading"></a></h3>
+<p>Configuration for user-uploaded files (article images):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MEDIA_URL</span> <span class="o">=</span> <span class="s1">&#39;/media/&#39;</span>
+<span class="n">MEDIA_ROOT</span> <span class="o">=</span> <span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s1">&#39;media&#39;</span>
+</pre></div>
+</div>
+<p><strong>Media Files Structure</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>media/
+└── article_images/
+    ├── image1.jpg
+    ├── image2.png
+    └── (uploaded article images)
+</pre></div>
+</div>
+<p><strong>File Upload Settings</strong>:</p>
+<p>The application uses Django’s default file upload settings. You can customize these if needed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Maximum file size (5MB) - optional settings</span>
+<span class="n">FILE_UPLOAD_MAX_MEMORY_SIZE</span> <span class="o">=</span> <span class="mi">5242880</span>
+<span class="n">DATA_UPLOAD_MAX_MEMORY_SIZE</span> <span class="o">=</span> <span class="mi">5242880</span>
+
+<span class="c1"># Allowed image formats - custom validation in models/forms</span>
+<span class="n">ALLOWED_IMAGE_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;.jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;.png&#39;</span><span class="p">,</span> <span class="s1">&#39;.gif&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="middleware-configuration">
+<h2>Middleware Configuration<a class="headerlink" href="#middleware-configuration" title="Link to this heading"></a></h2>
+<section id="required-middleware">
+<h3>Required Middleware<a class="headerlink" href="#required-middleware" title="Link to this heading"></a></h3>
+<p>Essential middleware for the application:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MIDDLEWARE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;django.middleware.security.SecurityMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Middleware Functions</strong>:</p>
+<ul class="simple">
+<li><p><strong>SecurityMiddleware</strong>: Basic security headers</p></li>
+<li><p><strong>SessionMiddleware</strong>: Session handling for web interface</p></li>
+<li><p><strong>CommonMiddleware</strong>: Common HTTP features</p></li>
+<li><p><strong>CsrfViewMiddleware</strong>: CSRF protection</p></li>
+<li><p><strong>AuthenticationMiddleware</strong>: User authentication</p></li>
+<li><p><strong>MessageMiddleware</strong>: Django messages framework</p></li>
+<li><p><strong>XFrameOptionsMiddleware</strong>: Clickjacking protection</p></li>
+</ul>
+</section>
+</section>
+<section id="internationalization-localization">
+<h2>Internationalization &amp; Localization<a class="headerlink" href="#internationalization-localization" title="Link to this heading"></a></h2>
+<section id="language-timezone">
+<h3>Language &amp; Timezone<a class="headerlink" href="#language-timezone" title="Link to this heading"></a></h3>
+<p>Localization settings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;LANGUAGE_CODE&#39;</span><span class="p">,</span> <span class="s1">&#39;en-us&#39;</span><span class="p">)</span>
+<span class="n">TIME_ZONE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TIME_ZONE&#39;</span><span class="p">,</span> <span class="s1">&#39;UTC&#39;</span><span class="p">)</span>
+<span class="n">USE_I18N</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">USE_TZ</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p><strong>Timezone Considerations</strong>:</p>
+<ul class="simple">
+<li><p>All timestamps stored in UTC</p></li>
+<li><p>Convert to local timezone in frontend/templates</p></li>
+<li><p>Article publication times use timezone-aware datetimes</p></li>
+</ul>
+</section>
+</section>
+<section id="email-configuration">
+<h2>Email Configuration<a class="headerlink" href="#email-configuration" title="Link to this heading"></a></h2>
+<section id="smtp-settings">
+<h3>SMTP Settings<a class="headerlink" href="#smtp-settings" title="Link to this heading"></a></h3>
+<p>The application includes email functionality using SMTP configuration. The default setup uses Mailtrap for testing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;django.core.mail.backends.smtp.EmailBackend&#39;</span>
+<span class="n">EMAIL_HOST</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;EMAIL_HOST&#39;</span><span class="p">,</span> <span class="s1">&#39;sandbox.smtp.mailtrap.io&#39;</span><span class="p">)</span>
+<span class="n">EMAIL_PORT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;EMAIL_PORT&#39;</span><span class="p">,</span> <span class="s1">&#39;2525&#39;</span><span class="p">))</span>
+<span class="n">EMAIL_HOST_USER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;EMAIL_HOST_USER&#39;</span><span class="p">,</span> <span class="s1">&#39;your_mailtrap_user&#39;</span><span class="p">)</span>
+<span class="n">EMAIL_HOST_PASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;EMAIL_HOST_PASSWORD&#39;</span><span class="p">,</span> <span class="s1">&#39;your_mailtrap_password&#39;</span><span class="p">)</span>
+<span class="n">EMAIL_USE_TLS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;EMAIL_USE_TLS&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span>
+<span class="n">DEFAULT_FROM_EMAIL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DEFAULT_FROM_EMAIL&#39;</span><span class="p">,</span> <span class="s1">&#39;test@example.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Email Environment Variables</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>EMAIL_HOST=sandbox.smtp.mailtrap.io
+EMAIL_PORT=2525
+EMAIL_HOST_USER=your_mailtrap_user
+EMAIL_HOST_PASSWORD=your_mailtrap_password
+EMAIL_USE_TLS=True
+DEFAULT_FROM_EMAIL=your-app@example.com
+</pre></div>
+</div>
+<p><strong>Production Email Settings</strong>:</p>
+<p>For production, configure with your actual SMTP provider:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gmail example</span>
+<span class="n">EMAIL_HOST</span> <span class="o">=</span> <span class="s1">&#39;smtp.gmail.com&#39;</span>
+<span class="n">EMAIL_PORT</span> <span class="o">=</span> <span class="mi">587</span>
+<span class="n">EMAIL_USE_TLS</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">EMAIL_HOST_USER</span> <span class="o">=</span> <span class="s1">&#39;your-email@gmail.com&#39;</span>
+<span class="n">EMAIL_HOST_PASSWORD</span> <span class="o">=</span> <span class="s1">&#39;your-app-password&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="third-party-integrations">
+<h2>Third-Party Integrations<a class="headerlink" href="#third-party-integrations" title="Link to this heading"></a></h2>
+<section id="twitter-api-configuration">
+<h3>Twitter API Configuration<a class="headerlink" href="#twitter-api-configuration" title="Link to this heading"></a></h3>
+<p>The application includes Twitter integration for social features. Configure Twitter API credentials:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TWITTER_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TWITTER_API_KEY&#39;</span><span class="p">)</span>
+<span class="n">TWITTER_API_SECRET</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TWITTER_API_SECRET&#39;</span><span class="p">)</span>
+<span class="n">TWITTER_ACCESS_TOKEN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TWITTER_ACCESS_TOKEN&#39;</span><span class="p">)</span>
+<span class="n">TWITTER_ACCESS_TOKEN_SECRET</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TWITTER_ACCESS_TOKEN_SECRET&#39;</span><span class="p">)</span>
+<span class="n">TWITTER_BEARER_TOKEN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TWITTER_BEARER_TOKEN&#39;</span><span class="p">)</span>
+<span class="n">TWITTER_ENABLED</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TWITTER_ENABLED&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;True&#39;</span>
+</pre></div>
+</div>
+<p><strong>Twitter Environment Variables</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>TWITTER_API_KEY=your_twitter_api_key
+TWITTER_API_SECRET=your_twitter_api_secret
+TWITTER_ACCESS_TOKEN=your_access_token
+TWITTER_ACCESS_TOKEN_SECRET=your_access_token_secret
+TWITTER_BEARER_TOKEN=your_bearer_token
+TWITTER_ENABLED=True
+</pre></div>
+</div>
+<p><strong>Getting Twitter API Credentials</strong>:</p>
+<ol class="arabic simple">
+<li><p>Create a Twitter Developer account at <a class="reference external" href="https://developer.twitter.com/">https://developer.twitter.com/</a></p></li>
+<li><p>Create a new Twitter App</p></li>
+<li><p>Generate API keys and access tokens</p></li>
+<li><p>Add credentials to your environment variables</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">TWITTER_ENABLED=False</span></code> to disable Twitter features if needed</p></li>
+</ol>
+</section>
+</section>
+<section id="logging-configuration">
+<h2>Logging Configuration<a class="headerlink" href="#logging-configuration" title="Link to this heading"></a></h2>
+<section id="application-logging">
+<h3>Application Logging<a class="headerlink" href="#application-logging" title="Link to this heading"></a></h3>
+<p>The application does not include logging configuration by default. If you want to add logging for debugging and monitoring, you can configure it as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;disable_existing_loggers&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;formatters&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{levelname}</span><span class="s1"> </span><span class="si">{asctime}</span><span class="s1"> </span><span class="si">{module}</span><span class="s1"> </span><span class="si">{process:d}</span><span class="s1"> </span><span class="si">{thread:d}</span><span class="s1"> </span><span class="si">{message}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="s1">&#39;{&#39;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;simple&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{levelname}</span><span class="s1"> </span><span class="si">{message}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="s1">&#39;{&#39;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;logging.FileHandler&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;news_app.log&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;formatter&#39;</span><span class="p">:</span> <span class="s1">&#39;verbose&#39;</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;console&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;logging.StreamHandler&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;formatter&#39;</span><span class="p">:</span> <span class="s1">&#39;simple&#39;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;root&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;console&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;loggers&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;News_app&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;console&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;propagate&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Log Levels</strong>:</p>
+<ul class="simple">
+<li><p><strong>DEBUG</strong>: Detailed debugging information</p></li>
+<li><p><strong>INFO</strong>: General application information</p></li>
+<li><p><strong>WARNING</strong>: Warning messages</p></li>
+<li><p><strong>ERROR</strong>: Error conditions</p></li>
+<li><p><strong>CRITICAL</strong>: Critical errors</p></li>
+</ul>
+</section>
+</section>
+<section id="environment-specific-configuration">
+<h2>Environment-Specific Configuration<a class="headerlink" href="#environment-specific-configuration" title="Link to this heading"></a></h2>
+<section id="development-settings">
+<h3>Development Settings<a class="headerlink" href="#development-settings" title="Link to this heading"></a></h3>
+<p>Settings for local development:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Development-specific settings</span>
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">]</span>
+
+<span class="c1"># Less restrictive CORS for development</span>
+<span class="n">CORS_ALLOW_ALL_ORIGINS</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># Database with local MySQL</span>
+<span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;news_app_dev&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;USER&#39;</span><span class="p">:</span> <span class="s1">&#39;dev_user&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s1">&#39;dev_password&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;HOST&#39;</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PORT&#39;</span><span class="p">:</span> <span class="s1">&#39;3306&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="production-settings">
+<h3>Production Settings<a class="headerlink" href="#production-settings" title="Link to this heading"></a></h3>
+<p>Settings for production deployment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Production-specific settings</span>
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span> <span class="s1">&#39;www.your-domain.com&#39;</span><span class="p">]</span>
+
+<span class="c1"># Secure CORS settings</span>
+<span class="n">CORS_ALLOWED_ORIGINS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;https://your-frontend-domain.com&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Production database</span>
+<span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.mysql&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_NAME&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;USER&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_USER&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_PASSWORD&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;HOST&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_HOST&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;PORT&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DB_PORT&#39;</span><span class="p">,</span> <span class="s1">&#39;3306&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;init_command&#39;</span><span class="p">:</span> <span class="s2">&quot;SET sql_mode=&#39;STRICT_TRANS_TABLES&#39;&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Security settings</span>
+<span class="n">SECURE_BROWSER_XSS_FILTER</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">SECURE_CONTENT_TYPE_NOSNIFF</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">SECURE_HSTS_SECONDS</span> <span class="o">=</span> <span class="mi">31536000</span>
+<span class="n">SECURE_HSTS_INCLUDE_SUBDOMAINS</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">SECURE_HSTS_PRELOAD</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="testing-configuration">
+<h3>Testing Configuration<a class="headerlink" href="#testing-configuration" title="Link to this heading"></a></h3>
+<p>Settings for running tests:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test database (uses SQLite for speed)</span>
+<span class="k">if</span> <span class="s1">&#39;test&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s1">&#39;django.db.backends.sqlite3&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;:memory:&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="url-configuration">
+<h2>URL Configuration<a class="headerlink" href="#url-configuration" title="Link to this heading"></a></h2>
+<section id="main-url-configuration">
+<h3>Main URL Configuration<a class="headerlink" href="#main-url-configuration" title="Link to this heading"></a></h3>
+<p>The main URL configuration in <cite>News/urls.py</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">include</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.conf.urls.static</span><span class="w"> </span><span class="kn">import</span> <span class="n">static</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework_simplejwt.views</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TokenObtainPairView</span><span class="p">,</span>
+    <span class="n">TokenRefreshView</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;admin/&#39;</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">&#39;News_app.urls&#39;</span><span class="p">)),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;api/auth/login/&#39;</span><span class="p">,</span> <span class="n">TokenObtainPairView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;token_obtain_pair&#39;</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;api/auth/refresh/&#39;</span><span class="p">,</span> <span class="n">TokenRefreshView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;token_refresh&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Serve media files during development</span>
+<span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+    <span class="n">urlpatterns</span> <span class="o">+=</span> <span class="n">static</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">MEDIA_URL</span><span class="p">,</span> <span class="n">document_root</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">MEDIA_ROOT</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="application-url-configuration">
+<h3>Application URL Configuration<a class="headerlink" href="#application-url-configuration" title="Link to this heading"></a></h3>
+<p>The News_app URL configuration includes:</p>
+<ul class="simple">
+<li><p>Web interface URLs (Django templates)</p></li>
+<li><p>API endpoints (Django REST Framework)</p></li>
+<li><p>JWT authentication endpoints (login, refresh tokens)</p></li>
+<li><p>Media file serving (development only)</p></li>
+</ul>
+</section>
+</section>
+<section id="configuration-validation">
+<h2>Configuration Validation<a class="headerlink" href="#configuration-validation" title="Link to this heading"></a></h2>
+<section id="settings-validation">
+<h3>Settings Validation<a class="headerlink" href="#settings-validation" title="Link to this heading"></a></h3>
+<p>Validate your configuration with Django’s built-in checks:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>check
+python<span class="w"> </span>manage.py<span class="w"> </span>check<span class="w"> </span>--deploy<span class="w">  </span><span class="c1"># Production readiness check</span>
+</pre></div>
+</div>
+<p><strong>Common Configuration Issues</strong>:</p>
+<ul class="simple">
+<li><p>Missing environment variables</p></li>
+<li><p>Incorrect database credentials</p></li>
+<li><p>CORS configuration problems</p></li>
+<li><p>Missing static file directories</p></li>
+<li><p>Incorrect media file permissions</p></li>
+</ul>
+</section>
+<section id="database-connection-testing">
+<h3>Database Connection Testing<a class="headerlink" href="#database-connection-testing" title="Link to this heading"></a></h3>
+<p>Test database connectivity:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>dbshell<span class="w">  </span><span class="c1"># Connect to database directly</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span>--dry-run<span class="w">  </span><span class="c1"># Test migrations without applying</span>
+</pre></div>
+</div>
+<p><strong>Database Health Checks</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Django shell</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">connection</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT 1&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Database connection successful&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration-best-practices">
+<h2>Configuration Best Practices<a class="headerlink" href="#configuration-best-practices" title="Link to this heading"></a></h2>
+<section id="security-best-practices">
+<h3>Security Best Practices<a class="headerlink" href="#security-best-practices" title="Link to this heading"></a></h3>
+<p><strong>Environment Variables</strong>:
+- Store sensitive data in environment variables
+- Use <cite>.env</cite> files for local development
+- Never commit secrets to version control</p>
+<p><strong>Secret Key Management</strong>:
+- Generate unique secret keys for each environment
+- Use cryptographically secure random generation
+- Rotate keys periodically in production</p>
+<p><strong>Database Security</strong>:
+- Use dedicated database users with minimal privileges
+- Enable SSL/TLS for database connections in production
+- Regular database backups and security updates</p>
+<p><strong>API Security</strong>:
+- Use HTTPS in production
+- Implement rate limiting
+- Validate and sanitize all inputs
+- Regular security audits</p>
+</section>
+<section id="performance-optimization">
+<h3>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading"></a></h3>
+<p><strong>Database Optimization</strong>:
+- Use connection pooling in production
+- Implement proper indexing strategies
+- Monitor query performance
+- Use read replicas for high-traffic applications</p>
+<p><strong>Caching Configuration</strong>:</p>
+<p>The application does not include caching by default. For production environments, you can add Redis caching:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CACHES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;django.core.cache.backends.redis.RedisCache&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LOCATION&#39;</span><span class="p">:</span> <span class="s1">&#39;redis://127.0.0.1:6379/1&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Static File Optimization</strong>:
+- Use CDN for static files in production
+- Enable gzip compression
+- Implement proper caching headers</p>
+</section>
+<section id="monitoring-maintenance">
+<h3>Monitoring &amp; Maintenance<a class="headerlink" href="#monitoring-maintenance" title="Link to this heading"></a></h3>
+<p><strong>Application Monitoring</strong>:
+- Implement application performance monitoring (APM)
+- Set up error tracking and alerting
+- Monitor database performance
+- Track API usage and performance</p>
+<p><strong>Regular Maintenance</strong>:
+- Keep Django and dependencies updated
+- Regular security patches
+- Database maintenance and optimization
+- Log rotation and cleanup</p>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Review the <a class="reference internal" href="installation.html"><span class="doc">Installation &amp; Setup</span></a> guide to set up your development environment</p></li>
+<li><p>Check the <a class="reference internal" href="models.html"><span class="doc">Database Models</span></a> documentation to understand the database schema</p></li>
+<li><p>See the <a class="reference internal" href="api.html"><span class="doc">REST API Documentation</span></a> documentation for API endpoint configuration</p></li>
+</ul>
+<p><strong>Configuration Checklist</strong>:</p>
+<ol class="arabic simple">
+<li><p>✅ Database configuration and connection</p></li>
+<li><p>✅ Environment variables setup</p></li>
+<li><p>✅ JWT authentication configuration</p></li>
+<li><p>✅ Static and media files configuration</p></li>
+<li><p>✅ CORS configuration for frontend</p></li>
+<li><p>✅ Security settings for production</p></li>
+<li><p>✅ Logging and monitoring setup</p></li>
+<li><p>✅ Email configuration for notifications</p></li>
+<li><p>✅ Twitter API integration setup</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="troubleshooting.html" class="btn btn-neutral float-left" title="Troubleshooting Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="models_explanation.html" class="btn btn-neutral float-right" title="Database Models Explanation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

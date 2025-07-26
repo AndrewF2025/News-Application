@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News_app.forms &mdash; Django News Application 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Django News Application
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation &amp; Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models_explanation.html">Database Models Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Database Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_serializers_explanation.html">API Serializers Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_serializers.html">API Serializers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tests_api_explanation.html">API Tests Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tests_api.html">API Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../urls_explanation.html">URL Routing Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">REST API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../forms_explanation.html">Forms Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../forms.html">Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../views_explanation.html">Views Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../views.html">Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin_explanation.html">Admin Interface Explanation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin.html">Admin</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Django News Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">News_app.forms</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for News_app.forms</h1><div class="highlight"><pre>
+<span></span><span class="c1"># News_app/forms.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django</span><span class="w"> </span><span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreationForm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Publisher</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Article</span><span class="p">,</span> <span class="n">Newsletter</span><span class="p">,</span> <span class="n">Comment</span><span class="p">,</span>
+    <span class="n">PublisherStaff</span><span class="p">,</span> <span class="n">Subscription</span>
+<span class="p">)</span>
+
+<span class="n">CustomUser</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="CustomUserChangeForm">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.CustomUserChangeForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomUserChangeForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for updating existing users.</span>
+<span class="sd">    Inherits from Django&#39;s UserChangeForm and includes</span>
+<span class="sd">    additional fields like role.</span>
+
+<span class="sd">    :param username: Username of the user</span>
+<span class="sd">    :param email: Email address of the user</span>
+<span class="sd">    :param first_name: First name of the user</span>
+<span class="sd">    :param last_name: Last name of the user</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CustomUserChangeForm.Meta">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.CustomUserChangeForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">CustomUser</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CustomUserCreationForm">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.CustomUserCreationForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomUserCreationForm</span><span class="p">(</span><span class="n">UserCreationForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for creating new users.</span>
+<span class="sd">    Inherits from Django&#39;s UserCreationForm and adds fields like role.</span>
+<span class="sd">    Used for user registration and admin user creation.</span>
+
+<span class="sd">    :param username: Username of the user</span>
+<span class="sd">    :param email: Email address of the user</span>
+<span class="sd">    :param first_name: First name of the user</span>
+<span class="sd">    :param last_name: Last name of the user</span>
+<span class="sd">    :param role: Role of the user</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CustomUserCreationForm.Meta">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.CustomUserCreationForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">CustomUser</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PublisherForm">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.PublisherForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PublisherForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for creating and updating Publisher instances.</span>
+<span class="sd">    Allows input of publisher name and description.</span>
+
+<span class="sd">    :param name: Name of the publisher</span>
+<span class="sd">    :param description: Description of the publisher</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PublisherForm.Meta">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.PublisherForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Publisher</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CategoryForm">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.CategoryForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CategoryForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for creating and updating Category instances.</span>
+<span class="sd">    Allows input of category name and description.</span>
+
+<span class="sd">    :param name: Name of the category</span>
+<span class="sd">    :param description: Description of the category</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CategoryForm.Meta">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.CategoryForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Category</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ArticleForm">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.ArticleForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ArticleForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for creating and updating Article instances.</span>
+<span class="sd">    Includes fields for title, content, publisher, category, image,</span>
+<span class="sd">    and independence.</span>
+
+<span class="sd">    :param title: Title of the article</span>
+<span class="sd">    :param content: Content of the article</span>
+<span class="sd">    :param publisher: Publisher of the article</span>
+<span class="sd">    :param category: Category of the article</span>
+<span class="sd">    :param image: Image associated with the article</span>
+<span class="sd">    :param is_independent: Whether the article is independent</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ArticleForm.Meta">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.ArticleForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Article</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="s1">&#39;category&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;is_independent&#39;</span>
+        <span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="NewsletterForm">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.NewsletterForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NewsletterForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for creating and updating Newsletter instances.</span>
+<span class="sd">    Includes fields for title, content, publisher, and independence.</span>
+
+<span class="sd">    :param title: Title of the newsletter</span>
+<span class="sd">    :param content: Content of the newsletter</span>
+<span class="sd">    :param publisher: Publisher of the newsletter</span>
+<span class="sd">    :param is_independent: Whether the newsletter is independent</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="NewsletterForm.Meta">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.NewsletterForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Newsletter</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="s1">&#39;is_independent&#39;</span>
+        <span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CommentForm">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.CommentForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CommentForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for creating and updating Comment instances.</span>
+<span class="sd">    Only includes the content field for user comments.</span>
+
+<span class="sd">    :param content: Content of the comment</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CommentForm.Meta">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.CommentForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Comment</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PublisherStaffForm">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.PublisherStaffForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PublisherStaffForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for assigning staff to a publisher.</span>
+<span class="sd">    Includes fields for publisher, user, and staff role.</span>
+
+<span class="sd">    :param publisher: Publisher to assign staff to</span>
+<span class="sd">    :param user: User being assigned</span>
+<span class="sd">    :param role: Role of the staff member</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PublisherStaffForm.Meta">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.PublisherStaffForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">PublisherStaff</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SubscriptionForm">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.SubscriptionForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SubscriptionForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for managing subscriptions.</span>
+<span class="sd">    Allows input of subscriber, publisher, and journalist fields.</span>
+
+<span class="sd">    :param subscriber: User subscribing</span>
+<span class="sd">    :param publisher: Publisher being subscribed to</span>
+<span class="sd">    :param journalist: Journalist being followed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SubscriptionForm.Meta">
+<a class="viewcode-back" href="../../forms.html#News_app.forms.SubscriptionForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Subscription</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;subscriber&#39;</span><span class="p">,</span> <span class="s1">&#39;publisher&#39;</span><span class="p">,</span> <span class="s1">&#39;journalist&#39;</span><span class="p">]</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Andrew French.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

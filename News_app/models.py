@@ -9,24 +9,25 @@ class CustomUser(AbstractUser):
     Model to represent a custom user with different roles
 
     This model extends the default Django user model to include roles
-    such as Reader, Editor, and Journalist. Each role has specific fields
-    and relationships to other models like Publisher, Article, and Newsletter.
+    such as Reader, Editor, and Journalist. Each role has specific
+    fields and relationships to other models like Publisher, Article,
+    and Newsletter.
 
     Fields:
     - role: The role of the user (reader, editor, journalist).
 
     Relationships:
     - Readers can subscribe to multiple Publishers and Journalists
-      via Subscription.
-    - Journalists can create independent Articles and Newsletters
-      (is_independent=True).
-    - Editors can manage Articles and Newsletters, approving or rejecting them.
+    via Subscription.
+    - Journalists can create independent Articles and Newsletters.
+    - Editors can manage Articles and Newsletters, approving or rejecting
+    them.
 
     Methods:
     - can_approve_articles: Returns True if user is editor or in
-      the Editors group.
+    the Editors group.
     - can_manage_content: Returns True if user is editor or in
-      the Editors group.
+    the Editors group.
     - save: Custom save method to handle role-specific logic.
     """
     ROLE_CHOICES = [
@@ -97,7 +98,7 @@ class Publisher(models.Model):
     Relationships:
     - Publishers can have multiple Editors and Journalists via PublisherStaff.
     - Publishers can have multiple Articles and Newsletters published
-      under them.
+    under them.
 
     Methods:
     - ordering: Publishers are ordered by name.
@@ -398,6 +399,7 @@ class Subscription(models.Model):
     - subscriber: Foreign key to CustomUser (user subscribing).
     - publisher: Foreign key to Publisher (optional).
     - journalist: Foreign key to CustomUser (journalist, optional).
+
     # Only one of publisher or journalist should be set
 
     Relationships:
