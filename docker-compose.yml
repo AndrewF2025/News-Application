@@ -1,0 +1,53 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: news_db
+      MYSQL_USER: news_user
+      MYSQL_PASSWORD: news_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  web:
+    #build: . #(If image needs to be built, uncomment this line)
+    image: andrewf2025/news-app #(If need to build image Comment out this line)
+    command: ["gunicorn", "News.wsgi:application", "--bind", "0.0.0.0:8000"]
+    #volumes: #(Only include if you want to mount the current directory)
+    #  - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=News.settings
+      - DB_NAME=news_db
+      - DB_USER=news_user
+      - DB_PASSWORD=news_password
+      - DB_HOST=db
+      - DB_PORT=3306
+      - ALLOWED_HOSTS=* # Comment this line for production
+      #- ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0 # Uncomment for local development
+      - SECRET_KEY=your-very-secret-key-here
+
+      # Email configuration (replace with real values for production)
+      - EMAIL_HOST=sandbox.smtp.mailtrap.io
+      - EMAIL_PORT=2525
+      - EMAIL_HOST_USER=your-mailtrap-username
+      - EMAIL_HOST_PASSWORD=your-mailtrap-password
+      - EMAIL_USE_TLS=True
+      - DEFAULT_FROM_EMAIL=test@example.com
+      
+      # Twitter API configuration (replace with real values for production)
+      - TWITTER_API_KEY=your-twitter-api-key
+      - TWITTER_API_SECRET=your-twitter-api-secret
+      - TWITTER_ACCESS_TOKEN=your-twitter-access-token
+      - TWITTER_ACCESS_TOKEN_SECRET=your-twitter-access-token-secret
+      - TWITTER_BEARER_TOKEN=your-twitter-bearer-token
+      - TWITTER_ENABLED=True
+
+volumes:
+  db_data:
