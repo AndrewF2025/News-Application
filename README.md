@@ -4,6 +4,22 @@ News Application project using Django
 
 ## Getting Started
 
+### About `.env.example`
+
+This project includes a `.env.example` file in the root directory. This file contains all the environment variables required to run the application, such as database credentials, secret keys, email settings, and API keys.
+
+**How to use:**
+
+- Copy `.env.example` to `.env` in the project root:
+  ```sh
+  cp .env.example .env
+  ```
+- Edit the `.env` file and fill in the required values for your local setup or production environment.
+- The `.env` file is used by the Django application when running locally with venv or with Docker using `--env-file .env`.
+- For Docker Compose, environment variables are set in `docker-compose.yml` and not loaded from `.env` by default.
+
+**Never commit your `.env` file with real secrets to a public repository.**
+
 You can run this project using either a Python virtual environment (venv) or Docker.
 
 ---
@@ -50,34 +66,41 @@ You can run this project using either a Python virtual environment (venv) or Doc
 
 ### Option 2: Using Docker
 
-1. **Ensure Docker is installed and running.**
 
-2. **Build the Docker image:**
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/yourusername/News-Application.git
+   cd News-Application
+   ```
+
+2. **Ensure Docker is installed and running.**
+
+3. **Build the Docker image:**
    ```sh
    docker build -t /news-app .
    ```
 
-3. **Edit environment variables:**
+4. **Edit environment variables:**
    - The Docker Compose setup uses environment variables defined directly in `docker-compose.yml` (not from `.env`).
    - If you need to change database credentials, secret keys, or API keys, edit them in the `environment:` section of the `web` and `db` services in `docker-compose.yml`.
 
-4. **Start the app and database:**
+5. **Start the app and database:**
    ```sh
    docker-compose up --build
    ```
    This will build the images (if needed), start the MySQL database, and run the Django app.
 
-5. **Apply migrations (in a new terminal):**
+6. **Apply migrations (in a new terminal):**
    ```sh
    docker-compose exec web python manage.py migrate
    ```
 
-6. **Create a superuser (optional, for admin access):**
+7. **Create a superuser (optional, for admin access):**
    ```sh
    docker-compose exec web python manage.py createsuperuser
    ```
 
-7. **Access the application:**
+8. **Access the application:**
    - Open your browser to [http://localhost:8000](http://localhost:8000)
 
 ---
